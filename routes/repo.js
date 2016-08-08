@@ -14,11 +14,14 @@ var repo;
 router.get('/*', function(req, res, next) {
 
 	getCommit(req.params.commitRef).then(function(commit) {
-		console.log("loading path from repo commit. commit: " + req.params.commitRef + "  path: " + req.path);
-		commit.getEntry(req.path).then(function(treeEntry) {
-			res.type(mime.type(req.path));
+		console.log("loading from repo. commit: " + req.params.commitRef + "  path: " + req.path);
+		commit.getEntry(req.path.substr(1)).then(function(treeEntry) {
+			console.log("Got TreeEntry: " + treeEntry + "   isBlob? " + treeEntry.isBlob());
+			console.log("mime type: " + mime.lookup(treeEntry.name()));
+			res.type(mime.lookup(req.path));
 			if (treeEntry.isBlob()) {
 				treeEntry.getBlob().then(function(blob) {
+					console.log("Sending content: " + blob.content());
 					res.send(blob.content());
 				}, function(error) {
 					logError("Problem retrieving tree entry blob from git: " + treeEntry.name(), error);
