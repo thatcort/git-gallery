@@ -1,0 +1,11 @@
+<h4>Commit: {{commitId}}</h4>
+
+
+A page does not exist for this commit.
+
+<div>
+	<form method="post" action="/pages/create">
+	<input type="hidden" name="commitRef" value="{{commitId}}" />
+	<button type="submit">Create a New Page</button>
+	<form>
+</div>

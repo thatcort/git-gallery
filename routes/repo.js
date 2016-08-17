@@ -75,7 +75,9 @@ function getRepo() {
 function getCommit(ref) {
 	return new Promise(function(fulfill, reject) {
 		getRepo().then(function(repo) {
+			// console.log("GOT REPO");
 			repo.getCommit(ref).then(function(commit) {
+				// console.log("GOT COMMIT: " + ref);
 				fulfill(commit);
 			}, function(error) {
 				logError("Unable to get commit: " + ref, error);
@@ -104,4 +106,7 @@ function logError(message, error) {
 }
 
 
-module.exports = router;
+exports.router = router;
+exports.getCommit = getCommit;
+
+// module.exports = router;
