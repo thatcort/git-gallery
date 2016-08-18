@@ -28,10 +28,10 @@ router.get('/:commitRef', function(req, res, next) {
 	//     else (if directory does exist, but path doesn't)
 	//       return 404
 	if (pageExists(req.params.commitRef)) {
-		console.log("page DOES exist");
+// console.log("page DOES exist");
 		return loadPage(req.params.commitRef, res);	
 	} else {
-		console.log("page does NOT exist");
+// console.log("page does NOT exist");
 		createPageJson(req.params.commitRef, function(error, json) {
 			if (error) {
 				res.sendStatus(404);
@@ -58,7 +58,7 @@ router.post('/create', function(req, res, next) {
 
 function loadPage(commitRef, res) {
 	let jsonPath = path.join(galleryRoot, commitRef, 'page.json');
-	// console.log("looking for: " + jsonPath);
+// console.log("looking for: " + jsonPath);
 	let json = readJsonFileSync(jsonPath);
 	json.commitRef = commitRef;
 	res.render('page', json);
@@ -81,11 +81,11 @@ function pageExists(commitRef) {
 		fs.accessSync(dir);
 		exists = true;
 	} catch (e) {
-console.log("accesssync failed");
-return false;
+// console.log("accesssync failed");
+		return false;
 	}
 	let isDir = fs.statSync(dir).isDirectory();
-console.log("isDir? " + isDir);
+// console.log("isDir? " + isDir);
 	return exists && isDir;
 }
 
@@ -100,7 +100,7 @@ function createPage(commitRef, callback) {
 			callback(error);
 			return;
 		}
-console.log("about to create page json");
+// console.log("about to create page json");
 		// create and add a json file to the directory
 		createPageJson(commitRef, (error, data) => {
 			if (error) {
@@ -110,7 +110,7 @@ console.log("about to create page json");
 				let json = JSON.stringify(data, null, '\t');
 				console.log("About to write page json file: " + json);
 				fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
-console.log("Wrote file or failed");
+// console.log("Wrote file or failed");
 					callback(error);
 					return;
 				});
