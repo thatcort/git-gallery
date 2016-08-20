@@ -9,12 +9,15 @@ function pathExists(f) {
 	try {
 		fs.accessSync(f);
 	} catch (e) {
+// console.log('Path does not exist: ' + f);
 		return false;
 	}
+// console.log('Path does exist: ' + f);
 	return true;
 }
 
 function isDirectory(f) {
+// console.log('isDirectory: ' + f + ': ' + fs.statSync(f).isDirectory());
 	return fs.statSync(f).isDirectory();
 }
 
@@ -24,12 +27,12 @@ function pageDir(commitRef) {
 
 function isPageDir(dir) {
 	let exists = pathExists(dir) && isDirectory(dir);
-console.log("directory exists for " + dir + '? ' + exists);
+// console.log("directory exists for " + dir + '? ' + exists);
 	if (!exists) {
 		return false;
 	}
 	let page = readPageJSON(dir);
-console.log('basename ' + path.basename(dir));
+// console.log('basename ' + path.basename(dir));
 	return path.basename(dir) === page.commitId;
 }
 

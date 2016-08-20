@@ -18,20 +18,24 @@ function buildDB() {
 	// find all gallery directories with page.json files and create an in memory index of them
 	var files = fs.readdirSync(galleryRoot);
 	for (let f of files) {
+// console.log("Processing file: " + f);
+		let p = path.join(galleryRoot, f);
 		// skip the HEAD symlink dir and any directory that is not a valid page
-		if (f === 'HEAD' || !isPageDir(f)) {
+		if (f === 'HEAD' || !isPageDir(p)) {
+// console.log("...skipping");
 			continue;
 		}
 		// add the page to the db
-		addPageDir(dir);
+		addPageDir(p);
 	}
 
 	sortPages();
-
+console.log("PageDB: " + JSON.stringify(pages, null, 2));
 }
 
 function addPageDir(dir) {
 	let page = readPageJSON(dir);
+
 	pages.push(page);
 	commit2Page[page.commitId] = page;
 }
