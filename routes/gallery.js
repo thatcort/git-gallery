@@ -22,8 +22,7 @@ router.use('/:commitRef', pageRouter);
 function getDirectory(req, res, next) {
 	let pages = db.getPages();
 	let data = {
-		pages: pages,
-		helpers: utils.handlebarsHelpers
+		pages: pages
 	};
 	res.render('gallery.hbs', data);
 }

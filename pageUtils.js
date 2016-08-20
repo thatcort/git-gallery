@@ -1,5 +1,6 @@
 var fs = require("fs");
 var path = require('path');
+var hbs = require('hbs');
 
 var repo = require('./routes/repo');
 
@@ -99,9 +100,13 @@ function createPageJson(commitRef, callback) {
 	});
 }
 
-handlebarsHelpers = {
-	dateTime:  function(date) { return date.toLocaleString(); }
-};
+function registerHandlebarsHelper(name, helper) {
+	hbs.handlebars.registerHelper(name, helper);
+}
+
+registerHandlebarsHelper('dateTime', (date) => { return date.toLocaleString(); });
+
+
 
 exports.galleryRoot = galleryRoot;
 exports.pathExists = pathExists;
@@ -112,5 +117,3 @@ exports.pageDir = pageDir;
 exports.readPageJSON = readPageJSON;
 exports.createPage = createPage;
 exports.createPageJson = createPageJson;
-exports.handlebarsHelpers = handlebarsHelpers;
-
