@@ -1,8 +1,9 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({mergeParams: true});
 
 var fs = require("fs");
 var path = require('path');
+var parseUrl = require('parseurl');
 
 var utils = require('../pageUtils');
 var galleryRoot = utils.galleryRoot;
@@ -13,23 +14,19 @@ var readPageJSON = utils.readPageJSON;
 var createPage = utils.createPage;
 var createPageJson = utils.createPageJson;
 
+
 router.use(function(req, res, next) {
 	console.log('pagesRouter: %s %s %s', req.method, req.url, req.path);
 	next();
 });
 
 var repo = require('./repo');
-router.use('/:commitRef/repo', repo.router);
+router.use('/repo', repo.router);
 
 // router.use('/:commitRef/*', express.static(path.join(__dirname, '..', '.gitGallery')));
 
-router.get('/:commitRef/*', function(req, res, next) {
-console.log('Sending file: ' + req.path + '   from dir: ' + galleryRoot);
-	res.sendFile(req.path, {root: galleryRoot})
-});
-
 /* GET users listing. */
-router.get('/:commitRef', function(req, res, next) {
+router.get('/', function(req, res, next) {
 	//     if directory does not exist
 	//       offer to create a new page
 	//     else (if directory does exist, but path doesn't)
@@ -62,6 +59,20 @@ router.post('/create', function(req, res, next) {
 		}
 	});
 });
+
+
+router.get('/*', function(req, res, next) {
+	let pn = parseUrl(req).pathname;
+	let f = path.join(req.params.commitRef, pn);
+	let root = '.gitGallery';
+// console.log("pathname: " + pn);
+// console.log('root resolved: ' + path.resolve(root));
+// console.log('req url: ' + req.url);
+// console.log('commitRef: ' + req.params.commitRef);
+// console.log('Sending file: ' + f);
+	res.sendFile(f, {root: root});
+});
+
 
 function loadPage(commitRef, res) {
 	let dir = pageDir(commitRef);

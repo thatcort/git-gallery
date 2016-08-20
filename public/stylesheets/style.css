@@ -8,4 +8,11 @@ a {
 p {
   color: #333; }
 
+.galleryItem {
+  background-color: #f0f0f0;
+  padding: 10px; }
+
+.giDate {
+  color: grey; }
+
 /*# sourceMappingURL=style.css.map */

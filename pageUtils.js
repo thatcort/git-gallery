@@ -24,8 +24,6 @@ function pageDir(commitRef) {
 
 function isPageDir(dir) {
 	let exists = pathExists(dir) && isDirectory(dir);
-console.log('path exists: ' + pathExists(dir));
-console.log('isDirectory: ' + isDirectory(dir));
 console.log("directory exists for " + dir + '? ' + exists);
 	if (!exists) {
 		return false;
