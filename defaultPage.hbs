@@ -1,0 +1,9 @@
+<h4>Commit: {{commitId}}</h4>
+{{#if title}}<h2>{{title}}</h2>{{/if}}
+{{#if comment}}<p>{{comment}}</p>{{/if}}
+{{#each images}}
+	<figure>
+		<img src="{{src}}" />
+		<figcaption>{{caption}}</figcaption>
+	</figure
+{{/each}}

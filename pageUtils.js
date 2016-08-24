@@ -4,7 +4,7 @@ var hbs = require('hbs');
 
 var repo = require('./routes/repo');
 
-var galleryRoot = path.join(__dirname, '.gitGallery');
+var galleryRoot = path.resolve('./.gitGallery'); // path.join(__dirname, '.gitGallery');
 
 function pathExists(f) {
 	try {
@@ -20,6 +20,10 @@ function pathExists(f) {
 function isDirectory(f) {
 // console.log('isDirectory: ' + f + ': ' + fs.statSync(f).isDirectory());
 	return fs.statSync(f).isDirectory();
+}
+
+function directoryExists(f) {
+	return pathExists(f) && isDirectory(f);
 }
 
 function pageDir(commitRef) {
@@ -111,6 +115,7 @@ registerHandlebarsHelper('dateTime', (date) => { return date.toLocaleString(); }
 exports.galleryRoot = galleryRoot;
 exports.pathExists = pathExists;
 exports.isDirectory = isDirectory;
+exports.directoryExists = directoryExists;
 exports.isPageDir = isPageDir;
 exports.pageExists = pageExists;
 exports.pageDir = pageDir;
