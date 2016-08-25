@@ -8,7 +8,7 @@ var galleryRoot = path.resolve('./.gitGallery'); // path.join(__dirname, '.gitGa
 
 function pathExists(f) {
 	try {
-		fs.accessSync(f);
+		fs.accessSync(f, fs.constants.R_OK | fs.constants.W_OK);
 	} catch (e) {
 // console.log('Path does not exist: ' + f);
 		return false;

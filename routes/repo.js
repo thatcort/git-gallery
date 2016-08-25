@@ -1,19 +1,16 @@
-var express = require('express');
-var Git = require('nodegit');
-var path = require("path");
-var mime = require('mime');
-var Promise = require('promise');
+const express = require('express');
+const path = require("path");
+const mime = require('mime');
 
-var router = express.Router({mergeParams: true});
+const rUtils = require('../repoUtils');
 
-var repoPath = path.resolve(process.cwd());
+const router = express.Router({mergeParams: true});
 
-var repo;
 
 /* GET users listing. */
 router.get('/*', function(req, res, next) {
 
-	getCommit(req.params.commitRef).then(function(commit) {
+	rUtils.getCommit(req.params.commitRef).then(function(commit) {
 		console.log("loading from repo. commit: " + req.params.commitRef + "  path: " + req.path);
 		commit.getEntry(req.path.substr(1)).then(function(treeEntry) {
 			console.log("Got TreeEntry: " + treeEntry + "   isBlob? " + treeEntry.isBlob());
@@ -41,61 +38,33 @@ router.get('/*', function(req, res, next) {
 });
 
 
-function getRepo() {
-	return new Promise(function(fulfill, reject) {
-		if (repo) {
-			fulfill(repo);
-		} else {
-			Git.Repository.open(repoPath).then(function(repository) {
-				repo = repository;
-				fulfill(repo);
-			}, function(error) {
-				logError("Unable to open Git repo: " + repoPath, error);
-				reject(error);
-			});
-		}
-	});
-}
-
-// function getRepo(callback) {
-// 	if (repo) {
-// 		return callback(null, repo);
-// 	} else {
-// 		Git.Repository.open(repoPath).then(function(repository) {
-// 			repo = repository;
-// 			return callback(null, repo);
-// 		}, function(error) {
-// 			console.log("Unable to open Git repo: " + repoPath);
-// 			console.log(error);
-// 			return callback(error);
-// 		});
-// 	}
+// function getRepo() {
+// 	return new Promise(function(fulfill, reject) {
+// 		if (repo) {
+// 			fulfill(repo);
+// 		} else {
+// 			Git.Repository.open(repoPath).then(function(repository) {
+// 				repo = repository;
+// 				fulfill(repo);
+// 			}, function(error) {
+// 				logError("Unable to open Git repo: " + repoPath, error);
+// 				reject(error);
+// 			});
+// 		}
+// 	});
 // }
 
-function getCommit(ref) {
-	return new Promise(function(fulfill, reject) {
-		getRepo().then(function(repo) {
-			// console.log("GOT REPO");
-			repo.getCommit(ref).then(function(commit) {
-				// console.log("GOT COMMIT: " + ref);
-				fulfill(commit);
-			}, function(error) {
-				logError("Unable to get commit: " + ref, error);
-				reject(error);
-			});
-		});
-	});
-}
-
-// function getCommit(ref, callback) {
-// 	getRepo(function(error, repo) {
-// 		if (error) {
-// 			return;
-// 		}
-// 		repo.getCommit(ref).then(function(commit) {
-// 			return callback(null, commit);
-// 		}, function(error) {
-// 			return callback(error);
+// function getCommit(ref) {
+// 	return new Promise(function(fulfill, reject) {
+// 		getRepo().then(function(repo) {
+// 			// console.log("GOT REPO");
+// 			repo.getCommit(ref).then(function(commit) {
+// 				// console.log("GOT COMMIT: " + ref);
+// 				fulfill(commit);
+// 			}, function(error) {
+// 				logError("Unable to get commit: " + ref, error);
+// 				reject(error);
+// 			});
 // 		});
 // 	});
 // }
@@ -107,6 +76,6 @@ function logError(message, error) {
 
 
 exports.router = router;
-exports.getCommit = getCommit;
+// exports.getCommit = getCommit;
 
 // module.exports = router;

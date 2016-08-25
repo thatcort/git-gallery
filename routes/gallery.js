@@ -13,7 +13,6 @@ router.use(function(req, res, next) {
 });
 
 var pageRouter = require('./page');
-var repoRouter = require('./repo');
 
 router.get('/', getDirectory);
 router.get('/index.html', getDirectory);
