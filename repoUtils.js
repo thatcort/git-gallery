@@ -37,6 +37,42 @@ function getCommit(ref) {
 	});
 }
 
+function getHeadCommit() {
+	return getRepo().then((repo) => {
+		return Git.Reference.nameToId(repo, "HEAD").then((head) => {
+			return getCommit(head);
+		});
+	});
+}
+
+// function getHeadCommit() {
+// 	return new Promise(function(fulfill, reject) {
+// console.log('Getting HEAD...');
+// 		getRepo().then(function(repo) {
+// 			console.log("GOT REPO");
+// 			// console.log('getHeadCommit: ' + repo.getHeadCommit);
+// 			// repo.
+// 			repoGetHeadCommit().then(function(commit) {
+// 				console.log("GOT HEAD: " + ref);
+// 				fulfill(commit);
+// 			}, function(error) {
+// 				logError("Unable to get HEAD commit: " + ref, error);
+// 				reject(error);
+// 			});
+// 		});
+// 	});
+// }
+
+
+function repoGetHeadCommit() {
+	return Git.Reference.nameToId(repo, "HEAD").then(function (head) {
+console.log("nameToId: HEAD=" + head);
+		return getCommit(head);
+	}, function(e) {
+		console.error(e);
+	});
+}
+
 
 function logError(message, error) {
 	console.log(message);
@@ -46,3 +82,4 @@ function logError(message, error) {
 
 exports.getRepo = getRepo;
 exports.getCommit = getCommit;
+exports.getHeadCommit = getHeadCommit;

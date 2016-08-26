@@ -9,6 +9,9 @@ var routes = require('./routes/index');
 // var users = require('./routes/users');
 var gallery = require('./routes/gallery');
 var pages = require('./routes/page');
+var head = require('./galleryHEAD');
+
+head.watchHead();
 
 var app = express();
 
