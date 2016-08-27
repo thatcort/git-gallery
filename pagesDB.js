@@ -65,21 +65,21 @@ function getPage(commitRef) {
 
 
 function watchGallery() {
-	watcher = chokidar.watch(galleryRoot);
-	watcher.on('ready', () => {
-		watcher.on('addDir', onDirAdded) // directory added
-			.on('unlinkDir', onDirRemoved) // directory removed
-			.on('add', onFileAdded) // file added
-			.on('change', onFileChaged) // file changed
-			.on('unlink', onFileRemoved); // file removed		
-	});
-	watcher.on('error', error => console.log(`Watcher error: ${error}`));
+	console.log("HELLO")
+	watcher = chokidar.watch(galleryRoot, { ignoreInitial: true });
+	// watcher.on('all', (event, path) => { console.log(event, path); });
+	watcher.on('addDir', onDirAdded) // directory added
+		.on('unlinkDir', onDirRemoved) // directory removed
+		.on('add', onFileAdded) // file added
+		.on('change', onFileChaged) // file changed
+		.on('unlink', onFileRemoved) // file removed
+		.on('error', error => console.log(`Watcher error: ${error}`));
 }
 
 function onDirAdded(dir) {
 	console.log("Watcher.onDirAdded: " + dir);
 	if (path.basename(dir) === 'HEAD') {
-		console.log('aborting')
+		console.log('ignoring')
 		return;
 	}
 	if (isPageDir(dir)) {

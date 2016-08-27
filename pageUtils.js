@@ -36,9 +36,10 @@ function isPageDir(dir) {
 	if (!exists) {
 		return false;
 	}
-	let page = readPageJSON(dir);
+	let pageExists = pathExists(path.join(dir, 'page.json'));
+	// let page = readPageJSON(dir);
 // console.log('basename ' + path.basename(dir));
-	return path.basename(dir) === page.commitId;
+	return pageExists; //  && path.basename(dir) === page.commitId;
 }
 
 function pageExists(commitRef) {
