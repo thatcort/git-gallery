@@ -3,7 +3,7 @@
 {{#each pages}}
 	<a href="{{commitId}}\">
 		<div class="galleryItem">
-			<div class="giTitle">{{title}}</div>
+			<div class="giTitle">{{#if title}}{{title}}{{else}}Untitled{{/if}}</div>
 			<div class="giDate">{{dateTime date}}</div>
 		</div>
 	</a>
