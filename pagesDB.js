@@ -65,7 +65,6 @@ function getPage(commitRef) {
 
 
 function watchGallery() {
-	console.log("HELLO")
 	watcher = chokidar.watch(galleryRoot, { ignoreInitial: true });
 	// watcher.on('all', (event, path) => { console.log(event, path); });
 	watcher.on('addDir', onDirAdded) // directory added
