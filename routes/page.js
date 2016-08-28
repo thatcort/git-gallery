@@ -6,6 +6,7 @@ var path = require('path');
 var parseUrl = require('parseurl');
 
 var utils = require('../pageUtils');
+var repoUtils = require('../repoUtils');
 var galleryRoot = utils.galleryRoot;
 var isPageDir = utils.isPageDir;
 var pageExists = utils.pageExists;
@@ -41,7 +42,18 @@ router.get('/', function(req, res, next) {
 				res.sendStatus(404);
 			} else {
 				json.title = "Create Page";
-				res.render('createPage.hbs', json);
+				json.isHead = req.params.commitRef === 'HEAD';
+				if (json.isHead) {
+					
+console.log("Checking if working dir clean");
+					repoUtils.isWorkingDirClean().then(isClean => {
+						json.isClean = isClean;
+						console.log("ISCLEAN: " + isClean);
+						res.render('createPage.hbs', json);
+					});
+				} else {
+					res.render('createPage.hbs', json);
+				}
 			}
 		});
 	}

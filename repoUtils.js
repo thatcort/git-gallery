@@ -37,7 +37,8 @@ function getHeadCommit() {
 
 
 function isWorkingDirClean() {
-	repo.getStatus().then(statuses => { return statuses.length === 0; });
+	return getRepo().then(repo => { return repo.getStatus() })
+		.then(statuses => { return statuses.length === 0; });
 
 // 	repo.getStatus().then(function(statuses) {
 //       function statusToText(status) {
@@ -67,3 +68,4 @@ function logError(message, error) {
 exports.getRepo = getRepo;
 exports.getCommit = getCommit;
 exports.getHeadCommit = getHeadCommit;
+exports.isWorkingDirClean = isWorkingDirClean;
