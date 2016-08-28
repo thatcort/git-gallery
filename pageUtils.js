@@ -2,7 +2,7 @@ var fs = require("fs");
 var path = require('path');
 var hbs = require('hbs');
 
-var repo = require('./routes/repo');
+var repo = require('./repoUtils');
 
 var galleryRoot = path.resolve('./.gitGallery'); // path.join(__dirname, '.gitGallery');
 
@@ -14,7 +14,12 @@ function pathExists(f) {
 		return false;
 	}
 // console.log('Path does exist: ' + f);
-	return true;
+	let stats = fs.lstatSync(f);
+	if (stats.isSymbolicLink()) {
+		return pathExists(fs.readlinkSync(f));
+	} else {
+		return true;
+	}
 }
 
 function isDirectory(f) {
@@ -29,6 +34,11 @@ function directoryExists(f) {
 function pageDir(commitRef) {
 	return path.join(galleryRoot, commitRef);
 }
+
+// function isSymbolicLinkDirectory(dir) {
+// 	let stats = fs.lstatSync(f);
+// 	return stats.isDirectory() && stats.isSymbolicLink();
+// }
 
 function isPageDir(dir) {
 	let exists = pathExists(dir) && isDirectory(dir);

@@ -23,54 +23,38 @@ function getRepo() {
 }
 
 function getCommit(ref) {
-	return new Promise(function(fulfill, reject) {
-		getRepo().then(function(repo) {
-			// console.log("GOT REPO");
-			repo.getCommit(ref).then(function(commit) {
-				// console.log("GOT COMMIT: " + ref);
-				fulfill(commit);
-			}, function(error) {
-				logError("Unable to get commit: " + ref, error);
-				reject(error);
-			});
-		});
-	});
+	if (ref === 'HEAD') {
+		return getHeadCommit(ref);
+	}
+	return getRepo().then(repo => repo.getCommit(ref));
 }
 
 function getHeadCommit() {
 	return getRepo().then((repo) => {
-		return Git.Reference.nameToId(repo, "HEAD").then((head) => {
-			return getCommit(head);
-		});
+		return Git.Reference.nameToId(repo, "HEAD").then(getCommit);
 	});
 }
 
-// function getHeadCommit() {
-// 	return new Promise(function(fulfill, reject) {
-// console.log('Getting HEAD...');
-// 		getRepo().then(function(repo) {
-// 			console.log("GOT REPO");
-// 			// console.log('getHeadCommit: ' + repo.getHeadCommit);
-// 			// repo.
-// 			repoGetHeadCommit().then(function(commit) {
-// 				console.log("GOT HEAD: " + ref);
-// 				fulfill(commit);
-// 			}, function(error) {
-// 				logError("Unable to get HEAD commit: " + ref, error);
-// 				reject(error);
-// 			});
-// 		});
-// 	});
-// }
 
+function isWorkingDirClean() {
+	repo.getStatus().then(statuses => { return statuses.length === 0; });
 
-function repoGetHeadCommit() {
-	return Git.Reference.nameToId(repo, "HEAD").then(function (head) {
-console.log("nameToId: HEAD=" + head);
-		return getCommit(head);
-	}, function(e) {
-		console.error(e);
-	});
+// 	repo.getStatus().then(function(statuses) {
+//       function statusToText(status) {
+//         var words = [];
+//         if (status.isNew()) { words.push("NEW"); }
+//         if (status.isModified()) { words.push("MODIFIED"); }
+//         if (status.isTypechange()) { words.push("TYPECHANGE"); }
+//         if (status.isRenamed()) { words.push("RENAMED"); }
+//         if (status.isIgnored()) { words.push("IGNORED"); }
+
+//         return words.join(" ");
+//       }
+
+//       statuses.forEach(function(file) {
+//         console.log(file.path() + " " + statusToText(file));
+//       });
+// });
 }
 
 
