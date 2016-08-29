@@ -1,19 +1,18 @@
-var express = require('express');
-var router = express.Router({mergeParams: true});
+const express = require('express');
+const router = express.Router({mergeParams: true});
 
-var fs = require("fs");
-var path = require('path');
-var parseUrl = require('parseurl');
+const fs = require("fs");
+const path = require('path');
+const parseUrl = require('parseurl');
 
-var utils = require('../pageUtils');
-var repoUtils = require('../repoUtils');
-var galleryRoot = utils.galleryRoot;
-var isPageDir = utils.isPageDir;
-var pageExists = utils.pageExists;
-var pageDir = utils.pageDir;
-var readPageJSON = utils.readPageJSON;
-var createPage = utils.createPage;
-var createPageJson = utils.createPageJson;
+const utils = require('../pageUtils');
+const repoUtils = require('../repoUtils');
+const galleryRoot = utils.galleryRoot;
+const isPageDir = utils.isPageDir;
+const pageExists = utils.pageExists;
+const pageDir = utils.pageDir;
+const readPageJSON = utils.readPageJSON;
+const createPageJson = utils.createPageJson;
 
 
 router.use(function(req, res, next) {
@@ -60,17 +59,6 @@ console.log("Checking if working dir clean");
 	
 });
 
-/** Create a new page */
-router.post('/create', function(req, res, next) {
-	createPage(req.body.commitRef, (error, data) => {
-		if (error) {
-			console.log(error);
-			res.sendStatus(500);
-		} else {
-			res.redirect(req.body.commitRef);
-		}
-	});
-});
 
 
 router.get('/*', function(req, res, next) {
@@ -93,86 +81,5 @@ function loadPage(commitRef, res) {
 	res.render('page', json);
 }
 
-// function loadPage(commitRef, res) {
-// 	let jsonPath = path.join(galleryRoot, commitRef, 'page.json');
-// // console.log("looking for: " + jsonPath);
-// 	let json = readJsonFileSync(jsonPath);
-// 	json.commitRef = commitRef;
-// 	res.render('page', json);
-// }
-
-
-// function readJsonFileSync(filepath, encoding) {
-// 	if (typeof (encoding) == 'undefined') {
-// 		encoding = 'utf8';
-// 	}
-// 	var file = fs.readFileSync(filepath, encoding);
-// 	return JSON.parse(file);
-// }
-
-
-// function pageExists(commitRef) {
-// 	let exists = false;
-// 	let dir = pageDir(commitRef);
-// 	try {
-// 		fs.accessSync(dir);
-// 		exists = true;
-// 	} catch (e) {
-// // console.log("accesssync failed");
-// 		return false;
-// 	}
-// 	let isDir = fs.statSync(dir).isDirectory();
-// // console.log("isDir? " + isDir);
-// 	return exists && isDir;
-// }
-
-// function pageDir(commitRef) {
-// 	return path.join(galleryRoot, commitRef);
-// }
-
-// function createPage(commitRef, callback) {
-// 	let dir = pageDir(commitRef);
-// 	fs.mkdir(dir, function(error) {
-// 		if (error) {
-// 			callback(error);
-// 			return;
-// 		}
-// // console.log("about to create page json");
-// 		// create and add a json file to the directory
-// 		createPageJson(commitRef, (error, data) => {
-// 			if (error) {
-// 				callback(error);
-// 				return;
-// 			} else {
-// 				let json = JSON.stringify(data, null, '\t');
-// 				console.log("About to write page json file: " + json);
-// 				fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
-// // console.log("Wrote file or failed");
-// 					callback(error);
-// 					return;
-// 				});
-// 			}
-// 		});
-// 	});
-// }
-
-// function createPageJson(commitRef, callback) {
-// 	repo.getCommit(commitRef).then(function(commit) {
-// 		callback(null, {
-// 			"commitId": commitRef,
-// 			"date": commit.date().toJSON(),
-// 			"body": commit.body(),
-// 			"author": commit.author().toString(),
-// 			"committer": commit.committer().toString(),
-// 			"message": commit.message(),
-// 			"parents": commit.parents(),
-// 			"title": "",
-// 			"comment": "",
-// 			"images": []
-// 		});
-// 	}, function(error) {
-// 		callback(error);
-// 	});
-// }
 
 module.exports = router;

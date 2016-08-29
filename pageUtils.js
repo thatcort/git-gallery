@@ -32,6 +32,9 @@ function directoryExists(f) {
 }
 
 function pageDir(commitRef) {
+console.log('pageDir: ' + commitRef + 'type: ' + typeof(commitRef) + '  base: ' + galleryRoot);
+let result = path.join(galleryRoot, commitRef);
+console.log('pageDir result: ' + result);
 	return path.join(galleryRoot, commitRef);
 }
 
@@ -71,29 +74,37 @@ function readJsonFileSync(filepath, encoding) {
 }
 
 function createPage(commitRef, callback) {
-	let dir = pageDir(commitRef);
-	fs.mkdir(dir, function(error) {
-		if (error) {
-			callback(error);
-			return;
-		}
-// console.log("about to create page json");
-		// create and add a json file to the directory
-		createPageJson(commitRef, (error, data) => {
+console.log('createPage: ' + commitRef);
+	if (commitRef === 'HEAD') {
+		return repo.getHeadCommit().then(head => createPage(head.sha(), callback));
+	} else {
+	console.log("HELLLLOOOOO");
+		let dir = pageDir(commitRef);
+	console.log('About to make dir: ' + dir);
+		fs.mkdir(dir, function(error) {
 			if (error) {
+	console.log("Problem creating dir: " + error);
 				callback(error);
 				return;
-			} else {
-				let json = JSON.stringify(data, null, '\t');
-				console.log("About to write page json file: " + json);
-				fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
-// console.log("Wrote file or failed");
+			}
+	console.log("about to create page json");
+			// create and add a json file to the directory
+			createPageJson(commitRef, (error, data) => {
+				if (error) {
 					callback(error);
 					return;
-				});
-			}
+				} else {
+					let json = JSON.stringify(data, null, '\t');
+					console.log("About to write page json file: " + json);
+					fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
+	console.log("Wrote file or failed");
+						callback(error);
+						return;
+					});
+				}
+			});
 		});
-	});
+	}
 }
 
 function createPageJson(commitRef, callback) {

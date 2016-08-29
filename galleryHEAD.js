@@ -22,7 +22,9 @@ if (!canSymlink()) {
 function updateHeadDir() {
 	repo.getHeadCommit().then(function(commit) {
 		getHeadDirTarget(function(error, currentTarget) {
-			currentTarget = path.basename(currentTarget);
+			if (currentTarget) {
+				currentTarget = path.basename(currentTarget);
+			}
 			// console.log('HEAD=' + commit.sha() + '. Dir links to: ' + currentTarget);
 			let head = commit.sha();
 			// console.log('HEAD and link are the same? ' + (head === currentTarget));
@@ -36,7 +38,7 @@ function updateHeadDir() {
 					console.log("Can't delete HEAD directory.");
 				}
 
-				let target = path.join(galleryRoot, commit.sha());
+				let target = path.join(galleryRoot, head);
 				fs.symlink(target, headPath, 'dir', (error) => {
 					if (error) {
 						return console.log("Unable to create gallery HEAD directory: " + error);

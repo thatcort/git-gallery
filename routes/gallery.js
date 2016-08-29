@@ -1,18 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var path = require('path');
+const express = require('express');
+const router = express.Router();
+const path = require('path');
 
-var utils = require('../pageUtils');
-var galleryRoot = utils.galleryRoot;
+const utils = require('../pageUtils');
+const galleryRoot = utils.galleryRoot;
+const createPage = utils.createPage;
 
-var db = require('../pagesDB');
+const db = require('../pagesDB');
 
 router.use(function(req, res, next) {
 	console.log('galleryRouter: %s %s %s', req.method, req.url, req.path);
 	next();
 });
 
-var pageRouter = require('./page');
+const pageRouter = require('./page');
 
 router.get('/', getDirectory);
 router.get('/index.html', getDirectory);
@@ -25,5 +26,18 @@ function getDirectory(req, res, next) {
 	};
 	res.render('gallery.hbs', data);
 }
+
+/** Create a new page */
+router.post('/create', function(req, res, next) {
+console.log("Received /create call");
+	createPage(req.body.commitRef, (error, data) => {
+		if (error) {
+			console.log(error);
+			res.sendStatus(500);
+		} else {
+			res.redirect(req.body.commitRef);
+		}
+	});
+});
 
 module.exports = router;
