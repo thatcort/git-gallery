@@ -73,13 +73,19 @@ router.get('/*', function(req, res, next) {
 	res.sendFile(f, {root: root});
 });
 
-
 function loadPage(commitRef, res) {
-	let dir = pageDir(commitRef);
-	let json = readPageJSON(dir);
-	json.commitRef = commitRef;
+	let json = loadPageJSON(commitRef);
 	res.render('page', json);
 }
+
+function loadPageJSON(commitRef) {
+	let dir = pageDir(commitRef);
+	let json = readPageJSON(dir);
+	json.isHead = commitRef === 'HEAD';
+	json.commitRef = commitRef;
+	return json;	
+}
+
 
 
 module.exports = router;
