@@ -1,4 +1,5 @@
 <h4>Commit: {{commitId}}</h4>
+<h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="post">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
 {{#if title}}<h2>{{title}}</h2>{{/if}}
 {{#if comment}}<p>{{comment}}</p>{{/if}}
 {{#each images}}
