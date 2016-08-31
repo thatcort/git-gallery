@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require('path');
 const parseUrl = require('parseurl');
 
-const debug = require('debug')('sketchGit');
+const debug = require('debug')('git-gallery');
 
 const utils = require('../pageUtils');
 const repoUtils = require('../repoUtils');
@@ -79,7 +79,21 @@ router.get('/*', function(req, res, next) {
 router.post('/editpage', function(req, res, next) {
 	debug('Edit page: name=' + req.body.name + ' => value=' + req.body.value);
 	let json = loadPageJSON(req.params.commitRef);
-	json[req.body.name] = req.body.value;
+	if (req.body.name.startsWith('caption/')) {
+console.log('Is Caption');
+		let imgSrc = req.body.name.substring(8);
+console.log('src=' + imgSrc);
+		let caption = null;
+		for (img of json.images) {
+			if (img.src === imgSrc) {
+console.log('Found img');
+				img.caption = req.body.value;
+				break;
+			}
+		}
+	} else {
+		json[req.body.name] = req.body.value;
+	}
 	writePageJson(req.params.commitRef, json, (error) => {
 		if (error) {
 			console.log('Problem writing page.json for ' + req.params.commitRef + ': ' + error);
