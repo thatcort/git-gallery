@@ -1,1 +1,1 @@
-set DEBUG=myapp:* & npm start
+set DEBUG=git-gallery:* & npm start

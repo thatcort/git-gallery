@@ -5,6 +5,8 @@ const fs = require("fs");
 const path = require('path');
 const parseUrl = require('parseurl');
 
+const debug = require('debug')('sketchGit');
+
 const utils = require('../pageUtils');
 const repoUtils = require('../repoUtils');
 const galleryRoot = utils.galleryRoot;
@@ -13,6 +15,7 @@ const pageExists = utils.pageExists;
 const pageDir = utils.pageDir;
 const readPageJSON = utils.readPageJSON;
 const createPageJson = utils.createPageJson;
+const writePageJson = utils.writePageJson;
 
 
 router.use(function(req, res, next) {
@@ -60,7 +63,6 @@ console.log("Checking if working dir clean");
 });
 
 
-
 router.get('/*', function(req, res, next) {
 	let pn = parseUrl(req).pathname;
 	let f = path.join(req.params.commitRef, pn);
@@ -71,6 +73,20 @@ router.get('/*', function(req, res, next) {
 // console.log('commitRef: ' + req.params.commitRef);
 // console.log('Sending file: ' + f);
 	res.sendFile(f, {root: root});
+});
+
+
+router.post('/editpage', function(req, res, next) {
+	debug('Edit page: name=' + req.body.name + ' => value=' + req.body.value);
+	let json = loadPageJSON(req.params.commitRef);
+	json[req.body.name] = req.body.value;
+	writePageJson(req.params.commitRef, json, (error) => {
+		if (error) {
+			console.log('Problem writing page.json for ' + req.params.commitRef + ': ' + error);
+			return 
+		}
+		res.sendStatus(200);
+	});
 });
 
 function loadPage(commitRef, res) {

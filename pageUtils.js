@@ -1,6 +1,7 @@
 var fs = require("fs");
 var path = require('path');
 var hbs = require('hbs');
+const debug = require('debug')('git-gallery');
 
 var repo = require('./repoUtils');
 
@@ -74,36 +75,53 @@ function readJsonFileSync(filepath, encoding) {
 }
 
 function createPage(commitRef, callback) {
-console.log('createPage: ' + commitRef);
+	debug('createPage: ' + commitRef);
 	if (commitRef === 'HEAD') {
 		return repo.getHeadCommit().then(head => createPage(head.sha(), callback));
 	} else {
-	console.log("HELLLLOOOOO");
 		let dir = pageDir(commitRef);
-	console.log('About to make dir: ' + dir);
+		debug('About to make dir: ' + dir);
 		fs.mkdir(dir, function(error) {
 			if (error) {
-	console.log("Problem creating dir: " + error);
+				debug("Problem creating dir: " + error);
 				callback(error);
 				return;
 			}
-	console.log("about to create page json");
+			debug("about to create page json");
 			// create and add a json file to the directory
 			createPageJson(commitRef, (error, data) => {
 				if (error) {
-					callback(error);
-					return;
+					return callback(error);
 				} else {
-					let json = JSON.stringify(data, null, '\t');
-					console.log("About to write page json file: " + json);
-					fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
-	console.log("Wrote file or failed");
-						callback(error);
-						return;
-					});
+					return writePageJson(commitRef, data, callback);
 				}
 			});
 		});
+	}
+}
+
+function writePageJson(commitRef, data, callback) {
+	if (commitRef === 'HEAD') {
+		return repo.getHeadCommit().then(head => writePageJSON(head.sha(), json, callback));
+	} else {
+		let dir = pageDir(commitRef);
+		// if (!directoryExists(dir)) {
+		// 	debug('About to make dir: ' + dir);
+		// 	try {
+		// 		fs.mkdirSync(dir);
+		// 	} catch (error) {
+		// 		debug("Problem creating dir: " + error);
+		// 		return callback(error);
+		// 	}
+		// }
+		let json = JSON.stringify(data, null, '\t');
+		debug("About to write page json file: " + json);
+		fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
+			debug("Wrote file or failed");
+			callback(error);
+			return;
+		});
+
 	}
 }
 
@@ -144,3 +162,4 @@ exports.pageDir = pageDir;
 exports.readPageJSON = readPageJSON;
 exports.createPage = createPage;
 exports.createPageJson = createPageJson;
+exports.writePageJson = writePageJson;
