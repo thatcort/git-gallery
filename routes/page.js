@@ -4,6 +4,7 @@ const router = express.Router({mergeParams: true});
 const fs = require("fs");
 const path = require('path');
 const parseUrl = require('parseurl');
+const multer = require('multer');
 
 const debug = require('debug')('git-gallery');
 
@@ -16,6 +17,22 @@ const pageDir = utils.pageDir;
 const readPageJSON = utils.readPageJSON;
 const createPageJson = utils.createPageJson;
 const writePageJson = utils.writePageJson;
+
+
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		// console.log('multer request: %s %s %s' + req.method, req.url, req.path);
+		d = path.join(galleryRoot, req.body.commitId);
+		console.log('multer destination: ' + d);
+		cb(null, d);
+	},
+	filename: function (req, file, cb) {
+		cb(null, file.originalname);
+	}
+});
+var upload = multer({ storage: storage });
+
+
 
 
 router.use(function(req, res, next) {
@@ -47,7 +64,7 @@ router.get('/', function(req, res, next) {
 				json.isHead = req.params.commitRef === 'HEAD';
 				if (json.isHead) {
 					
-console.log("Checking if working dir clean");
+// console.log("Checking if working dir clean");
 					repoUtils.isWorkingDirClean().then(isClean => {
 						json.isClean = isClean;
 						console.log("ISCLEAN: " + isClean);
@@ -80,13 +97,10 @@ router.post('/editpage', function(req, res, next) {
 	debug('Edit page: name=' + req.body.name + ' => value=' + req.body.value);
 	let json = loadPageJSON(req.params.commitRef);
 	if (req.body.name.startsWith('caption/')) {
-console.log('Is Caption');
 		let imgSrc = req.body.name.substring(8);
-console.log('src=' + imgSrc);
 		let caption = null;
 		for (img of json.images) {
 			if (img.src === imgSrc) {
-console.log('Found img');
 				img.caption = req.body.value;
 				break;
 			}
@@ -102,6 +116,20 @@ console.log('Found img');
 		res.sendStatus(200);
 	});
 });
+
+router.post('/addimage', upload.single('imageFile'), function(req, res, next) {
+	// add the image to the page.json file
+	let json = loadPageJSON(req.params.commitRef);
+	json.images.push({ 'src': req.file.originalname, 'caption': '' });
+	writePageJson(req.params.commitRef, json, (error) => {
+		if (error) {
+			console.log('Problem writing page.json for ' + req.params.commitRef + ': ' + error);
+			return 
+		}
+		res.sendStatus(200);
+	});
+});
+
 
 function loadPage(commitRef, res) {
 	let json = loadPageJSON(commitRef);
