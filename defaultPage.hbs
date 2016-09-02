@@ -1,13 +1,25 @@
 <h4>Commit: {{commitId}}</h4>
-<h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="post">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
-{{#if title}}<h2>{{title}}</h2>{{/if}}
-{{#if comment}}<p>{{comment}}</p>{{/if}}
+<h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
+<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if comment}}{{comment}}{{else}}Add comments{{/if}}</p>
 {{#each images}}
 	<figure>
 		<img src="{{src}}" />
-		<figcaption>{{caption}}</figcaption>
-	</figure
+		<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
+	</figure>
+	<br />
 {{/each}}
+<form id="addImageForm" class="dropzone" action="addimage" method="post" enctype="multipart/form-data">
+	<div class="fallback">Add Images: <input name="imageFile" type="file" /></div>
+	<!-- <div class="fallback">Add Images: <input name="imageFile" type="file" multiple /></div> -->
+	<input type="hidden" name="commitId" value="{{commitId}}" />
+</form>
+<script>
+$("#addImageForm").dropzone({
+	dictDefaultMessage: "Drop images here to add to the page", 
+	paramName: 'imageFile', 
+	init: function() { this.on("queuecomplete", function() { location.reload(); }); }
+});
+</script>
 
 {{#if isHead}}
 	<script type="text/javascript" src="/lib/live.js"></script>
