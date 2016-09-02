@@ -16,6 +16,8 @@
 <script>
 $("#addImageForm").dropzone({
 	dictDefaultMessage: "Drop images here to add to the page", 
+	parallelUploads: 1,
+	uploadMultiple: false,
 	paramName: 'imageFile', 
 	init: function() { this.on("queuecomplete", function() { location.reload(); }); }
 });
