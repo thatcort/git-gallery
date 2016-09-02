@@ -43,10 +43,11 @@ router.use(function(req, res, next) {
 var repo = require('./repo');
 router.use('/repo', repo.router);
 
-// router.use('/:commitRef/*', express.static(path.join(__dirname, '..', '.gitGallery')));
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', pageRequest);
+router.get('/index.html', pageRequest);
+
+function pageRequest(req, res, next) {
 	//     if directory does not exist
 	//       offer to create a new page
 	//     else (if directory does exist, but path doesn't)
@@ -76,8 +77,7 @@ router.get('/', function(req, res, next) {
 			}
 		});
 	}
-	
-});
+}
 
 
 router.get('/*', function(req, res, next) {

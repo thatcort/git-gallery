@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
+const debug = require('debug')('git-gallery');
+
 const utils = require('../pageUtils');
 const galleryRoot = utils.galleryRoot;
 const createPage = utils.createPage;
@@ -29,13 +31,13 @@ function getDirectory(req, res, next) {
 
 /** Create a new page */
 router.post('/create', function(req, res, next) {
-console.log("Received /create call");
+	debug("Received /create call");
 	createPage(req.body.commitRef, (error, data) => {
 		if (error) {
 			console.log(error);
 			res.sendStatus(500);
 		} else {
-			res.redirect(req.body.commitRef);
+			res.redirect(req.body.commitRef + '/index.html');
 		}
 	});
 });
