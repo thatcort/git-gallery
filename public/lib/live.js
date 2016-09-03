@@ -29,12 +29,26 @@
       oldLinkElements = {},
       interval = 1000,
       loaded = false,
-      active = { "html": 1, "css": 1, "js": 1 };
+      active = { "html": 1, "css": 1, "js": 1 },
+      isPaused = false;
 
   var Live = {
 
+    setPaused(pause) {
+      if (pause != isPaused) {
+        console.log("Live.js setting PAUSED = " + pause);
+        isPaused = pause;
+        if (!pause) {
+          Live.heartbeat();
+        }
+      }
+    },
+
     // performs a cycle per interval
-    heartbeat: function () {      
+    heartbeat: function () {
+      if (isPaused) {
+        return;
+      }
       if (document.body) {        
         // make sure all resources are loaded on first activation
         if (!loaded) Live.loadresources();
@@ -227,7 +241,10 @@
       Live.heartbeat();
 
     window.liveJsLoaded = true;
+    window.liveJs = Live;
   }
   else if (window.console)
-    console.log("Live.js doesn't support the file protocol. It needs http.");    
+    console.log("Live.js doesn't support the file protocol. It needs http.");
+
+  return Live;
 })();

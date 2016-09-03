@@ -33,9 +33,9 @@ function directoryExists(f) {
 }
 
 function pageDir(commitRef) {
-console.log('pageDir: ' + commitRef + 'type: ' + typeof(commitRef) + '  base: ' + galleryRoot);
-let result = path.join(galleryRoot, commitRef);
-console.log('pageDir result: ' + result);
+	// console.log('pageDir: ' + commitRef + ' type: ' + typeof(commitRef) + '  base: ' + galleryRoot);
+	// let result = path.join(galleryRoot, commitRef);
+	// console.log('pageDir result: ' + result);
 	return path.join(galleryRoot, commitRef);
 }
 
