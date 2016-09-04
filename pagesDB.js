@@ -104,7 +104,7 @@ function onFileAdded(f) {
 	}
 }
 
-function onFileChaged(f) {
+function onFileChanged(f) {
 	if (path.basename(f) === 'page.json') {
 		let dir = path.dirname(f);
 		let commitRef = path.basename(dir);
