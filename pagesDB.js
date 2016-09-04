@@ -70,7 +70,7 @@ function watchGallery() {
 	watcher.on('addDir', onDirAdded) // directory added
 		.on('unlinkDir', onDirRemoved) // directory removed
 		.on('add', onFileAdded) // file added
-		.on('change', onFileChaged) // file changed
+		.on('change', onFileChanged) // file changed
 		.on('unlink', onFileRemoved) // file removed
 		.on('error', error => console.log(`Watcher error: ${error}`));
 }
