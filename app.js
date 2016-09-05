@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var hbs = require('hbs');
+hbs.registerPartials(__dirname + '/views/partials');
+
 var routes = require('./routes/index');
 // var users = require('./routes/users');
 var gallery = require('./routes/gallery');

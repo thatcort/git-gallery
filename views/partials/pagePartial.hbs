@@ -1,0 +1,48 @@
+<form id="addImageForm" class="dropzone" action="addimage" method="post" enctype="multipart/form-data">
+	<div class="fallback">Add Images: <input name="imageFile" type="file" /></div>
+	<!-- <div class="fallback">Add Images: <input name="imageFile" type="file" multiple /></div> -->
+	<input type="hidden" name="commitId" value="{{commitId}}" />
+</form>
+{{#if isHead}}
+	<script type="text/javascript" src="/lib/live.js"></script>
+{{/if}}
+<script>
+	$.fn.editable.defaults.mode = 'inline';
+
+	Dropzone.autoDiscover = false;
+
+	$(document).ready(function() {
+
+		$('.editable').editable();
+	
+		let dropErrors = false; // did dropzone errors occur?
+		$("#addImageForm").dropzone({
+			dictDefaultMessage: "Drop images here to add to the page", 
+			parallelUploads: 1,
+			uploadMultiple: false,
+			paramName: 'imageFile', 
+			init: function() {
+				this.on("addedfile", (file) => {
+					console.log("Dropzone file added: " + file.name);
+					if (window.liveJs) { window.liveJs.setPaused(true); }
+				});
+				this.on("error", (file, error) => {
+					console.log("Dropzone error on " + file.name + ": " + error);
+					dropErrors = true;
+				});
+				this.on("queuecomplete", () => { 
+					console.log("Dropzone queue complete. Errors? " + dropErrors);
+					if (!dropErrors) {
+						location.reload(); 
+						if (window.liveJs) { window.liveJs.setPaused(false); }
+					}
+				});
+				this.on("reset", () => {
+					console.log("Dropzone reset");
+					dropErrors = false;
+				});
+			}
+		});
+
+	});
+</script>
