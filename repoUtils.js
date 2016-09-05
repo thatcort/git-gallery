@@ -24,7 +24,7 @@ function getRepo() {
 
 function getCommit(ref) {
 	if (ref === 'HEAD') {
-		return getHeadCommit(ref);
+		return getHeadCommit();
 	}
 	return getRepo().then(repo => repo.getCommit(ref));
 }

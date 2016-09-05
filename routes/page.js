@@ -15,9 +15,6 @@ const galleryRoot = utils.galleryRoot;
 const isPageDir = utils.isPageDir;
 const pageExists = utils.pageExists;
 const pageDir = utils.pageDir;
-// const readPageJSON = utils.readPageJSON;
-// const createPageJson = utils.createPageJson;
-// const writePageJson = utils.writePageJson;
 
 
 var storage = multer.diskStorage({
@@ -67,7 +64,6 @@ function handlePageRequest(commitId, req, res, next) {
 	//     else (if directory does exist, but path doesn't)
 	//       return 404
 	let page = db.getPage(commitId);
-console.log('Found page ' + page + ' for ' + commitId);
 	if (page) {
 		if (req.params.commitRef === 'HEAD') {
 			page.isHead = true;
@@ -75,9 +71,7 @@ console.log('Found page ' + page + ' for ' + commitId);
 		return res.render('page', page);
 	} else {
 		repoUtils.getCommit(commitId).then(commit => {
-console.log('Found commit: ' + commit);
 			let data = utils.createPageForCommit(commit);
-console.log('Created data: ' + JSON.stringify(data));
 			data.title = 'Create Page';
 			data.isHead = req.params.commitRef === 'HEAD';
 			if (data.isHead) {

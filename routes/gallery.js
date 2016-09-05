@@ -30,7 +30,6 @@ function getDirectory(req, res, next) {
 
 /** Create a new page */
 router.post('/create', function(req, res, next) {
-	debug("Received /create call");
 	db.createPage(req.body.commitRef, (error, data) => {
 		if (error) {
 			console.log(error);

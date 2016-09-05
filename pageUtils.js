@@ -187,12 +187,11 @@ function writePage(page, callback) {
 
 
 function createPageForId(commitId, callback) {
-	repo.getCommit(commitId).then(commit => callback(null, createPageForCommit), callback);
+	repo.getCommit(commitId).then(commit => callback(null, createPageForCommit(commit)), callback);
 }
 function createPageForCommit(commit) {
 	let commitId = commit.sha();
-console.log('page for commit: ' + commitId);
-	return {
+	let page = {
 		"commitId": commitId,
 		"date": commit.date(), //.toJSON(),
 		"body": commit.body(),
@@ -204,6 +203,7 @@ console.log('page for commit: ' + commitId);
 		"comment": "",
 		"images": []
 	};
+	return page;
 }
 
 function registerHandlebarsHelper(name, helper) {
