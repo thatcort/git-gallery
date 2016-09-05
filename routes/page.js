@@ -51,7 +51,10 @@ router.get('/index.html', pageRequest);
 function pageRequest(req, res, next) {
 	let commitId = req.params.commitRef;
 	if (commitId === 'HEAD') {
-		return repoUtils.getHeadCommit().then(head => { handlePageRequest(head.sha(), req, res, next); });
+console.log('HEAD request');
+		return repoUtils.getHeadCommit().then(head => { 
+console.log('HEAD = ' + head);
+			handlePageRequest(head.sha(), req, res, next); });
 	} else {
 		return handlePageRequest(commitId, req, res, next);
 	}
@@ -64,6 +67,7 @@ function handlePageRequest(commitId, req, res, next) {
 	//     else (if directory does exist, but path doesn't)
 	//       return 404
 	let page = db.getPage(commitId);
+console.log('Found page ' + page + ' for ' + commitId);
 	if (page) {
 		if (req.params.commitRef === 'HEAD') {
 			page.isHead = true;
@@ -71,7 +75,9 @@ function handlePageRequest(commitId, req, res, next) {
 		return res.render('page', page);
 	} else {
 		repoUtils.getCommit(commitId).then(commit => {
-			let data = createPageForCommit(commit);
+console.log('Found commit: ' + commit);
+			let data = utils.createPageForCommit(commit);
+console.log('Created data: ' + JSON.stringify(data));
 			data.title = 'Create Page';
 			data.isHead = req.params.commitRef === 'HEAD';
 			if (data.isHead) {

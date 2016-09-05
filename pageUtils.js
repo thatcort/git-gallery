@@ -191,6 +191,7 @@ function createPageForId(commitId, callback) {
 }
 function createPageForCommit(commit) {
 	let commitId = commit.sha();
+console.log('page for commit: ' + commitId);
 	return {
 		"commitId": commitId,
 		"date": commit.date(), //.toJSON(),
@@ -225,5 +226,7 @@ exports.pageDir = pageDir;
 exports.readPage = readPage;
 exports.readPageSync = readPageSync;
 exports.writePage = writePage;
+exports.createPageForId = createPageForId;
+exports.createPageForCommit = createPageForCommit;
 // exports.createPageJson = createPageJson;
 // exports.writePageJson = writePageJson;

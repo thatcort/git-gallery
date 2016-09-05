@@ -73,7 +73,7 @@ function getPage(commitId) {
 }
 
 function createPage(commitId, callback) {
-	createPageForId(commitId, (error, obj) => {
+	utils.createPageForId(commitId, (error, obj) => {
 		if (error) {
 			return callback(error);
 		}
@@ -203,3 +203,4 @@ watchGallery(); // Start the watcher
 
 exports.getPages = getPages;
 exports.getPage = getPage;
+exports.createPage = createPage;

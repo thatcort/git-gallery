@@ -6,7 +6,6 @@ const debug = require('debug')('git-gallery');
 
 const utils = require('../pageUtils');
 const galleryRoot = utils.galleryRoot;
-const createPage = utils.createPage;
 
 const db = require('../pagesDB');
 
@@ -32,7 +31,7 @@ function getDirectory(req, res, next) {
 /** Create a new page */
 router.post('/create', function(req, res, next) {
 	debug("Received /create call");
-	createPage(req.body.commitRef, (error, data) => {
+	db.createPage(req.body.commitRef, (error, data) => {
 		if (error) {
 			console.log(error);
 			res.sendStatus(500);
