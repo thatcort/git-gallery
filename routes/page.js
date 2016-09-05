@@ -8,15 +8,16 @@ const multer = require('multer');
 
 const debug = require('debug')('git-gallery');
 
+const db = require('../pagesDB');
 const utils = require('../pageUtils');
 const repoUtils = require('../repoUtils');
 const galleryRoot = utils.galleryRoot;
 const isPageDir = utils.isPageDir;
 const pageExists = utils.pageExists;
 const pageDir = utils.pageDir;
-const readPageJSON = utils.readPageJSON;
-const createPageJson = utils.createPageJson;
-const writePageJson = utils.writePageJson;
+// const readPageJSON = utils.readPageJSON;
+// const createPageJson = utils.createPageJson;
+// const writePageJson = utils.writePageJson;
 
 
 var storage = multer.diskStorage({
@@ -48,33 +49,41 @@ router.get('/', pageRequest);
 router.get('/index.html', pageRequest);
 
 function pageRequest(req, res, next) {
-	//     if directory does not exist
+	let commitId = req.params.commitRef;
+	if (commitId === 'HEAD') {
+		return repoUtils.getHeadCommit().then(head => { handlePageRequest(head.sha(), req, res, next); });
+	} else {
+		return handlePageRequest(commitId, req, res, next);
+	}
+}
+
+
+function handlePageRequest(commitId, req, res, next) {
+	//     if page does not exist
 	//       offer to create a new page
 	//     else (if directory does exist, but path doesn't)
 	//       return 404
-	if (pageExists(req.params.commitRef)) {
-// console.log("page DOES exist");
-		return loadPage(req.params.commitRef, res);	
+	let page = db.getPage(commitId);
+	if (page) {
+		if (req.params.commitRef === 'HEAD') {
+			page.isHead = true;
+		}
+		return res.render('page', page);
 	} else {
-// console.log("page does NOT exist");
-		createPageJson(req.params.commitRef, function(error, json) {
-			if (error) {
-				res.sendStatus(404);
+		repoUtils.getCommit(commitId).then(commit => {
+			let data = createPageForCommit(commit);
+			data.title = 'Create Page';
+			data.isHead = req.params.commitRef === 'HEAD';
+			if (data.isHead) {
+				repoUtils.isWorkingDirClean().then(isClean => {
+					data.isClean = isClean;
+					return res.render('createPage.hbs', data);
+				});
 			} else {
-				json.title = "Create Page";
-				json.isHead = req.params.commitRef === 'HEAD';
-				if (json.isHead) {
-					
-// console.log("Checking if working dir clean");
-					repoUtils.isWorkingDirClean().then(isClean => {
-						json.isClean = isClean;
-						console.log("ISCLEAN: " + isClean);
-						res.render('createPage.hbs', json);
-					});
-				} else {
-					res.render('createPage.hbs', json);
-				}
+				return res.render('createPage.hbs', data);
 			}
+		}, error => {
+			res.sendStatus(404);
 		});
 	}
 }
@@ -94,56 +103,45 @@ router.get('/*', function(req, res, next) {
 
 
 router.post('/editpage', function(req, res, next) {
+	let commitId = req.params.commitRef;
+	if (commitId === 'HEAD') {
+		return repoUtils.getHeadCommit().then(head => { editPage(head.sha(), req, res); });
+	} else {
+		return editPage(commitId, req, res);
+	}
+});
+
+function editPage(commitId, req, res) {
 	debug('Edit page: name=' + req.body.name + ' => value=' + req.body.value);
-	let json = loadPageJSON(req.params.commitRef);
+	let page = db.getPage(commitId);
 	if (req.body.name.startsWith('caption/')) {
 		let imgSrc = req.body.name.substring(8);
 		let caption = null;
-		for (img of json.images) {
+		for (img of page.images) {
 			if (img.src === imgSrc) {
 				img.caption = req.body.value;
 				break;
 			}
 		}
 	} else {
-		json[req.body.name] = req.body.value;
+		page[req.body.name] = req.body.value;
 	}
-	writePageJson(req.params.commitRef, json, (error) => {
-		if (error) {
-			console.log('Problem writing page.json for ' + req.params.commitRef + ': ' + error);
-			return 
-		}
-		res.sendStatus(200);
-	});
-});
+	res.sendStatus(200);	
+}
 
 router.post('/addimage', upload.single('imageFile'), function(req, res, next) {
-	// add the image to the page.json file
-	let json = loadPageJSON(req.params.commitRef);
-	json.images.push({ 'src': req.file.originalname, 'caption': '' });
-	writePageJson(req.params.commitRef, json, (error) => {
-		if (error) {
-			console.log('Problem writing page.json for ' + req.params.commitRef + ': ' + error);
-			return 
-		}
-		res.sendStatus(200);
-	});
+	if (req.params.commitRef === 'HEAD') {
+		return repoUtils.getHeadCommit().then(head => { addImage(head.sha(), req, res); });
+	} else {
+		return addImage(req.params.commitRef, req, res);
+	}
 });
 
-
-function loadPage(commitRef, res) {
-	let json = loadPageJSON(commitRef);
-	res.render('page', json);
+function addImage(commitId, req, res) {
+	let page = db.getPage(commitId);
+	page.images.push({ 'src': req.file.originalname, 'caption': '' });
+	res.sendStatus(200);
 }
-
-function loadPageJSON(commitRef) {
-	let dir = pageDir(commitRef);
-	let json = readPageJSON(dir);
-	json.isHead = commitRef === 'HEAD';
-	json.commitRef = commitRef;
-	return json;	
-}
-
 
 
 module.exports = router;
