@@ -12,7 +12,11 @@ Git-Gallery should be considered alpha quality at this point. Please send feedba
 
 `npm install -g git-gallery`
 
-Then run git-gallery in the directory containing your .git repo. On Windows you need to run as Administrator.
+Then cd to the directory containinng your Git repo and run
+`git-gallery init`
+to create the .gitGallery directory. Then run
+`git-gallery`
+to run the app. On Windows you need to run as Administrator.
 
 Open a web browser and navigate to http://localhost:3000/pages/HEAD to create a page for the currently checked out commit. Navigate to http://localhost:3000/pages/ to browse all the pages created for the repo.
 
