@@ -10,16 +10,23 @@ Git-Gallery should be considered alpha quality at this point. Please send feedba
 
 ## Usage
 
-```npm install -g git-gallery
+On Windows you need to run all commands as Administrator.
+
+```
+npm install -g git-gallery
 ```
 
 Then cd to the directory containinng your Git repo and run
-```git-gallery init
 ```
-to create the .gitGallery directory. Then run
-```git-gallery`
+git-gallery init
 ```
-to run the app. On Windows you need to run as Administrator.
+to create the .gitGallery directory.
+
+Then run
+```
+git-gallery`
+```
+to run the app.
 
 Git Gallery will create a .gitGallery directory containing all its files. Every time you create a page it will create a sub-directory named after the commit id to store images and info about that page.
 
