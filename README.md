@@ -10,17 +10,20 @@ Git-Gallery should be considered alpha quality at this point. Please send feedba
 
 ## Usage
 
-`npm install -g git-gallery`
+```npm install -g git-gallery
+```
 
 Then cd to the directory containinng your Git repo and run
-`git-gallery init`
+```git-gallery init
+```
 to create the .gitGallery directory. Then run
-`git-gallery`
+```git-gallery`
+```
 to run the app. On Windows you need to run as Administrator.
 
-Open a web browser and navigate to http://localhost:3000/pages/HEAD to create a page for the currently checked out commit. Navigate to http://localhost:3000/pages/ to browse all the pages created for the repo.
+Git Gallery will create a .gitGallery directory containing all its files. Every time you create a page it will create a sub-directory named after the commit id to store images and info about that page.
 
-Git Gallery will create a .gitGallery directory containing all its files. Every time you create a page it will create a directory named after the commit id to store images and info about that page.
+Open a web browser and navigate to http://localhost:3000/pages/HEAD to create a page for the currently checked out commit. Navigate to http://localhost:3000/pages/ to browse all the pages created for the repo.
 
 Information about the page is stored in the page.json file in each commit directory. You can edit this in the browser or by hand.
 
