@@ -24,11 +24,11 @@ to create the .gitGallery directory.
 
 Then run
 ```
-git-gallery`
+git-gallery
 ```
 to run the app.
 
-Git Gallery will create a .gitGallery directory containing all its files. Every time you create a page it will create a sub-directory named after the commit id to store images and info about that page.
+Git Gallery will create a .gitGallery directory containing all its files. Every time you create a page it will create a sub-directory named after the commit id to store images and info about that page. The app is an Express webserver that will serve content from this directory and from the underlying Git repository
 
 Open a web browser and navigate to http://localhost:3000/pages/HEAD to create a page for the currently checked out commit. Navigate to http://localhost:3000/pages/ to browse all the pages created for the repo.
 
@@ -38,15 +38,16 @@ The HEAD directory is a symbolic link that will always point to the commit direc
 
 ## Features
 
-* Create pages for any Git commit
+* Create gallery pages for any Git commit
 * Edit the page in the browser
-* Drop images on the page to have them included
+* Drag-n-drop images onto the page to have them included
 * Maintains a HEAD directory that points to the current Git HEAD
-* Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have be live on the page
+* Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have it run live on the page
 
 ## Roadmap
 
 Some planned features:
 * Publish to the web: export the gallery in a simple format that can be copied to a basic web server
+* Git add, commit and create a gallery page with a single action
 * Better configuration
-* Improve the appearance -- it's UGLY right now :/
+* Improve the appearance
