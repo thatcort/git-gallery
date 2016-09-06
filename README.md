@@ -10,7 +10,7 @@ Git-Gallery should be considered alpha quality at this point. Please send feedba
 
 ## Usage
 
-`npm install -g git-gallery`
+I'll publish the app to npm soon. For now you need to clone the repo, run `npm pack` and then `npm install -g git-gallery-0.1.0.tgz`.
 
 Then cd to the directory containinng your Git repo and run
 `git-gallery init`
