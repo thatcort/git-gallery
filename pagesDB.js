@@ -133,6 +133,14 @@ function removePage(commitId) {
 function sortPages() {
 	// sort all the entries by time
 	pages.sort((a, b) => { return b.date - a.date; });
+
+	for (let i=0; i < pages.length; i++) {
+		let prevInd = i - 1;
+		let nextInd = i + 1;
+		let p = pages[i];
+		p.prevCommit = (prevInd >= 0 ? pages[prevInd].commitId : null);
+		p.nextCommit = (nextInd < pages.length ? pages[nextInd].commitId : null);
+	}
 }
 
 

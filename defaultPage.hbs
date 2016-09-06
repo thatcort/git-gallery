@@ -1,4 +1,8 @@
-<h4>Commit: {{commitId}} {{dateTime date}}</h4>
+<div>
+	{{#if prevCommit}}<p style="float: left"><a href="../{{prevCommit}}/index.html"><< prev</a></p>{{/if}}
+	{{#if nextCommit}}<p style="float: right"><a href="../{{nextCommit}}/index.html">next >></a></p>{{/if}}
+</div>
+<h5 style="clear:both">Commit: {{commitId}} {{dateTime date}}</h5>
 <p>{{message}}
 
 <h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
