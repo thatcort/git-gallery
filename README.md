@@ -2,7 +2,7 @@
 
 Git Gallery is tool for creating a visual gallery from Git commits. It's primarily intended for those creating visual art with code.
 
-Often when creating algorithmic art I discover versions of the work that aren't what I was intending, but are interesting in their own right. I might be inspired to go back later and explore from that point in a different direction. Other times I create a work something I like and then want to explore its parameter space. Simply changing a parameter from 3 to 5 or a sin wave to a square wave or just the colours will have a huge effect on the work. Git Gallery is intended to make it easy to keep track of these versions of the work, relate them back to their Git commits and (soon) to publish them onto the web.
+Often when creating algorithmic art I discover versions of the work that aren't what I was intending, but are interesting in their own right. I might be inspired to go back later and explore from that point in a different direction. Other times I create something I like and then want to explore its parameter space. Simply changing a parameter from 3 to 5 or a sin wave to a square wave or just the colours will have a huge effect on the work. Git Gallery is intended to make it easy to keep track of these versions of the work, relate them back to their Git commits and (soon) to publish them onto the web.
 
 ## Status
 
