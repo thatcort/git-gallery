@@ -68,7 +68,7 @@ function handlePageRequest(commitId, req, res, next) {
 		if (req.params.commitRef === 'HEAD') {
 			page.isHead = true;
 		}
-		return res.render('page', page);
+		return res.render('page.hbs', page);
 	} else {
 		repoUtils.getCommit(commitId).then(commit => {
 			let data = utils.createPageForCommit(commit);
