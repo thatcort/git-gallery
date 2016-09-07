@@ -1,18 +1,19 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-var hbs = require('hbs');
+const hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
-var routes = require('./routes/index');
-// var users = require('./routes/users');
-var gallery = require('./routes/gallery');
-var pages = require('./routes/page');
-var head = require('./galleryHEAD');
+const routes = require('./routes/index');
+// const users = require('./routes/users');
+const gallery = require('./routes/gallery');
+const pages = require('./routes/page');
+const head = require('./galleryHEAD');
+const utils = require('./pageUtils');
 
 head.watchHead();
 
@@ -20,7 +21,7 @@ var app = express();
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-app.set('views', [path.join(__dirname, 'views'), path.join(__dirname, '.gitGallery')]);
+app.set('views', [path.join(__dirname, 'views'), utils.galleryRoot]);
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
