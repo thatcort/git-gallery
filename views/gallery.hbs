@@ -3,8 +3,9 @@
 {{#each pages}}
 	<a href="{{commitId}}/">
 		<div class="galleryItem">
-			<div class="giTitle">{{#if title}}{{title}}{{else}}Untitled{{/if}}</div>
-			<div class="giDate">{{dateTime date}}</div>
+			{{#if title}}<div class="giTitle">{{title}}</div>{{/if}}
+			<div>{{message}}</div>
+			<div class="giDate">{{#if date}}{{date date}} {{time date}}{{/if}}</div>
 		</div>
 	</a>
 {{/each}}

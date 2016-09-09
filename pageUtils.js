@@ -9,6 +9,18 @@ const galleryRoot = path.resolve('./.gitGallery'); // path.join(__dirname, '.git
 
 const transientPageProperties = ['isHead', 'isClean', 'prevCommit', 'nextCommit', '_locals']; // page properties not to be written to disk
 
+function dateReviver(key, value) {
+	var a;
+	if (typeof value === 'string') {
+		a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)(Z|([+\-])(\d{2}):(\d{2}))$/.exec(value);
+		// a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
+		if (a) {
+			return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4], +a[5], +a[6]));
+		}
+	}
+	return value;
+}
+
 function pathExists(f) {
 	try {
 		fs.accessSync(f, fs.constants.R_OK | fs.constants.W_OK);
@@ -88,14 +100,14 @@ function readPage(dir, callback) {
 		if (error) {
 			return callback(error);
 		}
-		return callback(null, JSON.parse(data));
+		return callback(null, JSON.parse(data, dateReviver));
 	});	
 }
 
 function readPageSync(dir) {
 	let f = path.join(dir, 'page.json');
 	let data = fs.readFileSync(f, 'utf8');
-	return JSON.parse(data);
+	return JSON.parse(data, dateReviver);
 }
 
 function writePage(page, callback) {
@@ -142,6 +154,8 @@ function registerHandlebarsHelper(name, helper) {
 }
 
 registerHandlebarsHelper('dateTime', (date) => { return date.toLocaleString(); });
+registerHandlebarsHelper('date', (date) => { return date.toDateString(); });
+registerHandlebarsHelper('time', (date) => { return date.toLocaleTimeString(); });
 
 
 
