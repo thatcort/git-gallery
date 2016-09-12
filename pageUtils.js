@@ -7,7 +7,7 @@ const repo = require('./repoUtils');
 
 const galleryRoot = path.resolve('./.gitGallery'); // path.join(__dirname, '.gitGallery');
 
-const transientPageProperties = ['isHead', 'isClean', 'prevCommit', 'nextCommit', '_locals']; // page properties not to be written to disk
+const transientPageProperties = ['isHead', 'isClean', 'prevPage', 'nextPage', 'prevCommit', 'nextCommit', '_locals']; // page properties not to be written to disk
 
 function dateReviver(key, value) {
 	var a;
