@@ -50,6 +50,10 @@ function init() {
 	var sourcePageTemplate = path.join(__dirname, '../defaultPage.hbs');
 	var destPageTemplate = path.join(utils.galleryRoot, 'page.hbs');
 	ncp(sourcePageTemplate, destPageTemplate, (error) => { console.error(error); });
+
+	// create/edit .gitignore file
+	let fd = fs.openSync(path.join(utils.galleryRoot, '../.gitignore'), 'a');
+	fs.writeSync(fd, '\n.gitGallery\n');
 }
 
 
