@@ -60,9 +60,10 @@ function isWorkingDirClean() {
 
 function isHeadDetached() {
 	return getRepo().then(repo => {
-		Git.Reference.lookup(repo, 'HEAD').then(ref => {
-			return !ref.isSymbolic();
-		});
+		let detached = repo.headDetached();
+		if (detached < 0 || detached > 1)
+			throw "Error determining if HEAD detached.";
+		return !!detached;
 	});
 }
 

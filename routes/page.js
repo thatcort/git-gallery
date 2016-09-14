@@ -48,10 +48,10 @@ router.get('/index.html', pageRequest);
 function pageRequest(req, res, next) {
 	let commitId = req.params.commitRef;
 	if (commitId === 'HEAD') {
-console.log('HEAD request');
+	debug('HEAD request');
 		return repoUtils.getHeadCommit().then(head => { 
-console.log('HEAD = ' + head);
-			handlePageRequest(head.sha(), req, res, next); });
+			debug('HEAD = ' + head);
+			return handlePageRequest(head.sha(), req, res, next); });
 	} else {
 		return handlePageRequest(commitId, req, res, next);
 	}
