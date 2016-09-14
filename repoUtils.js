@@ -58,6 +58,24 @@ function isWorkingDirClean() {
 // });
 }
 
+function isHeadDetached() {
+	return getRepo().then(repo => {
+		Git.Reference.lookup(repo, 'HEAD').then(ref => {
+			return !ref.isSymbolic();
+		});
+	});
+}
+
+function headStatus() {
+	return isWorkingDirClean().then(isClean => {
+		return isHeadDetached().then(isDetached => {
+			return {
+				isClean: isClean,
+				isDetached: isDetached
+			};
+		});
+	});
+}
 
 function logError(message, error) {
 	console.log(message);
@@ -69,3 +87,5 @@ exports.getRepo = getRepo;
 exports.getCommit = getCommit;
 exports.getHeadCommit = getHeadCommit;
 exports.isWorkingDirClean = isWorkingDirClean;
+exports.isHeadDetached = isHeadDetached;
+exports.headStatus = headStatus;

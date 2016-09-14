@@ -4,6 +4,7 @@
 A page does not exist for this commit.
 
 {{#if isHead}}
+Head is Detached? {{#if isDetached}}TRUE{{else}}FALSE{{/if}}
 	{{#if isClean}}
 	{{else}}
 		<div>Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>

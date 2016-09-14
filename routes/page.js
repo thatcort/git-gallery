@@ -75,10 +75,15 @@ function handlePageRequest(commitId, req, res, next) {
 			data.title = 'Create Page';
 			data.isHead = req.params.commitRef === 'HEAD';
 			if (data.isHead) {
-				repoUtils.isWorkingDirClean().then(isClean => {
-					data.isClean = isClean;
+				repoUtils.headStatus().then(headStatus => {
+					data.isClean = headStatus.isClean;
+					data.isDetached = headStatus.isDetached;
 					return res.render('createPage.hbs', data);
-				});
+				})
+				// repoUtils.isWorkingDirClean().then(isClean => {
+				// 	data.isClean = isClean;
+				// 	return res.render('createPage.hbs', data);
+				// });
 			} else {
 				return res.render('createPage.hbs', data);
 			}
