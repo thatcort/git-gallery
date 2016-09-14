@@ -47,9 +47,14 @@ function init() {
 	fs.mkdirSync(utils.galleryRoot);
 
 	// copy in the default page template
-	var sourcePageTemplate = path.join(__dirname, '../defaultPage.hbs');
-	var destPageTemplate = path.join(utils.galleryRoot, 'page.hbs');
+	let sourcePageTemplate = path.join(__dirname, '../defaultPage.hbs');
+	let destPageTemplate = path.join(utils.galleryRoot, 'page.hbs');
 	ncp(sourcePageTemplate, destPageTemplate, (error) => { console.error(error); });
+
+	// copy in the default current template
+	let sourceCurrentTemplate = path.join(__dirname, '../defaultCurrent.hbs');
+	let destCurrentTemplate = path.join(utils.galleryRoot, 'current.hbs');
+	ncp(sourceCurrentTemplate, destCurrentTemplate, (error) => { console.error(error); });
 
 	// create/edit .gitignore file
 	let fd = fs.openSync(path.join(utils.galleryRoot, '../.gitignore'), 'a');

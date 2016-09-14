@@ -9,7 +9,7 @@ const hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
 
 const routes = require('./routes/index');
-// const users = require('./routes/users');
+const current = require('./routes/current');
 const gallery = require('./routes/gallery');
 const pages = require('./routes/page');
 const head = require('./galleryHEAD');
@@ -44,9 +44,14 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use('/', current);
+
 // app.use('/', routes);
 // app.use('/users', users);
 app.use('/pages', gallery);
+
+app.use(express.static(path.resolve('.')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
