@@ -21,7 +21,7 @@ var app = express();
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-app.set('views', [path.join(__dirname, 'views'), utils.galleryRoot]);
+app.set('views', [utils.galleryRoot, path.join(__dirname, 'views')]);
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
@@ -30,6 +30,12 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(require('node-sass-middleware')({
+  src: utils.galleryRoot,
+  dest: utils.galleryRoot,
+  indentedSyntax: false,
+  sourceMap: true
+}));
 app.use(require('node-sass-middleware')({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
