@@ -78,6 +78,49 @@ function headStatus() {
 	});
 }
 
+function repoStatus() {
+	return getRepo().then(repo => {
+		return repo.getStatus().then(statuses => {
+			statuses.forEach((file, index) => {
+				statuses[index].description = statusToText(file);
+			});
+			return statuses;
+		});
+	});
+}
+
+function statusToText(status) {
+	var words = [];
+	if (status.isNew()) { words.push("NEW"); }
+	if (status.isModified()) { words.push("MODIFIED"); }
+	if (status.isTypechange()) { words.push("TYPECHANGE"); }
+	if (status.isRenamed()) { words.push("RENAMED"); }
+	if (status.isIgnored()) { words.push("IGNORED"); }
+	if (status.isDeleted()) { words.push("DELETED"); }
+	if (status.isConflicted()) { words.push("CONFLICTED"); }
+	return words.join(" ");
+
+}
+
+function commitAllChanges(message) {
+	let repo;
+	let index;
+	let oid;
+	return getRepo()
+		.then(_repo => {repo = _repo; return repo.refreshIndex(); })
+		.then(_index => { index = _index; return index.addAll() })
+		.then(() => index.write())
+		.then(() => index.writeTree())
+		.then(_oid => {
+			oid = _oid;
+			return Git.Reference.nameToId(repo, 'HEAD');
+		})
+		.then(parent => {
+			let sig = Git.Signature.default(repo);
+			return repo.createCommit("HEAD", sig, sig, message, oid, [parent]);
+		});
+}
+
 function logError(message, error) {
 	console.log(message);
 	console.log(error);
@@ -90,3 +133,5 @@ exports.getHeadCommit = getHeadCommit;
 exports.isWorkingDirClean = isWorkingDirClean;
 exports.isHeadDetached = isHeadDetached;
 exports.headStatus = headStatus;
+exports.repoStatus = repoStatus;
+exports.commitAllChanges = commitAllChanges;

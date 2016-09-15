@@ -2,6 +2,20 @@
 
 <h2>Current Working Directory</h2>
 
+{{#if isClean}}
+<p class="bg-success">Working directory is clean. Nothing to commit.</p>
+{{else}}
+<div class="bg-info">
+	<form method="post" action="/commitcurrent">
+		<div class="form-group">
+			<label for="message">Commit message</label>
+			<input type="text" id="message" class="form-control">
+		</div>
+		<button type="submit">git add -a; git commit</button>
+	</form>
+</div>
+{{/if}}
+
 <iframe src="/index.html" width="1000" height="600" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
 
 

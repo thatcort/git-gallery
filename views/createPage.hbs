@@ -4,7 +4,7 @@
 A page does not exist for this commit.
 
 {{#if isHead}}
-Head is Detached? {{#if isDetached}}TRUE{{else}}FALSE{{/if}} 
+	{{#if isDetached}}<p class="bg-danger">WARNING: HEAD is detached</p>{{/if}}
 	{{#if isClean}}
 	{{else}}
 		<div>Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
@@ -14,7 +14,7 @@ Head is Detached? {{#if isDetached}}TRUE{{else}}FALSE{{/if}}
 
 <div>
 	<form method="post" action="/pages/create">
-	<input type="hidden" name="commitRef" value="{{commitId}}" />
-	<button type="submit">Create a New Page</button>
-	<form>
+		<input type="hidden" name="commitRef" value="{{commitId}}" />
+		<button type="submit" class="btn btn-default">Create a New Page</button>
+	</form>
 </div>
