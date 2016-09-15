@@ -6,12 +6,18 @@
 <p class="bg-success">Working directory is clean. Nothing to commit.</p>
 {{else}}
 <div class="bg-info">
+	<ul>
+		{{#each status}}
+			<li>{{description}}: {{path}}</li>
+		{{/each}}
+	</ul>
+
 	<form method="post" action="/commitcurrent">
 		<div class="form-group">
-			<label for="message">Commit message</label>
-			<input type="text" id="message" class="form-control">
+			<label for="messageInput">Commit message</label>
+			<input type="text" id="messageInput" name="message" class="form-control">
 		</div>
-		<button type="submit">git add -a; git commit</button>
+		<button type="submit" class="btn btn-default">git add -a; git commit</button>
 	</form>
 </div>
 {{/if}}
