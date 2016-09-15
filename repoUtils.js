@@ -79,13 +79,26 @@ function headStatus() {
 }
 
 function repoStatus() {
-	return getRepo().then(repo => {
-		return repo.getStatus().then(statuses => {
-			statuses.forEach((file, index) => {
-				statuses[index].description = statusToText(file);
-			});
-			return statuses;
+	let repo;
+	let status;
+	return headStatus().then(_status => {
+		status = _status;
+		return getRepo();
+	})
+	.then(_repo => {
+		repo = _repo;
+		return repo.getCurrentBranch();
+	})
+	.then(branch => {
+		status.branch = branch.toString(); 
+		return repo.getStatus();
+	})
+	.then(statuses => {
+		statuses.forEach((file, index) => {
+			statuses[index].description = statusToText(file);
 		});
+		status.status = statuses;
+		return status;
 	});
 }
 
