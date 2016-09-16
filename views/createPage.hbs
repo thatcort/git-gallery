@@ -4,10 +4,10 @@
 A page does not exist for this commit.
 
 {{#if isHead}}
-	{{#if isDetached}}<p class="bg-danger">WARNING: HEAD is detached</p>{{/if}}
+	{{#if isDetached}}<div class="alert alert-danger" role="alert">WARNING: HEAD is detached</div>{{/if}}
 	{{#if isClean}}
 	{{else}}
-		<div>Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
+		<div class="alert alert-warning" role="alert">Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
 	{{/if}}
 	<script type="text/javascript" src="/lib/live.js"></script>
 {{/if}}

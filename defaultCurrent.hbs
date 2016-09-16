@@ -3,9 +3,10 @@
 <h2>Current Working Directory</h2>
 
 {{#if isClean}}
-<p class="bg-success">Working directory is clean. Nothing to commit.</p>
+<p class="bg-success"><p>On branch {{branch}}<br>Working directory is clean. Nothing to commit.</p>
 {{else}}
 <div class="bg-info">
+	<p>On branch {{branch}}
 	<ul>
 		{{#each status}}
 			<li>{{description}}: {{path}}</li>
