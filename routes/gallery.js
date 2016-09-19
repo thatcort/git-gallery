@@ -16,6 +16,9 @@ router.use(function(req, res, next) {
 
 const pageRouter = require('./page');
 
+const thumbnail = require('./thumbnail');
+router.use(thumbnail.register(galleryRoot));
+
 router.get('/', getDirectory);
 router.get('/index.html', getDirectory);
 router.use('/:commitRef', pageRouter);
