@@ -29,4 +29,8 @@ node_modules
 # Debug log from npm
 npm-debug.log
 
+# Using Sass (.scss), so don't track the generated .css files
+public/stylesheets/*.css
+public/stylesheets/*.css.map
+
 .gitGallery
