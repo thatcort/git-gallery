@@ -36,13 +36,18 @@ Information about the page is stored in the page.json file in each commit direct
 
 The HEAD directory is a symbolic link that will always point to the commit directory of the current HEAD commit (note you still need to create a page for that commit for the link to be valid). In this way you can programmatically save images/content to the HEAD directory and it will go to the correct place.
 
+Your current working directory is available at `/current.html`. From here you can see your current branch and changes and create a new commit ('git add *; git commit') If your work runs in a browser you can view it live on the page enabling a single place to test and commit from.
+
 ## Features
 
 * Create gallery pages for any Git commit
 * Edit the page in the browser
 * Drag-n-drop images onto the page to have them included
+* View and commit your current working copy at `/current.html`
 * Maintains a HEAD directory that points to the current Git HEAD
+* View the current HEAD commit at `/HEAD`
 * Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have it run live on the page
+* Thumbnails are generated on the fly and cached for reuse. You can request a thumbnail of any image by appending the query `thumb=100x100` to the request (or whatever resolution you desire). You can also request the first image of a page as a thumbnail at `{{commitId}}/thumbnail?thumb=100x100`.
 
 ## Roadmap
 
