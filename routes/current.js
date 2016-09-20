@@ -6,7 +6,7 @@ const repoUtils = require('../repoUtils');
 
 router.get('/current.html', (req, res, next) => {
 	return repoUtils.repoStatus().then(status => {
-		return res.render('currentPage', status);
+		return res.render('current', status);
 	});
 });
 
