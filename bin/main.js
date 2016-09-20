@@ -46,6 +46,11 @@ function init() {
 	// create the .gitGallery directory
 	fs.mkdirSync(utils.galleryRoot);
 
+	// copy in the gallery template
+	let sourceGalleryTemplate = path.join(__dirname, '../views/gallery.hbs');
+	let destGalleryTemplate = path.join(utils.galleryRoot, 'gallery.hbs');
+	ncp(sourceGalleryTemplate, destGalleryTemplate, (error) => { console.error(error); });
+
 	// copy in the default page template
 	let sourcePageTemplate = path.join(__dirname, '../defaultPage.hbs');
 	let destPageTemplate = path.join(utils.galleryRoot, 'page.hbs');
