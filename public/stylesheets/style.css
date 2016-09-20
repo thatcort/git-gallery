@@ -11,9 +11,23 @@ p {
 .galleryItem {
   background-color: #f0f0f0;
   padding: 10px;
-  margin: 10px; }
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.pageDesc {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.giMessage {}
 
 .giDate {
-  color: grey; }
+  color: grey;
+}
+
+.galleryThumb {
+	/*float: left;*/
+}
 
 /*# sourceMappingURL=style.css.map */

@@ -41,6 +41,7 @@ router.use(function(req, res, next) {
 var repo = require('./repo');
 router.use('/repo', repo.router);
 
+router.get('/thumbnail', thumbnailRequest);
 
 router.get('/', pageRequest);
 router.get('/index.html', pageRequest);
@@ -148,5 +149,18 @@ function addImage(commitId, req, res) {
 	res.sendStatus(200);
 }
 
+
+function thumbnailRequest(req, res, next) {
+	let page = db.getPage(req.params.commitRef);
+	if (!page) {
+		return res.sendStatus(404);
+	} else if (!page.images || page.images.length < 1) {
+		return res.redirect('/images/1x1.png');
+	} else {
+		let image = page.images[0];
+		let thumb = req.query.thumb || '100x100';
+		return res.redirect(image.src + '?thumb=' + thumb);
+	}
+}
 
 module.exports = router;
