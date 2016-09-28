@@ -1,4 +1,4 @@
-<div><a href="/pages/"><< Gallery</a></div>
+<div><a href="/"><< Gallery</a></div>
 
 <h2>Current Working Directory</h2>
 
@@ -8,7 +8,7 @@
 	{{#if isClean}}
 		<div class="alert alert-success">On branch {{branch}}<br>Working directory is clean. Nothing to commit.</div>
 		<div>
-			<form method="post" action="/pages/create">
+			<form method="post" action="/create">
 				<input type="hidden" name="commitRef" value="HEAD" />
 				<label>Create a page for the current HEAD:</label>
 				<button type="submit" class="btn btn-default">Create a New Page</button>
@@ -35,4 +35,4 @@
 	{{/if}}
 {{/if}}
 
-<iframe src="/index.html" width="1000" height="600" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+<iframe src="/workdir/index.html" width="1000" height="600" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>

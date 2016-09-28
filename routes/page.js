@@ -52,7 +52,8 @@ function pageRequest(req, res, next) {
 	let commitId = req.params.commitRef;
 	switch (commitId) {
 		case 'current':
-		case 'current.html':
+		case 'CURRENT':
+		// case 'current.html':
 			return getCurrent(req, res, next);
 		case 'HEAD':
 			debug('HEAD request');

@@ -45,7 +45,7 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/current', express.static(path.resolve('.')));
+app.use('/workdir', express.static(path.resolve('.')));
 // app.use('/current.html', current);
 app.use('/', gallery);
 
