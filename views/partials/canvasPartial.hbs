@@ -1,0 +1,27 @@
+<h4>Live Canvas   <button onclick="snapshot()"><span class="glyphicon glyphicon-camera"></span></button></h4>
+<script>
+function snapshot() {
+	// find the canvas:
+	let contents = $('#contentFrame').contents();
+	let canvas = contents.find('canvas').first()[0];
+
+	// send the contents to the server:
+	canvas.toBlob(blob => {
+		let fd = new FormData();
+		fd.append('commitId', '{{commitId}}');
+		fd.append('imageFile', blob);
+
+		$.ajax({
+			url: 'addimage',
+			data: fd,
+			cache: false,
+			contentType: false,
+			processData: false,
+			type: 'POST',
+			success: data => { location.reload(); }
+		});
+	});
+}
+</script>
+
+<iframe id="contentFrame" src="repo/index.html" width="1000" height="600" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
