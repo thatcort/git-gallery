@@ -4,9 +4,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
 const hbs = require('hbs');
-hbs.registerPartials(__dirname + '/views/partials');
 
 const routes = require('./routes/index');
 const current = require('./routes/current');
@@ -14,6 +12,9 @@ const gallery = require('./routes/gallery');
 const pages = require('./routes/page');
 const head = require('./galleryHEAD');
 const utils = require('./pageUtils');
+const galleryRoot = utils.galleryRoot;
+
+hbs.registerPartials(path.join(galleryRoot, 'views', 'partials'));
 
 head.watchHead();
 
@@ -21,7 +22,7 @@ var app = express();
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
-app.set('views', [utils.galleryRoot, path.join(__dirname, 'views')]);
+app.set('views', [path.join(galleryRoot, 'views') /* , path.join(__dirname, 'views') */]);
 app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
@@ -31,8 +32,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(require('node-sass-middleware')({
-  src: utils.galleryRoot,
-  dest: utils.galleryRoot,
+  src: galleryRoot,
+  dest: galleryRoot,
   indentedSyntax: false,
   sourceMap: true
 }));
@@ -52,6 +53,7 @@ app.use('/', current);
 app.use('/pages', gallery);
 
 app.use(express.static(path.resolve('.')));
+app.use(express.static(galleryRoot));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
