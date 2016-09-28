@@ -4,7 +4,7 @@ const path = require('path');
 
 const repoUtils = require('../repoUtils');
 
-router.get('/current.html', (req, res, next) => {
+router.get('/', (req, res, next) => {
 	return repoUtils.repoStatus().then(status => {
 		return res.render('current', status);
 	});

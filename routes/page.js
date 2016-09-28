@@ -46,15 +46,21 @@ router.get('/thumbnail', thumbnailRequest);
 router.get('/', pageRequest);
 router.get('/index.html', pageRequest);
 
+router.post('/commitcurrent', commitCurrent);
+
 function pageRequest(req, res, next) {
 	let commitId = req.params.commitRef;
-	if (commitId === 'HEAD') {
-	debug('HEAD request');
-		return repoUtils.getHeadCommit().then(head => { 
-			debug('HEAD = ' + head);
-			return handlePageRequest(head.sha(), req, res, next); });
-	} else {
-		return handlePageRequest(commitId, req, res, next);
+	switch (commitId) {
+		case 'current':
+		case 'current.html':
+			return getCurrent(req, res, next);
+		case 'HEAD':
+			debug('HEAD request');
+			return repoUtils.getHeadCommit().then(head => { 
+				debug('HEAD = ' + head);
+				return handlePageRequest(head.sha(), req, res, next); });
+		default:
+			return handlePageRequest(commitId, req, res, next);
 	}
 }
 
@@ -161,6 +167,19 @@ function thumbnailRequest(req, res, next) {
 		let thumb = req.query.thumb || '100x100';
 		return res.redirect(image.src + '?thumb=' + thumb);
 	}
+}
+
+function getCurrent(req, res, next) {
+	return repoUtils.repoStatus().then(status => {
+		return res.render('current', status);
+	});
+}
+
+function commitCurrent(req, res, next) {
+	let message = req.body.message || '';
+	return repoUtils.commitAllChanges(message).then(() => {
+		return res.redirect('/current.html');
+	})
 }
 
 module.exports = router;

@@ -45,14 +45,14 @@ app.use(require('node-sass-middleware')({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-app.use('/', current);
+app.use('/current', express.static(path.resolve('.')));
+// app.use('/current.html', current);
+app.use('/', gallery);
 
 // app.use('/', routes);
 // app.use('/users', users);
-app.use('/pages', gallery);
+// app.use('/pages', gallery);
 
-app.use(express.static(path.resolve('.')));
 app.use(express.static(galleryRoot));
 
 // catch 404 and forward to error handler
