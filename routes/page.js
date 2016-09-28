@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require('path');
 const parseUrl = require('parseurl');
 const multer = require('multer');
+const mime = require('mime');
 
 const debug = require('debug')('git-gallery');
 
@@ -25,7 +26,12 @@ var storage = multer.diskStorage({
 		cb(null, d);
 	},
 	filename: function (req, file, cb) {
-		cb(null, file.originalname);
+		let ext = '.' + mime.extension(file.mimetype);
+		let name = file.originalname;
+		if (!name.endsWith(ext)) {
+			name += ext;
+		}
+		cb(null, name);
 	}
 });
 var upload = multer({ storage: storage });
@@ -152,7 +158,7 @@ router.post('/addimage', upload.single('imageFile'), function(req, res, next) {
 
 function addImage(commitId, req, res) {
 	let page = db.getPage(commitId);
-	page.images.push({ 'src': req.file.originalname, 'caption': '' });
+	page.images.push({ 'src': req.file.filename, 'caption': '' });
 	res.sendStatus(200);
 }
 

@@ -2,7 +2,7 @@ const fs = require('fs');
 const chokidar = require('chokidar');
 const path = require('path');
 
-const debug = require('debug')('git-gallery');
+const debug = console.log; // require('debug')('git-gallery');
 
 const utils = require('./pageUtils');
 const galleryRoot = utils.galleryRoot;
