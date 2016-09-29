@@ -1,20 +1,21 @@
 <form id="addImageForm" class="dropzone" action="addimage" method="post" enctype="multipart/form-data">
-	<div class="fallback">Add Images: <input name="imageFile" type="file" /></div>
-	<!-- <div class="fallback">Add Images: <input name="imageFile" type="file" multiple /></div> -->
+	<div class="fallback">Add Images: <input name="file" type="file" /></div>
 	<input type="hidden" name="commitId" value="{{commitId}}" />
 </form>
 
+<script src="/lib/dropzone.js"></script>
+<link href="/lib/dropzone.css" rel="stylesheet">
 <script>
+	Dropzone.autoDiscover = false;
 	readyScripts.push(function() {
-		Dropzone.autoDiscover = false;
 
 		let dropErrors = false; // did dropzone errors occur?
 		$("#addImageForm").dropzone({
-			dictDefaultMessage: "Drop images here to add to the page", 
-			parallelUploads: 1,
-			uploadMultiple: false,
-			paramName: 'imageFile', 
-			init: function() {
+			'dictDefaultMessage': "Drop images here to add to the page", 
+			'parallelUploads': 1,
+			'uploadMultiple': false,
+			'paramName': 'file', 
+			'init': function() {
 				this.on("addedfile", (file) => {
 					console.log("Dropzone file added: " + file.name);
 					if (window.liveJs) { window.liveJs.setPaused(true); }

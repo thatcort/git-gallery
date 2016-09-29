@@ -148,7 +148,7 @@ function editPage(commitId, req, res) {
 	res.sendStatus(200);	
 }
 
-router.post('/addimage', upload.single('imageFile'), function(req, res, next) {
+router.post('/addimage', upload.single('file'), function(req, res, next) {
 	if (req.params.commitRef === 'HEAD') {
 		return repoUtils.getHeadCommit().then(head => { addImage(head.sha(), req, res); });
 	} else {

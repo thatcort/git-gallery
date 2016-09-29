@@ -9,7 +9,7 @@ function snapshot() {
 	canvas.toBlob(blob => {
 		let fd = new FormData();
 		fd.append('commitId', '{{commitId}}');
-		fd.append('imageFile', blob);
+		fd.append('file', blob);
 
 		$.ajax({
 			url: 'addimage',
