@@ -90,16 +90,19 @@ function createPage(commitId, callback) {
 }
 
 function addRawPage(obj) {
-console.log('ADD RAW: objIsProxy? ' + (obj instanceof Proxy));
-console.log('ADD RAW: obj.images.IsProxy? ' + (obj.images instanceof Proxy));
-
 	let dh = new DirtyHandler(obj);
 	for (let i=0; i < obj.images.length; i++) {
 		obj.images[i] = new Proxy(obj.images[i], dh);
 	}
 	obj.images = new Proxy(obj.images, dh);
 	let page = new Proxy(obj, dh);
-console.log('ADD RAW: page.images.IsProxy? ' + (page.images instanceof Proxy));
+
+	// remove old version of page
+	let old = commit2Page[page.commitId];
+	if (old) {
+		pages.splice(pages.indexOf(old), 1);
+	}
+
 	pages.push(page);
 	commit2Page[page.commitId] = page;
 	sortPages();
