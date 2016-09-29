@@ -6,12 +6,8 @@ const debug = console.log; // require('debug')('git-gallery');
 
 const utils = require('./pageUtils');
 const galleryRoot = utils.galleryRoot;
-// const readPage = utils.readPage;
-// const writePage = utils.writePage;
 
 const isPageDir = utils.isPageDir;
-// const pageExists = utils.pageExists;
-// const readPageJSON = utils.readPageJSON;
 
 var watcher; // gallery filesystem watcher
 
@@ -24,16 +20,26 @@ for (prop of utils.transientPageProperties) {
 }
 
 
-var dirtyHandler = {
-	set: function(obj, prop, value) {
+var DirtyHandler = function(root) {
+	this.root = root;
+
+	this.set = (obj, prop, value) => {
+		// if (this.ignoreSets) {
+		// 	return;
+		// }
 		if (!dirtyIgnores[prop]) {
 			debug('Dirty: ' + prop + ' of ' + obj.commitId);
-			markDirty(obj);
+			markDirty(this.root);
+		}
+		if (value && typeof value === 'object') {
+// console.log('SET: ' + prop + ' --> ' + JSON.stringify(value));
+			value = new Proxy(value, this);
 		}
 		obj[prop] = value;
 		return true;
-	}
-};
+	};
+}
+
 
 function markDirty(page) {
 	let id = page.commitId;
@@ -84,7 +90,16 @@ function createPage(commitId, callback) {
 }
 
 function addRawPage(obj) {
-	let page = new Proxy(obj, dirtyHandler);
+console.log('ADD RAW: objIsProxy? ' + (obj instanceof Proxy));
+console.log('ADD RAW: obj.images.IsProxy? ' + (obj.images instanceof Proxy));
+
+	let dh = new DirtyHandler(obj);
+	for (let i=0; i < obj.images.length; i++) {
+		obj.images[i] = new Proxy(obj.images[i], dh);
+	}
+	obj.images = new Proxy(obj.images, dh);
+	let page = new Proxy(obj, dh);
+console.log('ADD RAW: page.images.IsProxy? ' + (page.images instanceof Proxy));
 	pages.push(page);
 	commit2Page[page.commitId] = page;
 	sortPages();
