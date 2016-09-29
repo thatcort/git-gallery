@@ -14,7 +14,7 @@
 		<script>
 			var readyScripts = []; // scripts to be run once the document is ready
 			$(document).ready(function() {
-				readyScripts.forEach(script => { script(); });
+				readyScripts.forEach(script => { try { script(); } catch (e) { console.log(e); }});
 			});
 		</script>
   </head>

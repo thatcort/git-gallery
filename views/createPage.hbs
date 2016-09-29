@@ -10,11 +10,11 @@ A page does not exist for this commit.
 	{{else}}
 		<div class="alert alert-warning" role="alert">Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
 	{{/if}}
-	<script type="text/javascript" src="/lib/live.js"></script>
+	{{> livePartial }}
 {{/if}}
 
 <div>
-	<form method="post" action="/pages/create">
+	<form method="post" action="/create">
 		<input type="hidden" name="commitRef" value="{{commitId}}" />
 		<button type="submit" class="btn btn-default">Create a New Page</button>
 	</form>
