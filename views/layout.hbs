@@ -11,6 +11,12 @@
 		<script src="/lib/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 		<script src="/lib/dropzone.js"></script>
 		<link href="/lib/dropzone.css" rel="stylesheet">
+		<script>
+			var readyScripts = []; // scripts to be run once the document is ready
+			$(document).ready(function() {
+				readyScripts.forEach(script => { script(); });
+			});
+		</script>
   </head>
   <body>
     {{{body}}}

@@ -94,9 +94,8 @@ function createPageDir(commitRef, callback) {
 	}
 }
 
-function readPage(dir, callback) {
-	let f = path.join(dir, 'page.json');
-	fs.readFile(f, 'utf8', (error, data) => {
+function readJson(file, callback) {
+	fs.readFile(file, 'utf8', (error, data) => {
 		if (error) {
 			return callback(error);
 		}
@@ -104,10 +103,19 @@ function readPage(dir, callback) {
 	});	
 }
 
+function readPage(dir, callback) {
+	let f = path.join(dir, 'page.json');
+	readJson(f);
+}
+
+function readJsonSync(file) {
+	let data = fs.readFileSync(file, 'utf8');
+	return JSON.parse(data, dateReviver);
+}
+
 function readPageSync(dir) {
 	let f = path.join(dir, 'page.json');
-	let data = fs.readFileSync(f, 'utf8');
-	return JSON.parse(data, dateReviver);
+	return readJsonSync(f);
 }
 
 function writePage(page, callback) {
@@ -118,14 +126,20 @@ function writePage(page, callback) {
 			return console.log('Problem writing page: ' + error);
 		}
 		// write the page.json file	
-		let json = JSON.stringify(page, null, '\t');
-		debug("About to write page json file: " + json);
 		let dir = pageDir(page.commitId);
-		fs.writeFile(path.join(dir, 'page.json'), json, (error) => { 
-			debug("Wrote file or failed");
-			return callback(error);
-		});		
+		let file = path.join(dir, 'page.json');
+		return writeJson(page, file, callback);
 	});	
+}
+
+function writeJson(data, file, options, callback) {
+	if (typeof options === 'function') {
+		callback = options;
+		options = {};
+	}
+	let json = JSON.stringify(data, null, '\t');
+	debug("About to write json file: " + json);
+	fs.writeFile(file, json, options, callback);
 }
 
 
@@ -167,8 +181,11 @@ exports.directoryExists = directoryExists;
 exports.isPageDir = isPageDir;
 exports.pageExists = pageExists;
 exports.pageDir = pageDir;
+exports.readJson = readJson;
+exports.readJsonSync = readJsonSync;
 exports.readPage = readPage;
 exports.readPageSync = readPageSync;
 exports.writePage = writePage;
+exports.writeJson = writeJson;
 exports.createPageForId = createPageForId;
 exports.createPageForCommit = createPageForCommit;

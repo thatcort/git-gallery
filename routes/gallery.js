@@ -23,16 +23,19 @@ router.get('/', getDirectory);
 router.get('/index.html', getDirectory);
 router.use('/:commitRef', pageRouter);
 
+const galleryFile = path.join(galleryRoot, 'gallery.json');
+var galleryData;
+
 function getDirectory(req, res, next) {
-	let pages = db.getPages();
-	let data = {
-		pages: pages
-	};
-	res.render('gallery.hbs', data);
+	if (!galleryData) {
+		galleryData = utils.readJsonSync(galleryFile);
+	}
+	galleryData.pages = db.getPages();
+	res.render('gallery.hbs', galleryData);
 }
 
 /** Create a new page */
-router.post('/create', function(req, res, next) {
+router.post('/create', (req, res, next) => {
 	db.createPage(req.body.commitRef, (error, data) => {
 		if (error) {
 			console.log(error);
@@ -40,6 +43,19 @@ router.post('/create', function(req, res, next) {
 		} else {
 			res.redirect(req.body.commitRef + '/index.html');
 		}
+	});
+});
+
+router.post('/editgallery', (req, res, next) => {
+	debug('Edit gallery: name=' + req.body.name + ' => value=' + req.body.value);
+	galleryData[req.body.name] = req.body.value;
+	delete galleryData.pages;
+	utils.writeJson(galleryData, galleryFile, (error) => {
+		if (error) {
+			console.log(error);
+			return res.sendStatus(500);
+		}
+		res.sendStatus(200);
 	});
 });
 

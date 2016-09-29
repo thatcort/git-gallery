@@ -1,7 +1,7 @@
 <p><a href="/current/">Current Working Directory</a></p>
 <p><a href="/HEAD/">HEAD Commit</a></p>
 
-<h3>Gallery Pages</h3>
+<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
 {{#each pages}}
 	<a href="{{commitId}}/">
@@ -15,3 +15,5 @@
 		</div>
 	</a>
 {{/each}}
+
+{{> editablePartial }}

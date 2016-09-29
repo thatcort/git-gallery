@@ -3,18 +3,11 @@
 	<!-- <div class="fallback">Add Images: <input name="imageFile" type="file" multiple /></div> -->
 	<input type="hidden" name="commitId" value="{{commitId}}" />
 </form>
-{{#if isHead}}
-	<script type="text/javascript" src="/lib/live.js"></script>
-{{/if}}
+
 <script>
-	$.fn.editable.defaults.mode = 'inline';
+	readyScripts.push(function() {
+		Dropzone.autoDiscover = false;
 
-	Dropzone.autoDiscover = false;
-
-	$(document).ready(function() {
-
-		$('.editable').editable();
-	
 		let dropErrors = false; // did dropzone errors occur?
 		$("#addImageForm").dropzone({
 			dictDefaultMessage: "Drop images here to add to the page", 
@@ -43,6 +36,5 @@
 				});
 			}
 		});
-
 	});
 </script>
