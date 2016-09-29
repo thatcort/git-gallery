@@ -8,6 +8,8 @@
 <h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
 <p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if comment}}{{comment}}{{else}}Add comments{{/if}}</p>
 
+{{!-- {{> canvasPartial }} --}}
+
 <h4>Images</h4>
 {{#each images}}
 	<figure>
