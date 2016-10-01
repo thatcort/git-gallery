@@ -24,15 +24,11 @@ var DirtyHandler = function(root) {
 	this.root = root;
 
 	this.set = (obj, prop, value) => {
-		// if (this.ignoreSets) {
-		// 	return;
-		// }
 		if (!dirtyIgnores[prop]) {
 			debug('Dirty: ' + prop + ' of ' + obj.commitId);
 			markDirty(this.root);
 		}
 		if (value && typeof value === 'object') {
-// console.log('SET: ' + prop + ' --> ' + JSON.stringify(value));
 			value = new Proxy(value, this);
 		}
 		obj[prop] = value;
