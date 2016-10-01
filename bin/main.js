@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs');
 const ncp = require('ncp').ncp;
+const readline = require('readline');
 
 const utils = require('../pageUtils');
 
@@ -56,8 +57,21 @@ function init() {
 	utils.writeJson({ 'title': '' }, gjFile, { 'flag': 'wx' }, error => { console.log(error); });
 
 	// create/edit .gitignore file
-	let fd = fs.openSync(path.join(utils.galleryRoot, '../.gitignore'), 'a');
-	fs.writeSync(fd, '\n.gitGallery\n');
+	let gitignore = path.join(utils.galleryRoot, '../.gitignore');
+	var rd = readline.createInterface({
+		input: fs.createReadStream(gitignore),
+		output: process.stdout,
+		terminal: false
+	});
+	let alreadyIgnored = false;
+	rd.on('line', function(line) {
+		if (line.indexOf('.gitGallery') >= 0)
+			alreadyIgnored = true;
+	});
+	if (!alreadyIgnored) {
+		let fd = fs.openSync(gitignore, 'a');
+		fs.writeSync(fd, '\n.gitGallery\n');
+	}
 }
 
 
