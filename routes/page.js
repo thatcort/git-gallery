@@ -185,7 +185,7 @@ function getCurrent(req, res, next) {
 function commitCurrent(req, res, next) {
 	let message = req.body.message || '';
 	return repoUtils.commitAllChanges(message).then(() => {
-		return res.redirect('/current.html');
+		return res.redirect('/current/');
 	})
 }
 
