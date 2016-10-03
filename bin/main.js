@@ -50,11 +50,11 @@ function init() {
 	// copy in the views directory
 	let sourceViews = path.join(__dirname, '../views');
 	let destViews = path.join(utils.galleryRoot, 'views');
-	ncp(sourceViews, destViews, { "clobber": false }, error => { console.error(error); });
+	ncp(sourceViews, destViews, { "clobber": false }, error => { if (error) console.error(error); });
 
 	// add a gallery.json file
 	let gjFile = path.join(utils.galleryRoot, 'gallery.json');
-	utils.writeJson({ 'title': '' }, gjFile, { 'flag': 'wx' }, error => { console.log(error); });
+	utils.writeJson({ 'title': '' }, gjFile, { 'flag': 'wx' }, error => { if (error) console.log(error); });
 
 	// create/edit .gitignore file
 	let gitignore = path.join(utils.galleryRoot, '../.gitignore');
