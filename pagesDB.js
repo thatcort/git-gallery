@@ -152,8 +152,8 @@ function sortPages() {
 		let prevInd = i - 1;
 		let nextInd = i + 1;
 		let p = pages[i];
-		p.prevPage = (prevInd >= 0 ? pages[prevInd].commitId : null);
-		p.nextPage = (nextInd < pages.length ? pages[nextInd].commitId : null);
+		p.nextPage = (prevInd >= 0 ? pages[prevInd].commitId : null);
+		p.prevPage = (nextInd < pages.length ? pages[nextInd].commitId : null);
 	}
 }
 
