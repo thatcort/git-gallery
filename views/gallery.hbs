@@ -1,6 +1,13 @@
 <p><a href="/current/">Current Working Directory</a></p>
 <p><a href="/HEAD/">HEAD Commit</a></p>
 
+<table>
+<tr><th>Message</th><th>Date</th><th>ID</td></tr>
+{{#each commits}}
+	<tr><td><a href="{{sha}}/">{{message}}</a></td><td><a href="{{sha}}/">{{date date}}</a></td><td><a href="{{sha}}/">{{sha7}}</a></td></tr>
+{{/each}}
+</table>
+
 <h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
 {{#each pages}}

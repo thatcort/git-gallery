@@ -3,6 +3,8 @@ const Git = require('nodegit');
 const path = require("path");
 const Promise = require('promise');
 
+const hbs = require('hbs');
+
 const repoPath = path.resolve(process.cwd());
 var repo;
 
@@ -30,9 +32,25 @@ function getCommit(ref) {
 }
 
 function getHeadCommit() {
-	return getRepo().then((repo) => {
+	return getRepo().then(repo => {
 		return Git.Reference.nameToId(repo, "HEAD").then(getCommit);
 	});
+}
+
+function getAllCommits() {
+	return getRepo()
+		.then(repo => {
+			return repo.getReferenceNames(Git.Reference.TYPE.LISTALL);//SYMBOLIC)
+		}).then(refs => {
+console.log("FOUND REFS: " + refs);
+			let walk = Git.Revwalk.create(repo);
+			refs.forEach(ref => {
+				let code = walk.pushRef(ref);
+				if (code) logError("Problem adding reference to Git Revwalk: " + ref, null);
+			});
+			walk.sorting(Git.Revwalk.SORT.TIME);
+			return walk.getCommits(100);
+		});
 }
 
 
@@ -143,6 +161,7 @@ function logError(message, error) {
 exports.getRepo = getRepo;
 exports.getCommit = getCommit;
 exports.getHeadCommit = getHeadCommit;
+exports.getAllCommits = getAllCommits;
 exports.isWorkingDirClean = isWorkingDirClean;
 exports.isHeadDetached = isHeadDetached;
 exports.headStatus = headStatus;

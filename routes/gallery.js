@@ -9,6 +9,8 @@ const galleryRoot = utils.galleryRoot;
 
 const db = require('../pagesDB');
 
+const repoUtils = require('../repoUtils');
+
 router.use(function(req, res, next) {
 	console.log('galleryRouter: %s %s %s', req.method, req.url, req.path);
 	next();
@@ -31,7 +33,19 @@ function getDirectory(req, res, next) {
 		galleryData = utils.readJsonSync(galleryFile);
 	}
 	galleryData.pages = db.getPages();
-	res.render('gallery.hbs', galleryData);
+	repoUtils.getAllCommits().then(commits => {
+		processCommits(commits);
+		galleryData.commits = commits;
+		res.render('gallery.hbs', galleryData);
+	});
+}
+
+function processCommits(commits) {
+	commits.forEach(c => {
+		c.date = c.date();
+		c.sha = c.sha();
+		c.sha7 = c.sha.substring(0,7);
+	});
 }
 
 /** Create a new page */

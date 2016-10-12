@@ -7,7 +7,7 @@ const rUtils = require('../repoUtils');
 const router = express.Router({mergeParams: true});
 
 
-/* GET users listing. */
+/** GET file from repo */
 router.get('/*', function(req, res, next) {
 
 	rUtils.getCommit(req.params.commitRef).then(function(commit) {
