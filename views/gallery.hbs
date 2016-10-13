@@ -16,9 +16,10 @@
 	});
 </script>
 
-<p><a href="/current/">Current Working Directory</a></p>
-<p><a href="/HEAD/">HEAD Commit</a></p>
+<h3>Repository</h3>
+<p><a href="/current/">&gt;&gt; Current Working Directory</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="/HEAD/">&gt;&gt; HEAD Commit</a></p>
 
+<h4>Commit Log</h4>
 <table id="commitTable">
 <thead>
 	<tr><th>Message</th><th>Date</th><th>ID</td></tr>
@@ -29,6 +30,9 @@
 	{{/each}}
 </tbody>
 </table>
+
+<hr>
+<h3>Pages</h3>
 
 <h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
