@@ -1,9 +1,12 @@
-<div>
-	{{#if prevPage}}<p style="float: left"><a href="../{{prevPage}}/index.html"><< prev</a></p>{{/if}}
-	{{#if nextPage}}<p style="float: right"><a href="../{{nextPage}}/index.html">next >></a></p>{{/if}}
+{{> commitPartial }}
+<hr>
+
+<div id="pageNav">
+	<div>{{#if prevPage}}<a href="../{{prevPage}}/index.html"><< prev</a>{{/if}}</div>
+	<div>{{ galleryTitle }}</div>
+	<div>{{#if nextPage}}<a href="../{{nextPage}}/index.html">next >></a>{{/if}}</div>
 </div>
-<h5 style="clear:both">Commit: {{commitId}} {{dateTime date}}</h5>
-<p>{{message}}
+<br>
 
 <h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
 <p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if comment}}{{comment}}{{else}}Add comments{{/if}}</p>

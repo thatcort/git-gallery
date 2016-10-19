@@ -37,7 +37,7 @@ function getHeadCommit() {
 	});
 }
 
-function getAllCommits() {
+function getCommits(maxCount) {
 	return getRepo()
 		.then(repo => {
 			return repo.getReferenceNames(Git.Reference.TYPE.LISTALL);//SYMBOLIC)
@@ -49,8 +49,16 @@ console.log("FOUND REFS: " + refs);
 				if (code) logError("Problem adding reference to Git Revwalk: " + ref, null);
 			});
 			walk.sorting(Git.Revwalk.SORT.TIME);
-			return walk.getCommits(100);
-		});
+			return walk.getCommits(maxCount); // maximum # of commits to retrieve
+		});	
+}
+
+function getAllCommits() {
+	return getCommits(1000);
+}
+
+function getLatestCommit() {
+	return getCommits(1).then(commits => commits[0]);
 }
 
 
@@ -161,7 +169,9 @@ function logError(message, error) {
 exports.getRepo = getRepo;
 exports.getCommit = getCommit;
 exports.getHeadCommit = getHeadCommit;
+exports.getCommits = getCommits;
 exports.getAllCommits = getAllCommits;
+exports.getLatestCommit = getLatestCommit;
 exports.isWorkingDirClean = isWorkingDirClean;
 exports.isHeadDetached = isHeadDetached;
 exports.headStatus = headStatus;

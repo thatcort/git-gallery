@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const hbs = require('hbs');
 
 const routes = require('./routes/index');
-const current = require('./routes/current');
 const gallery = require('./routes/gallery');
 const pages = require('./routes/page');
 const head = require('./galleryHEAD');
@@ -46,8 +45,7 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/workdir', express.static(path.resolve('.')));
-// app.use('/current.html', current);
-app.use('/', gallery);
+app.use('/', gallery.router);
 
 // app.use('/', routes);
 // app.use('/users', users);

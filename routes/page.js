@@ -9,7 +9,9 @@ const mime = require('mime');
 
 const debug = require('debug')('git-gallery');
 
-const db = require('../pagesDB');
+const gallery = require('./gallery.js');
+const commitsDB = require('../commitsDB');
+const pagesDB = require('../pagesDB');
 const utils = require('../pageUtils');
 const repoUtils = require('../repoUtils');
 const galleryRoot = utils.galleryRoot;
@@ -77,7 +79,7 @@ function handlePageRequest(commitId, req, res, next) {
 	//       offer to create a new page
 	//     else (if directory does exist, but path doesn't)
 	//       return 404
-	let page = db.getPage(commitId);
+	let page = pagesDB.getPage(commitId);
 	if (page) {
 		if (req.params.commitRef === 'HEAD') {
 			page.isHead = true;
@@ -132,7 +134,7 @@ router.post('/editpage', function(req, res, next) {
 
 function editPage(commitId, req, res) {
 	debug('Edit page: name=' + req.body.name + ' => value=' + req.body.value);
-	let page = db.getPage(commitId);
+	let page = pagesDB.getPage(commitId);
 	if (req.body.name.startsWith('caption/')) {
 		let imgSrc = req.body.name.substring(8);
 		let caption = null;
@@ -157,14 +159,14 @@ router.post('/addimage', upload.single('file'), function(req, res, next) {
 });
 
 function addImage(commitId, req, res) {
-	let page = db.getPage(commitId);
+	let page = pagesDB.getPage(commitId);
 	page.images.push({ 'src': req.file.filename, 'caption': '' });
 	res.sendStatus(200);
 }
 
 
 function thumbnailRequest(req, res, next) {
-	let page = db.getPage(req.params.commitRef);
+	let page = pagesDB.getPage(req.params.commitRef);
 	if (!page) {
 		return res.sendStatus(404);
 	} else if (!page.images || page.images.length < 1) {
