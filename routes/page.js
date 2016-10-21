@@ -79,34 +79,45 @@ function handlePageRequest(commitId, req, res, next) {
 	//       offer to create a new page
 	//     else (if directory does exist, but path doesn't)
 	//       return 404
-	let page = pagesDB.getPage(commitId);
-	if (page) {
-		if (req.params.commitRef === 'HEAD') {
-			page.isHead = true;
-		}
-		return res.render('page.hbs', page);
-	} else {
-		repoUtils.getCommit(commitId).then(commit => {
-			let data = utils.createPageForCommit(commit);
-			data.title = 'Create Page';
-			data.isHead = req.params.commitRef === 'HEAD';
-			if (data.isHead) {
-				repoUtils.headStatus().then(headStatus => {
-					data.isClean = headStatus.isClean;
-					data.isDetached = headStatus.isDetached;
+	createRenderData(commitId).then(data => {
+		if (data.page) {
+console.log('Rendering page');
+			return res.render('page.hbs', data);
+		} else {
+console.log('No page found for commit');
+			repoUtils.getCommit(commitId).then(commit => {
+				if (data.isHead) {
+					repoUtils.headStatus().then(headStatus => {
+						data.isClean = headStatus.isClean;
+						data.isDetached = headStatus.isDetached;
+						return res.render('createPage.hbs', data);
+					})
+				} else {
 					return res.render('createPage.hbs', data);
-				})
-				// repoUtils.isWorkingDirClean().then(isClean => {
-				// 	data.isClean = isClean;
-				// 	return res.render('createPage.hbs', data);
-				// });
-			} else {
-				return res.render('createPage.hbs', data);
-			}
-		}, error => {
-			res.sendStatus(404);
-		});
-	}
+				}
+			}, error => {
+				res.sendStatus(404);
+			});
+		}
+	});
+}
+
+function createRenderData(commitId) {
+	let page = pagesDB.getPage(commitId);
+	return commitsDB.getCommit(commitId).then(commit => {
+console.log("HELLOOOOOO");
+console.log('gallery: ' + gallery);
+console.log('galleryData: ' + gallery.getGalleryData());
+console.log(JSON.stringify(gallery.getGalleryData().title));
+		let data = {
+			"commitId": commitId,
+			"galleryData": gallery.getGalleryData(),
+			"commit": commit,
+			"page": page,
+			"isHead": commitId === 'HEAD'
+		};
+		return data;
+	});
 }
 
 

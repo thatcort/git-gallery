@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const fs = require('fs');
 
 const debug = require('debug')('git-gallery');
 
@@ -26,12 +27,11 @@ router.get('/index.html', getDirectory);
 router.use('/:commitRef', pageRouter);
 
 const galleryFile = path.join(galleryRoot, 'gallery.json');
-var galleryData;
+var _galleryJson;
+
 
 function getDirectory(req, res, next) {
-	if (!galleryData) {
-		galleryData = utils.readJsonSync(galleryFile);
-	}
+	let galleryData = getGalleryData();
 	galleryData.pages = db.getPages();
 	commits.getCommits().then(commits => {
 		galleryData.commits = commits;
@@ -53,17 +53,25 @@ router.post('/create', (req, res, next) => {
 
 router.post('/editgallery', (req, res, next) => {
 	debug('Edit gallery: name=' + req.body.name + ' => value=' + req.body.value);
+	let galleryData = getGalleryData();
 	galleryData[req.body.name] = req.body.value;
-	delete galleryData.pages;
-	delete galleryData.commits;
 	utils.writeJson(galleryData, galleryFile, (error) => {
 		if (error) {
 			console.log(error);
 			return res.sendStatus(500);
 		}
+		_galleryJson = null;
 		res.sendStatus(200);
 	});
 });
 
+function getGalleryData() {
+	// JSON.parse(JSON.stringify(obj))
+	if (!_galleryJson) {
+		_galleryJson = fs.readFileSync(galleryFile, 'utf8');
+	}
+	return utils.parseJson(_galleryJson);
+}
+
 exports.router = router;
-exports.galleryData = galleryData;
+exports.getGalleryData = getGalleryData;

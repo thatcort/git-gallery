@@ -1,20 +1,20 @@
-{{> commitPartial }}
+{{> commitPartial commit }}
 <hr>
 
 <div id="pageNav">
-	<div>{{#if prevPage}}<a href="../{{prevPage}}/index.html"><< prev</a>{{/if}}</div>
-	<div>{{ galleryTitle }}</div>
-	<div>{{#if nextPage}}<a href="../{{nextPage}}/index.html">next >></a>{{/if}}</div>
+	<div>{{#if page.prevPage}}<a href="../{{page.prevPage}}/index.html"><< prev</a>{{/if}}</div>
+	<div>{{ galleryData.title }}</div>
+	<div>{{#if page.nextPage}}<a href="../{{page.nextPage}}/index.html">next >></a>{{/if}}</div>
 </div>
 <br>
 
-<h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if title}}{{title}}{{else}}Untitled{{/if}}</h2>
-<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if comment}}{{comment}}{{else}}Add comments{{/if}}</p>
+<h2 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if page.title}}{{page.title}}{{else}}Untitled{{/if}}</h2>
+<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if page.comment}}{{page.comment}}{{else}}Add comments{{/if}}</p>
 
 {{!-- {{> canvasPartial src="repo/index.html"}} --}}
 
 <h4>Images</h4>
-{{#each images}}
+{{#each page.images}}
 	<figure>
 		<img src="{{src}}" />
 		<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>

@@ -108,9 +108,13 @@ function readPage(dir, callback) {
 	readJson(f);
 }
 
+function parseJson(data) {
+	return JSON.parse(data, dateReviver);
+}
+
 function readJsonSync(file) {
 	let data = fs.readFileSync(file, 'utf8');
-	return JSON.parse(data, dateReviver);
+	return parseJson(data);
 }
 
 function readPageSync(dir) {
@@ -150,12 +154,6 @@ function createPageForCommit(commit) {
 	let commitId = commit.sha();
 	let page = {
 		"commitId": commitId,
-		"date": commit.date(), //.toJSON(),
-		"body": commit.body(),
-		"author": commit.author().toString(),
-		"committer": commit.committer().toString(),
-		"message": commit.message(),
-		"parents": commit.parents(),
 		"title": "",
 		"comment": "",
 		"images": []
@@ -183,6 +181,7 @@ exports.pageExists = pageExists;
 exports.pageDir = pageDir;
 exports.readJson = readJson;
 exports.readJsonSync = readJsonSync;
+exports.parseJson = parseJson;
 exports.readPage = readPage;
 exports.readPageSync = readPageSync;
 exports.writePage = writePage;
