@@ -1,7 +1,7 @@
 
 <!-- Canvas Partial -->
-<h4>Live Canvas   <button onclick="snapshot()"><span class="glyphicon glyphicon-camera"></span></button></h4>
-<script>
+<h4>Live Canvas   {{#if snapshot}}<button onclick="snapshot()"><span class="glyphicon glyphicon-camera"></span></button>{{/if}}</h4>
+{{#if snapshot}}<script>
 function snapshot() {
 	// find the canvas:
 	let contents = $('#contentFrame').contents();
@@ -25,5 +25,5 @@ function snapshot() {
 	});
 }
 </script>
-
+{{/if}}
 <iframe id="contentFrame" src="{{src}}" width="1000" height="600" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>

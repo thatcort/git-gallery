@@ -75,40 +75,14 @@ function pageRequest(req, res, next) {
 
 
 function handlePageRequest(commitId, req, res, next) {
-	//     if page does not exist
-	//       offer to create a new page
-	//     else (if directory does exist, but path doesn't)
-	//       return 404
-	createRenderData(commitId).then(data => {
-		if (data.page) {
-console.log('Rendering page');
-			return res.render('page.hbs', data);
-		} else {
-console.log('No page found for commit');
-			repoUtils.getCommit(commitId).then(commit => {
-				if (data.isHead) {
-					repoUtils.headStatus().then(headStatus => {
-						data.isClean = headStatus.isClean;
-						data.isDetached = headStatus.isDetached;
-						return res.render('createPage.hbs', data);
-					})
-				} else {
-					return res.render('createPage.hbs', data);
-				}
-			}, error => {
-				res.sendStatus(404);
-			});
-		}
-	});
+	createRenderData(commitId)
+		.then(data => res.render('page.hbs', data))
+		.catch(error => res.sendStatus(404));
 }
 
 function createRenderData(commitId) {
 	let page = pagesDB.getPage(commitId);
 	return commitsDB.getCommit(commitId).then(commit => {
-console.log("HELLOOOOOO");
-console.log('gallery: ' + gallery);
-console.log('galleryData: ' + gallery.getGalleryData());
-console.log(JSON.stringify(gallery.getGalleryData().title));
 		let data = {
 			"commitId": commitId,
 			"galleryData": gallery.getGalleryData(),
@@ -116,6 +90,15 @@ console.log(JSON.stringify(gallery.getGalleryData().title));
 			"page": page,
 			"isHead": commitId === 'HEAD'
 		};
+		return data;
+	}).then(data => {
+		if (data.isHead) {
+			return repoUtils.headStatus().then(headStatus => {
+				data.isClean = headStatus.isClean;
+				data.isDetached = headStatus.isDetached;
+				return data;
+			});
+		}
 		return data;
 	});
 }

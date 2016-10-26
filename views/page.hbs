@@ -1,26 +1,54 @@
 {{> commitPartial commit }}
 <hr>
 
-<div id="pageNav">
-	<div>{{#if page.prevPage}}<a href="../{{page.prevPage}}/index.html">&lt;&lt; Prev Page</a>{{/if}}</div>
-	<div><h3>{{ galleryData.title }}</h3></div>
-	<div>{{#if page.nextPage}}<a href="../{{page.nextPage}}/index.html">Next Page &gt;&gt;</a>{{/if}}</div>
-</div>
+{{if page}}
+	<div id="pageNav">
+		<div>{{#if page.prevPage}}<a href="../{{page.prevPage}}/index.html">&lt;&lt; Prev Page</a>{{/if}}</div>
+		<div><h4>{{ galleryData.title }}</h4></div>
+		<div>{{#if page.nextPage}}<a href="../{{page.nextPage}}/index.html">Next Page &gt;&gt;</a>{{/if}}</div>
+	</div>
 
-<h1 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if page.title}}{{page.title}}{{else}}Untitled{{/if}}</h1>
-<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if page.comment}}{{page.comment}}{{else}}Add comments{{/if}}</p>
+	<h1 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if page.title}}{{page.title}}{{else}}Untitled{{/if}}</h1>
+	<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if page.comment}}{{page.comment}}{{else}}Add comments{{/if}}</p>
 
-{{!-- {{> canvasPartial src="repo/index.html"}} --}}
+	{{!-- {{> canvasPartial src="repo/index.html" snapshot="true"}} --}}
 
-<h4>Images</h4>
-{{#each page.images}}
-	<figure>
-		<img src="{{src}}" />
-		<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
-	</figure>
-	<br />
-{{/each}}
+	<h4>Images</h4>
+	{{#each page.images}}
+		<figure>
+			<img src="{{src}}" />
+			<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
+		</figure>
+		<br />
+	{{/each}}
 
-{{> dropzonePartial }}
-{{> livePartial }}
-{{> editablePartial }}
+	{{> dropzonePartial }}
+	{{> livePartial }}
+	{{> editablePartial }}
+{{else}}
+	<div id="pageNav">
+		<div></div>
+		<div><h4>{{ galleryData.title }}</h4></div>
+		<div></div>
+	</div>
+
+	A page does not exist for this commit.
+
+	{{#if isHead}}
+		{{#if isDetached}}<div class="alert alert-danger" role="alert">WARNING: HEAD is detached</div>{{/if}}
+		{{#if isClean}}
+		{{else}}
+			<div class="alert alert-warning" role="alert">Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
+		{{/if}}
+		{{> livePartial }}
+	{{/if}}
+
+	<div>
+		<form method="post" action="/create">
+			<input type="hidden" name="commitRef" value="{{commitId}}" />
+			<button type="submit" class="btn btn-default">Create a New Page</button>
+		</form>
+	</div>
+
+	{{!-- {{> canvasPartial src="repo/index.html"}} --}}
+{{/if}}
