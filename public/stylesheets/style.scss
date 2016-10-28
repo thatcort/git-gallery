@@ -1,5 +1,7 @@
 body {
   padding: 50px;
+  margin-top: 0;
+  padding-top: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -32,6 +34,11 @@ p {
 }
 
 .galleryThumb {
+}
+
+#commitBox, #repoSection {
+  background-color: #eee;
+  padding: 0.5em;
 }
 
 #commitBox,#pageNav {

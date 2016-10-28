@@ -4,7 +4,7 @@
 {{if page}}
 	<div id="pageNav">
 		<div>{{#if page.prevPage}}<a href="../{{page.prevPage}}/index.html">&lt;&lt; Prev Page</a>{{/if}}</div>
-		<div><h4>{{ galleryData.title }}</h4></div>
+		<div><h4><a href="../index.html">{{ galleryData.title }}</a></h4></div>
 		<div>{{#if page.nextPage}}<a href="../{{page.nextPage}}/index.html">Next Page &gt;&gt;</a>{{/if}}</div>
 	</div>
 
@@ -28,7 +28,7 @@
 {{else}}
 	<div id="pageNav">
 		<div></div>
-		<div><h4>{{ galleryData.title }}</h4></div>
+		<div><h4><a href="../index.html">{{ galleryData.title }}</a></h4></div>
 		<div></div>
 	</div>
 
