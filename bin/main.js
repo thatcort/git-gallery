@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const ncp = require('ncp').ncp;
 const readline = require('readline');
 
@@ -58,6 +58,7 @@ function init() {
 
 	// create/edit .gitignore file
 	let gitignore = path.join(utils.galleryRoot, '../.gitignore');
+	fs.ensureFileSync(gitignore);
 	var rd = readline.createInterface({
 		input: fs.createReadStream(gitignore),
 		output: process.stdout,
