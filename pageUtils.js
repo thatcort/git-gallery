@@ -154,6 +154,7 @@ function createPageForCommit(commit) {
 	let commitId = commit.sha();
 	let page = {
 		"commitId": commitId,
+		"date": commit.date(),
 		"title": "",
 		"comment": "",
 		"images": []
