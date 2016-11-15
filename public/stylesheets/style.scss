@@ -1,7 +1,7 @@
 body {
-  padding: 50px;
-  margin-top: 0;
-  padding-top: 0;
+//  padding: 50px;
+//  margin-top: 0;
+//  padding-top: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -10,13 +10,47 @@ a {
 }
 
 $primary-color: #333;
+$date-color: grey;
+
+$repo-heading-color: #bbb; // #ddd;
+$repo-text-color: #bbb;
+
+.repoContent {
+  padding: 0.5em;
+  background-color: #444;
+  color: $repo-text-color;
+  h1, h2, h3, h4, h5, h6 {
+    color: $repo-heading-color;
+    margin-bottom: 0;
+  }
+
+  a {
+    color: $repo-text-color; // rgb(143,170,220); // rgb(157,195,230);
+    &:hover {
+      color: rgb(157,195,230);
+      text-decoration: none;
+    }
+  }
+}
+
+.pageContent {
+  margin-top: 2em;
+
+  a {
+    color: $primary-color;
+    &:hover {
+      color: auto;
+      text-decoration: none;
+    }
+  }
+}
 
 p {
-	color: $primary-color;
+  color: $primary-color;
 }
 
 .galleryItem {
-	background-color: rgb(240, 240, 240);
+	background-color: #ccc; // rgb(240, 240, 240);
 	padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -31,19 +65,20 @@ p {
     vertical-align: top;
 }
 
+.giTitle {
+  color: $primary-color;
+}
+
 .giMessage {}
 
 .giDate {
-  color: grey;
+  color: $date-color;
 }
 
 .galleryThumb {
 }
 
-#commitBox, #repoSection {
-  background-color: #eee;
-  padding: 0.5em;
-}
+
 
 #commitBox,#pageNav {
   display: flex;

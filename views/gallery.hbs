@@ -16,39 +16,38 @@
 	});
 </script>
 
-<div id="repoSection">
-<h3>Repository</h3>
-<p><a href="/current/">&gt;&gt; Current Working Directory</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="/HEAD/">&gt;&gt; HEAD Commit</a></p>
+<div id="repoSection" class="repoContent">
+	<h3>Repository</h3>
+	<p><a href="/current/">&gt;&gt; Current Working Directory</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="/HEAD/">&gt;&gt; HEAD Commit</a></p>
 
-<h4>Commit Log</h4>
-<table id="commitTable">
-<thead>
-	<tr><th>Message</th><th>Date</th><th>ID</td></tr>
-</thead>
-<tbody>
-	{{#each commits}}
-		<tr><td><a href="{{sha}}/">{{message}}</a></td><td><a href="{{sha}}/">{{date date}}</a></td><td><a href="{{sha}}/">{{sha7}}</a></td></tr>
-	{{/each}}
-</tbody>
-</table>
+	<h4>Commit Log</h4>
+	<table id="commitTable">
+	<thead>
+		<tr><th>Message</th><th>Date</th><th>ID</td></tr>
+	</thead>
+	<tbody>
+		{{#each commits}}
+			<tr><td><a href="{{sha}}/">{{message}}</a></td><td><a href="{{sha}}/">{{date date}}</a></td><td><a href="{{sha}}/">{{sha7}}</a></td></tr>
+		{{/each}}
+	</tbody>
+	</table>
 </div>
 
-<hr>
-<h3>Pages</h3>
+<div id="pagesSection" class="pageContent container">
+	<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
-<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
-
-{{#each pages}}
-	<a href="{{commitId}}/">
-		<div class="galleryItem">
-			{{#if images.length}}<img src="{{commitId}}/thumbnail?thumb=200x200" class="galleryThumb"/>{{/if}}
-			<div class="pageDesc">
-				{{#if title}}<div class="giTitle">{{title}}</div>{{/if}}
-				<div class="giMessage">{{message}}</div>
-				<div class="giDate">{{#if date}}{{date date}} {{time date}}{{/if}}</div>
+	{{#each pages}}
+		<a href="{{commitId}}/">
+			<div class="galleryItem">
+				{{#if images.length}}<img src="{{commitId}}/thumbnail?thumb=200x200" class="galleryThumb"/>{{/if}}
+				<div class="pageDesc">
+					{{#if title}}<div class="giTitle">{{title}}</div>{{/if}}
+					<!-- <div class="giMessage">{{message}}</div> -->
+					<div class="giDate">{{#if date}}{{date date}} {{time date}}{{/if}}</div>
+				</div>
 			</div>
-		</div>
-	</a>
-{{/each}}
+		</a>
+	{{/each}}
+</div>
 
 {{> editablePartial }}
