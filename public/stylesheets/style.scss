@@ -20,10 +20,14 @@ p {
 	padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: 10px;
+  width: 220px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .pageDesc {
-    display: inline-block;
+    display: block; // inline-block;
     vertical-align: top;
 }
 

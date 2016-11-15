@@ -17,6 +17,7 @@ const sharp = require('sharp');
 function makeThumbnail(source, outputPath, width, height) {
 	return sharp(source)
 		.resize(width, height)
+		.max()
 		.toFile(outputPath);
 }
 
