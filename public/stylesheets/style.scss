@@ -1,8 +1,15 @@
+@import 'https://fonts.googleapis.com/css?family=PT+Sans|Philosopher';
+
 body {
 //  padding: 50px;
 //  margin-top: 0;
 //  padding-top: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+//  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: 'PT Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Philosopher', sans-serif;
 }
 
 a {
@@ -25,7 +32,7 @@ $repo-text-color: #bbb;
   }
 
   a {
-    color: $repo-text-color; // rgb(143,170,220); // rgb(157,195,230);
+    color: $repo-text-color;
     &:hover {
       color: rgb(157,195,230);
       text-decoration: none;
