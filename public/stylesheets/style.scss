@@ -52,6 +52,17 @@ $repo-text-color: #bbb;
   }
 }
 
+#publishCtrls {
+  display: inline-block;
+}
+.publishChk {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  margin-right: 5px !important;
+  transform: scale(2);
+}
+
 p {
   color: $primary-color;
 }
@@ -61,10 +72,11 @@ p {
 	padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: 10px;
+  margin-right: 10px;
   width: 220px;
   display: inline-block;
   vertical-align: top;
+  position: relative;
 }
 
 .pageDesc {

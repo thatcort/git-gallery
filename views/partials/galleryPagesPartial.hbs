@@ -1,4 +1,17 @@
 <div id="pagesSection" class="pageContent container">
+	{{#if editable}}
+		<div>
+			<button id="publishBtn" class="btn btn-default" type="button">Publish...</button>
+			<div id="publishCtrls">
+				<label><input type="checkbox" id="selectAllChk">Select All</input></label>
+				<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
+				<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
+			</div>
+			<div id="publishSuccessAlert" class="alert alert-success" role="alert">Files were successfully published to the .gitGallery/export :)</div>
+			<div id="publishFailAlert" class="alert alert-warning" role="alert">Something went wrong and the publish failed :(</div>
+		</div>
+	{{/if}}
+
 	<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
 	{{#each pages}}
@@ -10,7 +23,45 @@
 					<!-- <div class="giMessage">{{message}}</div> -->
 					<div class="giDate">{{#if date}}{{date date}} {{time date}}{{/if}}</div>
 				</div>
+				{{#if ../editable}}
+					<input type="checkbox" class="publishChk" value="{{commitId}}"></input>
+				{{/if}}
 			</div>
 		</a>
 	{{/each}}
 </div>
+
+{{#if editable}}
+	<script>
+		$('#publishBtn').click(() => {
+			$('#publishBtn').toggleClass('active');
+			$('#publishCtrls').toggle();
+			$('.publishChk').toggle();
+			$('#publishSuccessAlert').hide();
+			$('#publishFailAlert').hide();
+		});
+		$('#cancelPublishBtn').click(() => {
+			$('#publishBtn').removeClass('active');
+			$('#publishCtrls').hide();
+			$('.publishChk').hide();
+		});
+		$('#publishCtrls').hide();
+		$('.publishChk').hide();
+		$('#publishSuccessAlert').hide();
+		$('#publishFailAlert').hide();
+
+		$('#saveBtn').click(() => {
+			let exports = [];
+			$('.publishChk:checked').each((index, item) => {
+				exports.push($(item).val());
+			});
+			let xhr = $.post('/publish', { 'ids': exports.join(',') })
+				.done(() => {
+					$('#publishSuccessAlert').show();
+				})
+				.fail(() => {
+					$('#publishFailAlert').show();
+				});
+		});
+	</script>
+{{/if}}
