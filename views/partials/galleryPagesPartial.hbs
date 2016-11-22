@@ -7,8 +7,9 @@
 				<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
 				<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
 			</div>
-			<div id="publishSuccessAlert" class="alert alert-success" role="alert">Files were successfully published to the .gitGallery/export :)</div>
-			<div id="publishFailAlert" class="alert alert-warning" role="alert">Something went wrong and the publish failed :(</div>
+			<div id="publishSuccessAlert" class="alert alert-success publishAlert" role="alert">Files were successfully published to the .gitGallery/export :)</div>
+			<div id="publishFailAlert" class="alert alert-warning publishAlert" role="alert">Something went wrong and the publish failed :(</div>
+			<div id="publishNonSelectedAlert" class="alert alert-info publishAlert" role="alert">You need to select some pages to publish first.</div>
 		</div>
 	{{/if}}
 
@@ -35,20 +36,19 @@
 	<script>
 		$('#publishCtrls').hide();
 		$('.publishChk').hide();
-		$('#publishSuccessAlert').hide();
-		$('#publishFailAlert').hide();
+		$('.publishAlert').hide();
 
 		$('#publishBtn').click(() => {
 			$('#publishBtn').toggleClass('active');
 			$('#publishCtrls').toggle();
 			$('.publishChk').toggle();
-			$('#publishSuccessAlert').hide();
-			$('#publishFailAlert').hide();
+			$('.publishAlert').hide();
 		});
 		$('#cancelPublishBtn').click(() => {
 			$('#publishBtn').removeClass('active');
 			$('#publishCtrls').hide();
 			$('.publishChk').hide();
+			$('.publishAlert').hide();
 		});
 
 		$('#selectAllChk').change(function() {
@@ -57,17 +57,22 @@
 		});
 
 		$('#saveBtn').click(() => {
+			$('.publishAlert').hide();
 			let exports = [];
 			$('.publishChk:checked').each((index, item) => {
 				exports.push($(item).val());
 			});
-			let xhr = $.post('/publish', { 'ids': exports.join(',') })
-				.done(() => {
-					$('#publishSuccessAlert').show();
-				})
-				.fail(() => {
-					$('#publishFailAlert').show();
-				});
+			if (exports.length === 0) {
+				$('#publishNonSelectedAlert').show();
+			} else {
+				let xhr = $.post('/publish', { 'ids': exports.join(',') })
+					.done(() => {
+						$('#publishSuccessAlert').show();
+					})
+					.fail(() => {
+						$('#publishFailAlert').show();
+					});
+			}
 		});
 	</script>
 {{/if}}
