@@ -3,7 +3,7 @@
 		<div>
 			<button id="publishBtn" class="btn btn-default" type="button">Publish...</button>
 			<div id="publishCtrls">
-				<label><input type="checkbox" id="selectAllChk">Select All</input></label>
+				<label><input type="checkbox" id="selectAllChk" checked>Select All</input></label>
 				<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
 				<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
 			</div>
@@ -24,7 +24,7 @@
 					<div class="giDate">{{#if date}}{{date date}} {{time date}}{{/if}}</div>
 				</div>
 				{{#if ../editable}}
-					<input type="checkbox" class="publishChk" value="{{commitId}}"></input>
+					<input type="checkbox" class="publishChk" value="{{commitId}}" checked></input>
 				{{/if}}
 			</div>
 		</a>
@@ -33,6 +33,11 @@
 
 {{#if editable}}
 	<script>
+		$('#publishCtrls').hide();
+		$('.publishChk').hide();
+		$('#publishSuccessAlert').hide();
+		$('#publishFailAlert').hide();
+
 		$('#publishBtn').click(() => {
 			$('#publishBtn').toggleClass('active');
 			$('#publishCtrls').toggle();
@@ -45,10 +50,11 @@
 			$('#publishCtrls').hide();
 			$('.publishChk').hide();
 		});
-		$('#publishCtrls').hide();
-		$('.publishChk').hide();
-		$('#publishSuccessAlert').hide();
-		$('#publishFailAlert').hide();
+
+		$('#selectAllChk').change(function() {
+			let sel = $(this).is(':checked');
+			$('.publishChk').prop('checked', sel);
+		});
 
 		$('#saveBtn').click(() => {
 			let exports = [];
