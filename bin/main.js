@@ -5,7 +5,8 @@ const fs = require('fs-extra');
 const ncp = require('ncp').ncp;
 const readline = require('readline');
 
-const utils = require('../pageUtils');
+const fsUtils = require('../fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
 
 const commandLineCommands = require('command-line-commands');
 
@@ -19,7 +20,7 @@ if (!command) {
 	}
 } else if (command === 'init') {
 	if (ableToStart(false)) {
-		console.log("Found an existing gallery root at " + utils.galleryRoot);
+		console.log("Found an existing gallery root at " + galleryRoot);
 		console.log("Aborting init.");
 	} else {
 		init();
@@ -28,13 +29,13 @@ if (!command) {
 
 
 function ableToStart(logErrors) {
-	let galleryExists = utils.directoryExists(utils.galleryRoot);
+	let galleryExists = fsUtils.directoryExists(galleryRoot);
 	if (!galleryExists && logErrors) {
-		console.log("Unable to find gallery root at " + utils.galleryRoot);
+		console.log("Unable to find gallery root at " + galleryRoot);
 		console.log("Run 'git-gallery init' to create a new gallery.");
 	}
 	let gitDir = path.resolve('./.git');
-	let gitExists = utils.directoryExists(gitDir);
+	let gitExists = fsUtils.directoryExists(gitDir);
 	if (!gitExists && logErrors) {
 		console.log("Unable to find git repository at " + gitDir);
 	}
@@ -45,19 +46,19 @@ function ableToStart(logErrors) {
 
 function init() {
 	// create the .gitGallery directory
-	fs.mkdirSync(utils.galleryRoot);
+	fs.mkdirSync(galleryRoot);
 
 	// copy in the views directory
 	let sourceViews = path.join(__dirname, '../views');
-	let destViews = path.join(utils.galleryRoot, 'views');
+	let destViews = path.join(galleryRoot, 'views');
 	ncp(sourceViews, destViews, { "clobber": false }, error => { if (error) console.error(error); });
 
 	// add a gallery.json file
-	let gjFile = path.join(utils.galleryRoot, 'gallery.json');
-	utils.writeJson({ 'title': '' }, gjFile, { 'flag': 'wx' }, error => { if (error) console.log(error); });
+	let gjFile = path.join(galleryRoot, 'gallery.json');
+	fsUtils.writeJson({ 'title': '' }, gjFile, { 'flag': 'wx' }, error => { if (error) console.log(error); });
 
 	// create/edit .gitignore file
-	let gitignore = path.join(utils.galleryRoot, '../.gitignore');
+	let gitignore = path.join(galleryRoot, '../.gitignore');
 	fs.ensureFileSync(gitignore);
 	var rd = readline.createInterface({
 		input: fs.createReadStream(gitignore),

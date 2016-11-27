@@ -5,8 +5,8 @@ const fs = require('fs');
 
 const debug = require('debug')('git-gallery');
 
-const utils = require('../pageUtils');
-const galleryRoot = utils.galleryRoot;
+const fsUtils = require('../fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
 
 const db = require('../pagesDB');
 
@@ -24,7 +24,7 @@ router.use(thumbnail.register(galleryRoot));
 
 router.get('/', getDirectory);
 router.get('/index.html', getDirectory);
-router.use('/:commitRef', pageRouter);
+router.use('/:commitRef', pageRouter.router);
 
 const galleryFile = path.join(galleryRoot, 'gallery.json');
 var _galleryJson;
@@ -35,6 +35,7 @@ function getDirectory(req, res, next) {
 	galleryData.pages = db.getPages();
 	commits.getCommits().then(commits => {
 		galleryData.commits = commits;
+		galleryData.editable = true;
 		res.render('gallery.hbs', galleryData);
 	});
 }
@@ -55,7 +56,7 @@ router.post('/editgallery', (req, res, next) => {
 	debug('Edit gallery: name=' + req.body.name + ' => value=' + req.body.value);
 	let galleryData = getGalleryData();
 	galleryData[req.body.name] = req.body.value;
-	utils.writeJson(galleryData, galleryFile, (error) => {
+	fsUtils.writeJson(galleryData, galleryFile, (error) => {
 		if (error) {
 			console.log(error);
 			return res.sendStatus(500);
@@ -70,7 +71,7 @@ function getGalleryData() {
 	if (!_galleryJson) {
 		_galleryJson = fs.readFileSync(galleryFile, 'utf8');
 	}
-	return utils.parseJson(_galleryJson);
+	return fsUtils.parseJson(_galleryJson);
 }
 
 exports.router = router;

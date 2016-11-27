@@ -1,4 +1,3 @@
-const express = require('express');
 const Git = require('nodegit');
 const path = require("path");
 const Promise = require('promise');

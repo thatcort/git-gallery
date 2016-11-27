@@ -1,37 +1,41 @@
-<link rel="stylesheet" type="text/css" href="/lib/DataTables-1.10.12/css/dataTables.bootstrap.min.css"/>
-<link rel="stylesheet" type="text/css" href="/lib/FixedHeader-3.1.2/css/fixedHeader.bootstrap.min.css"/>
-<script type="text/javascript" src="/lib/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/lib/DataTables-1.10.12/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="/lib/FixedHeader-3.1.2/js/dataTables.fixedHeader.min.js"></script>
-<script>
-	readyScripts.push(function() {
-		$('#commitTable').DataTable( {
-			"scrollY": "120px",
-			"scrollCollapse": true,
-			"paging": false,
-			"searching": false,
-			"ordering": false,
-			"info": false
+{{#if editable}}
+	<link rel="stylesheet" type="text/css" href="/lib/DataTables-1.10.12/css/dataTables.bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="/lib/FixedHeader-3.1.2/css/fixedHeader.bootstrap.min.css"/>
+	<script type="text/javascript" src="/lib/DataTables-1.10.12/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="/lib/DataTables-1.10.12/js/dataTables.bootstrap.min.js"></script>
+	<script type="text/javascript" src="/lib/FixedHeader-3.1.2/js/dataTables.fixedHeader.min.js"></script>
+	<script>
+		readyScripts.push(function() {
+			$('#commitTable').DataTable( {
+				"scrollY": "120px",
+				"scrollCollapse": true,
+				"paging": false,
+				"searching": false,
+				"ordering": false,
+				"info": false
+			});
 		});
-	});
-</script>
+	</script>
 
-<div id="repoSection" class="repoContent">
-	<p><a href="/current/">&gt;&gt; Current Working Directory</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="/HEAD/">&gt;&gt; HEAD Commit</a></p>
+	<div id="repoSection" class="repoContent">
+		<p><a href="/current/">&gt;&gt; Current Working Directory</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="/HEAD/">&gt;&gt; HEAD Commit</a></p>
 
-	<h4>Commit Log</h4>
-	<table id="commitTable">
-	<thead>
-		<tr><th>Message</th><th>Date</th><th>ID</td></tr>
-	</thead>
-	<tbody>
-		{{#each commits}}
-			<tr><td><a href="{{sha}}/">{{message}}</a></td><td><a href="{{sha}}/">{{date date}}</a></td><td><a href="{{sha}}/">{{sha7}}</a></td></tr>
-		{{/each}}
-	</tbody>
-	</table>
-</div>
+		<h4>Commit Log</h4>
+		<table id="commitTable">
+		<thead>
+			<tr><th>Message</th><th>Date</th><th>ID</td></tr>
+		</thead>
+		<tbody>
+			{{#each commits}}
+				<tr><td><a href="{{sha}}/">{{message}}</a></td><td><a href="{{sha}}/">{{date date}}</a></td><td><a href="{{sha}}/">{{sha7}}</a></td></tr>
+			{{/each}}
+		</tbody>
+		</table>
+	</div>
+{{/if}}
 
-{{> galleryPagesPartial editable=true }}
+{{> galleryPagesPartial }}
 
-{{> editablePartial }}
+{{#if editable}}
+	{{> editablePartial }}
+{{/if}}

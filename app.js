@@ -9,9 +9,10 @@ const hbs = require('hbs');
 const routes = require('./routes/index');
 const gallery = require('./routes/gallery');
 const pages = require('./routes/page');
+const publish = require('./routes/publish');
 const head = require('./galleryHEAD');
-const utils = require('./pageUtils');
-const galleryRoot = utils.galleryRoot;
+const fsUtils = require('./fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
 
 hbs.registerPartials(path.join(galleryRoot, 'views', 'partials'));
 
@@ -45,11 +46,8 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/workdir', express.static(path.resolve('.')));
+app.use('/publish', publish);
 app.use('/', gallery.router);
-
-// app.use('/', routes);
-// app.use('/users', users);
-// app.use('/pages', gallery);
 
 app.use(express.static(galleryRoot));
 

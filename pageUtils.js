@@ -5,46 +5,17 @@ const debug = require('debug')('git-gallery');
 
 const repo = require('./repoUtils');
 
-const galleryRoot = path.resolve('./.gitGallery'); // path.join(__dirname, '.gitGallery');
+const fsUtils = require('./fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
+const pathExists = fsUtils.pathExists;
+const isDirectory = fsUtils.isDirectory;
+const directoryExists = fsUtils.directoryExists;
+const readJson = fsUtils.readJson;
+const readJsonSync = fsUtils.readJsonSync;
+const parseJson = fsUtils.parseJson;
+const writeJson = fsUtils.writeJson;
 
-const transientPageProperties = ['isHead', 'isClean', 'prevPage', 'nextPage', 'prevCommit', 'nextCommit', '_locals']; // page properties not to be written to disk
 
-function dateReviver(key, value) {
-	var a;
-	if (typeof value === 'string') {
-		a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)(Z|([+\-])(\d{2}):(\d{2}))$/.exec(value);
-		// a = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/.exec(value);
-		if (a) {
-			return new Date(Date.UTC(+a[1], +a[2] - 1, +a[3], +a[4], +a[5], +a[6]));
-		}
-	}
-	return value;
-}
-
-function pathExists(f) {
-	try {
-		fs.accessSync(f, fs.constants.R_OK | fs.constants.W_OK);
-	} catch (e) {
-// console.log('Path does not exist: ' + f);
-		return false;
-	}
-// console.log('Path does exist: ' + f);
-	let stats = fs.lstatSync(f);
-	if (stats.isSymbolicLink()) {
-		return pathExists(fs.readlinkSync(f));
-	} else {
-		return true;
-	}
-}
-
-function isDirectory(f) {
-// console.log('isDirectory: ' + f + ': ' + fs.statSync(f).isDirectory());
-	return fs.statSync(f).isDirectory();
-}
-
-function directoryExists(f) {
-	return pathExists(f) && isDirectory(f);
-}
 
 function pageDir(commitRef) {
 	// console.log('pageDir: ' + commitRef + ' type: ' + typeof(commitRef) + '  base: ' + galleryRoot);
@@ -94,28 +65,13 @@ function createPageDir(commitRef, callback) {
 	}
 }
 
-function readJson(file, callback) {
-	fs.readFile(file, 'utf8', (error, data) => {
-		if (error) {
-			return callback(error);
-		}
-		return callback(null, JSON.parse(data, dateReviver));
-	});	
-}
+
 
 function readPage(dir, callback) {
 	let f = path.join(dir, 'page.json');
 	readJson(f);
 }
 
-function parseJson(data) {
-	return JSON.parse(data, dateReviver);
-}
-
-function readJsonSync(file) {
-	let data = fs.readFileSync(file, 'utf8');
-	return parseJson(data);
-}
 
 function readPageSync(dir) {
 	let f = path.join(dir, 'page.json');
@@ -136,21 +92,14 @@ function writePage(page, callback) {
 	});	
 }
 
-function writeJson(data, file, options, callback) {
-	if (typeof options === 'function') {
-		callback = options;
-		options = {};
-	}
-	let json = JSON.stringify(data, null, '\t');
-	debug("About to write json file: " + json);
-	fs.writeFile(file, json, options, callback);
-}
 
 
-function createPageForId(commitId, callback) {
+
+/** Data for the pagesDB */
+function createRawPageForId(commitId, callback) {
 	repo.getCommit(commitId).then(commit => callback(null, createPageForCommit(commit)), callback);
 }
-function createPageForCommit(commit) {
+function createRawPageForCommit(commit) {
 	let commitId = commit.sha();
 	let page = {
 		"commitId": commitId,
@@ -162,6 +111,8 @@ function createPageForCommit(commit) {
 	return page;
 }
 
+
+
 function registerHandlebarsHelper(name, helper) {
 	hbs.handlebars.registerHelper(name, helper);
 }
@@ -172,20 +123,13 @@ registerHandlebarsHelper('time', (date) => { return date.toLocaleTimeString(); }
 
 
 
-exports.transientPageProperties = transientPageProperties;
-exports.galleryRoot = galleryRoot;
-exports.pathExists = pathExists;
-exports.isDirectory = isDirectory;
-exports.directoryExists = directoryExists;
 exports.isPageDir = isPageDir;
 exports.pageExists = pageExists;
 exports.pageDir = pageDir;
-exports.readJson = readJson;
-exports.readJsonSync = readJsonSync;
-exports.parseJson = parseJson;
+
 exports.readPage = readPage;
 exports.readPageSync = readPageSync;
 exports.writePage = writePage;
-exports.writeJson = writeJson;
-exports.createPageForId = createPageForId;
-exports.createPageForCommit = createPageForCommit;
+
+exports.createRawPageForId = createRawPageForId;
+exports.createRawPageForCommit = createRawPageForCommit;

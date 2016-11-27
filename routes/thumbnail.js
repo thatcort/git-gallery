@@ -5,8 +5,8 @@ const fs = require('fs-extra');
 
 const debug = require('debug')('git-gallery');
 
-const utils = require('../pageUtils');
-const galleryRoot = utils.galleryRoot;
+const fsUtils = require('../fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
 
 const sharp = require('sharp');
 
@@ -37,7 +37,7 @@ function register(rootDir, options) {
 		let ext = path.extname(filename);
 		let pathObj = {
 			dir: path.join(options.cacheDir, path.dirname(filename)),
-			name: path.basename(filename, ext) + '_' + dimension,
+			name: path.basename(filename, ext), //  + '_' + dimension,
 			ext: ext
 		}
 		var location = path.format(pathObj);

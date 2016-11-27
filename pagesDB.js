@@ -4,18 +4,21 @@ const path = require('path');
 
 const debug = console.log; // require('debug')('git-gallery');
 
-const utils = require('./pageUtils');
-const galleryRoot = utils.galleryRoot;
+const pageUtils = require('./pageUtils');
+const fsUtils = require('./fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
 
-const isPageDir = utils.isPageDir;
+const isPageDir = pageUtils.isPageDir;
 
 var watcher; // gallery filesystem watcher
+
+const transientPageProperties = ['isHead', 'isClean', 'prevPage', 'nextPage', 'prevCommit', 'nextCommit', '_locals']; // page properties not to be written to disk
 
 var pages;
 var commit2Page;
 var dirties = {}; // a queue of objects that have been marked dirty and need to be written to disk
 var dirtyIgnores = {}; // page properties not to mark dirty on
-for (prop of utils.transientPageProperties) {
+for (prop of transientPageProperties) {
 	dirtyIgnores[prop] = true;
 }
 
@@ -55,7 +58,7 @@ function clean() {
 	debug('cleaning: ' + JSON.stringify(page));
 	delete dirties[id];
 
-	utils.writePage(page, (error) => {
+	pageUtils.writePage(page, (error) => {
 		if (error) {
 			console.log("Problem saving page " + id + ": " + error);
 		}
@@ -75,7 +78,7 @@ function getPage(commitId) {
 }
 
 function createPage(commitId, callback) {
-	utils.createPageForId(commitId, (error, obj) => {
+	pageUtils.createRawPageForId(commitId, (error, obj) => {
 		if (error) {
 			return callback(error);
 		}
@@ -131,7 +134,7 @@ function buildDB() {
 
 
 function processPageDir(dir) {
-	let obj = utils.readPageSync(dir);
+	let obj = pageUtils.readPageSync(dir);
 	addRawPage(obj);
 }
 
@@ -156,7 +159,6 @@ function sortPages() {
 		p.prevPage = (nextInd < pages.length ? pages[nextInd].commitId : null);
 	}
 }
-
 
 
 //---------------------------------------------------------------------

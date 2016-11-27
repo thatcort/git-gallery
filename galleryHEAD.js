@@ -3,9 +3,9 @@ const path = require('path');
 const debug = require('debug')('galleryHEAD');
 const canSymlink = require('can-symlink');
 
-const utils = require('./pageUtils');
 const repo = require('./repoUtils');
-const galleryRoot = utils.galleryRoot;
+const fsUtils = require('./fsUtils');
+const galleryRoot = fsUtils.galleryRoot;
 
 const headPath = path.join(galleryRoot, 'HEAD');
 // var headTarget; // current target of the head dir

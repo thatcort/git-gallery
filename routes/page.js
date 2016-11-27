@@ -12,12 +12,9 @@ const debug = require('debug')('git-gallery');
 const gallery = require('./gallery.js');
 const commitsDB = require('../commitsDB');
 const pagesDB = require('../pagesDB');
-const utils = require('../pageUtils');
+const fsUtils = require('../fsUtils');
 const repoUtils = require('../repoUtils');
-const galleryRoot = utils.galleryRoot;
-const isPageDir = utils.isPageDir;
-const pageExists = utils.pageExists;
-const pageDir = utils.pageDir;
+const galleryRoot = fsUtils.galleryRoot;
 
 
 var storage = multer.diskStorage({
@@ -75,34 +72,10 @@ function pageRequest(req, res, next) {
 
 
 function handlePageRequest(commitId, req, res, next) {
-	createRenderData(commitId)
+	createPageRenderData(commitId)
 		.then(data => res.render('page.hbs', data))
 		.catch(error => res.sendStatus(404));
 }
-
-function createRenderData(commitId) {
-	let page = pagesDB.getPage(commitId);
-	return commitsDB.getCommit(commitId).then(commit => {
-		let data = {
-			"commitId": commitId,
-			"galleryData": gallery.getGalleryData(),
-			"commit": commit,
-			"page": page,
-			"isHead": commitId === 'HEAD'
-		};
-		return data;
-	}).then(data => {
-		if (data.isHead) {
-			return repoUtils.headStatus().then(headStatus => {
-				data.isClean = headStatus.isClean;
-				data.isDetached = headStatus.isDetached;
-				return data;
-			});
-		}
-		return data;
-	});
-}
-
 
 router.get('/*', function(req, res, next) {
 	let pn = parseUrl(req).pathname;
@@ -167,7 +140,7 @@ function thumbnailRequest(req, res, next) {
 		return res.redirect('/images/1x1.png');
 	} else {
 		let image = page.images[0];
-		let thumb = req.query.thumb || '100x100';
+		let thumb = req.query.thumb || '200x200';
 		return res.redirect(image.src + '?thumb=' + thumb);
 	}
 }
@@ -185,4 +158,30 @@ function commitCurrent(req, res, next) {
 	})
 }
 
-module.exports = router;
+/** Data that can be sent to the page template including commit and page info. */
+function createPageRenderData(commitId) {
+	let page = pagesDB.getPage(commitId);
+	return commitsDB.getCommit(commitId).then(commit => {
+		let data = {
+			"commitId": commitId,
+			"galleryData": gallery.getGalleryData(),
+			"commit": commit,
+			"page": page,
+			"isHead": commitId === 'HEAD'
+		};
+		return data;
+	}).then(data => {
+		if (data.isHead) {
+			return repoUtils.headStatus().then(headStatus => {
+				data.isClean = headStatus.isClean;
+				data.isDetached = headStatus.isDetached;
+				return data;
+			});
+		}
+		return data;
+	});
+}
+
+
+exports.router = router;
+exports.createPageRenderData = createPageRenderData;
