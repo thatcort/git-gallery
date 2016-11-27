@@ -97,9 +97,10 @@ function writePage(page, callback) {
 
 /** Data for the pagesDB */
 function createRawPageForId(commitId, callback) {
-	repo.getCommit(commitId).then(commit => callback(null, createPageForCommit(commit)), callback);
+	repo.getCommit(commitId).then(commit => callback(null, createRawPageForCommit(commit)), callback);
 }
 function createRawPageForCommit(commit) {
+console.log('createRawPageForCommit: ' + commit);
 	let commitId = commit.sha();
 	let page = {
 		"commitId": commitId,

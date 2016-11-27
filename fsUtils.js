@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-
+const debug = require('debug')('git-gallery');
 
 const galleryRoot = path.resolve('./.gitGallery');
 

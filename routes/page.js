@@ -73,7 +73,10 @@ function pageRequest(req, res, next) {
 
 function handlePageRequest(commitId, req, res, next) {
 	createPageRenderData(commitId)
-		.then(data => res.render('page.hbs', data))
+		.then(data => {
+			data.editable = true;
+			res.render('page.hbs', data);
+		})
 		.catch(error => res.sendStatus(404));
 }
 

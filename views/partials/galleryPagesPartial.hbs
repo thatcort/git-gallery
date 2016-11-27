@@ -18,7 +18,7 @@
 	{{#each pages}}
 		<a href="{{commitId}}/">
 			<div class="galleryItem">
-				{{#if images.length}}<img src="{{#if editable}}{{commitId}}/thumbnail?thumb=200x200{{else}}{{commitId}}/thumb_{{images[0].src}}{{/if}}" class="galleryThumb"/>{{/if}}
+				{{#if images.length}}<img src="{{#if ../editable}}{{commitId}}/thumbnail?thumb=200x200{{else}}{{commitId}}/thumb_{{images.0.src}}{{/if}}" class="galleryThumb"/>{{/if}}
 				<div class="pageDesc">
 					{{#if title}}<div class="giTitle">{{title}}</div>{{/if}}
 					<!-- <div class="giMessage">{{message}}</div> -->
