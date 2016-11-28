@@ -11,6 +11,8 @@ const galleryRoot = fsUtils.galleryRoot;
 
 const db = require('../pagesDB');
 
+const repo = require('../repoUtils');
+
 const gallery = require('./gallery');
 const pageRouter = require('./page');
 
@@ -27,12 +29,12 @@ router.post('/', (req, res, next) => {
 		res.sendStatus(500);
 		return;
 	}
-	writeGallery(req.app, ids).then(() => res.sendStatus(200));
+	writeGallery(req.app, ids, req.body.exportRepo).then(() => res.sendStatus(200));
 });
 
 
 
-function writeGallery(app, ids) {
+function writeGallery(app, ids, exportRepo) {
 	fs.ensureDirSync(exportRoot);
 
 	// render the gallery template
@@ -65,7 +67,7 @@ function writeGallery(app, ids) {
 
 	return prepareExportPages(ids).then(pages => {
 		for (p of pages) {
-			writePage(app, p);
+			writePage(app, p, exportRepo);
 		}
 	});
 }
@@ -102,7 +104,7 @@ if (results[i].commitId !== id) {
 }
 
 
-function writePage(app, page) {
+function writePage(app, page, exportRepo) {
 	// create a dir
 	let pdir = path.join(exportRoot, page.commitId);
 	fs.ensureDirSync(pdir);
@@ -127,8 +129,36 @@ function writePage(app, page) {
 		fs.copySync(tsrc, tdest);
 	}
 
-	//   TODO: add the repo contents
-	
+	// add the repo contents
+	if (exportRepo) {
+		let repoDir = path.join(pdir, 'repo');
+		fs.ensureDirSync(repoDir);
+		repo.getCommit(page.commitId)
+		.then(commit => commit.getTree())
+		.then(tree => {
+			var walker = tree.walk(false);
+			walker.on("entry", function(entry) {
+				let entryPath = entry.path();
+				if (entryPath == '.gitignore' || entryPath == '.DS_Store') {
+					return;
+				}
+				let fn = path.join(repoDir, entryPath);
+				if (entry.isDirectory()) {
+					fs.ensureDirSync(fn);
+				} else {
+					entry.getBlob().then(blob => {
+						fs.writeFile(fn, blob.content(), err => {
+							if (err)
+								throw err;
+							// console.log('Wrote ' + fn);
+						});
+					});
+				}
+			});
+
+			walker.start();
+		});
+	}
 }
 
 

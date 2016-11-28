@@ -4,6 +4,7 @@
 			<button id="publishBtn" class="btn btn-default" type="button">Publish...</button>
 			<div id="publishCtrls">
 				<label><input type="checkbox" id="selectAllChk" checked>Select All</input></label>
+				<label><input type="checkbox" id="repoChk" checked>Include Repo Content</input></label>
 				<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
 				<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
 			</div>
@@ -65,7 +66,7 @@
 			if (exports.length === 0) {
 				$('#publishNonSelectedAlert').show();
 			} else {
-				let xhr = $.post('/publish', { 'ids': exports.join(',') })
+				let xhr = $.post('/publish', { 'ids': exports.join(','), 'exportRepo': $('#repoChk').is(':checked') })
 					.done(() => {
 						$('#publishSuccessAlert').show();
 					})
