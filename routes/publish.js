@@ -122,7 +122,7 @@ function writePage(app, page) {
 
 	// create page thumbnails
 	if (page.images.length > 0) {
-		let tsrc = path.join(exportRoot, '.thumb', page.commitId, page.images[0].src);
+		let tsrc = path.join(galleryRoot, '.thumb', page.commitId, page.images[0].src);
 		let tdest = path.join(pdir, 'thumb_' + page.images[0].src);
 		fs.copySync(tsrc, tdest);
 	}

@@ -1,29 +1,32 @@
 
 <!-- Canvas Partial -->
-<h4>Live Canvas   {{#if snapshot}}<button onclick="snapshot()"><span class="glyphicon glyphicon-camera"></span></button>{{/if}}</h4>
-{{#if snapshot}}<script>
-function snapshot() {
-	// find the canvas:
-	let contents = $('#contentFrame').contents();
-	let canvas = contents.find('canvas').first()[0];
+{{if editable}}
+	<h4>Live Canvas   {{#if snapshot}}<button onclick="snapshot()"><span class="glyphicon glyphicon-camera"></span></button>{{/if}}</h4>
+	{{#if snapshot}}
+		<script>
+			function snapshot() {
+				// find the canvas:
+				let contents = $('#contentFrame').contents();
+				let canvas = contents.find('canvas').first()[0];
 
-	// send the contents to the server:
-	canvas.toBlob(blob => {
-		let fd = new FormData();
-		fd.append('commitId', '{{commitId}}');
-		fd.append('file', blob);
+				// send the contents to the server:
+				canvas.toBlob(blob => {
+					let fd = new FormData();
+					fd.append('commitId', '{{commitId}}');
+					fd.append('file', blob);
 
-		$.ajax({
-			url: 'addimage',
-			data: fd,
-			cache: false,
-			contentType: false,
-			processData: false,
-			type: 'POST',
-			success: data => { location.reload(); }
-		});
-	});
-}
-</script>
+					$.ajax({
+						url: 'addimage',
+						data: fd,
+						cache: false,
+						contentType: false,
+						processData: false,
+						type: 'POST',
+						success: data => { location.reload(); }
+					});
+				});
+			}
+		</script>
+	{{/if}}
 {{/if}}
 <iframe id="contentFrame" src="{{src}}" width="1000" height="600" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
