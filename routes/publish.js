@@ -46,7 +46,7 @@ function writeGallery(app, ids, exportRepo) {
 	galleryData.pages = galleryPages;
 	galleryData.editable = false;
 
-	console.log('EXPORTING: GalleryData=' + JSON.stringify(galleryData, null, 2));
+	// console.log('EXPORTING: GalleryData=' + JSON.stringify(galleryData, null, 2));
 
 	app.render('gallery.hbs', galleryData, (err, html) => {
 		fs.writeFileSync(path.join(exportRoot, 'index.html'), html);
@@ -75,7 +75,7 @@ function writeGallery(app, ids, exportRepo) {
 
 /** Creates the render data for each page. */
 function prepareExportPages(ids) {
-	console.log("CREATE EXPORT FOR " + ids);
+	// console.log("CREATE EXPORT FOR " + ids);
 	return Promise.all(ids.map(pageRouter.createPageRenderData)).then(function(results) {
 		for (let i=0; i < ids.length; i++) {
 			let id = ids[i];
@@ -133,31 +133,13 @@ function writePage(app, page, exportRepo) {
 	if (exportRepo) {
 		let repoDir = path.join(pdir, 'repo');
 		fs.ensureDirSync(repoDir);
-		repo.getCommit(page.commitId)
-		.then(commit => commit.getTree())
-		.then(tree => {
-			var walker = tree.walk(false);
-			walker.on("entry", function(entry) {
-				let entryPath = entry.path();
-				if (entryPath == '.gitignore' || entryPath == '.DS_Store') {
-					return;
-				}
-				let fn = path.join(repoDir, entryPath);
-				if (entry.isDirectory()) {
-					fs.ensureDirSync(fn);
-				} else {
-					entry.getBlob().then(blob => {
-						fs.writeFile(fn, blob.content(), err => {
-							if (err)
-								throw err;
-							// console.log('Wrote ' + fn);
-						});
-					});
-				}
-			});
-
-			walker.start();
-		});
+		let restoreFilter = path => {
+			if (path == '.gitignore' || path == '.DS_Store') {
+				return false;
+			}
+			return true;
+		};
+		repo.restoreCommit(page.commitId, repoDir, restoreFilter);
 	}
 }
 

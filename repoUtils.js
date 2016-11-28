@@ -1,6 +1,7 @@
 const Git = require('nodegit');
 const path = require("path");
 const Promise = require('promise');
+const fs = require('fs-extra');
 
 const hbs = require('hbs');
 
@@ -159,6 +160,38 @@ function commitAllChanges(message) {
 		});
 }
 
+
+function restoreCommit(ref, dir, filter) {
+	getRepo()
+		.then(repo => repo.getCommit(ref))
+		.then(commit => commit.getTree())
+		.then(tree => {
+			var walker = tree.walk(false);
+			walker.on("entry", function(entry) {
+				let entryPath = entry.path();
+				if (filter && !filter(entryPath))
+					return;
+				let fn = path.join(dir, entryPath);
+				if (entry.isDirectory()) {
+					fs.ensureDirSync(fn);
+				} else {
+					entry.getBlob().then(blob => {
+						fs.writeFile(fn, blob.content(), err => {
+							if (err)
+								throw err;
+							// console.log('Wrote ' + fn);
+						});
+					});
+				}
+			});
+
+			walker.start();
+		});
+}
+
+
+
+
 function logError(message, error) {
 	console.log(message);
 	console.log(error);
@@ -176,3 +209,4 @@ exports.isHeadDetached = isHeadDetached;
 exports.headStatus = headStatus;
 exports.repoStatus = repoStatus;
 exports.commitAllChanges = commitAllChanges;
+exports.restoreCommit = restoreCommit;
