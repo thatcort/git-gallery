@@ -6,12 +6,23 @@
 			<div>{{#if page.nextPage}}<a href="../{{page.nextPage}}/index.html">Next Page &gt;&gt;</a>{{/if}}</div>
 		</div>
 
-		<h1 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if page.title}}{{page.title}}{{else}}Untitled{{/if}}</h1>
-		<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if page.comment}}{{page.comment}}{{else}}Add comments{{/if}}</p>
-
+		{{#if editable}}
+			<h1 class="editable" data-name="title" data-title="Page Title" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if page.title}}{{page.title}}{{else}}Untitled{{/if}}</h1>
+		{{else}}
+			{{#if page.title}}<h1>{{page.title}}</h1>{{/if}}
+		{{/if}}
+		
+		{{#if editable}}
+			<p class="editable" data-name="comment" data-title="Page Comments" data-type="textarea" data-pk="{{commitId}}" data-url="editpage">{{#if page.comment}}{{page.comment}}{{else}}Add comments{{/if}}</p>
+		{{else}}
+			{{#if page.comment}}<p>{{page.comment}}</p>{{/if}}
+		{{/if}}
+		
 		{{!-- {{> canvasPartial src="repo/index.html" snapshot="true"}} --}}
 
-		<h4>Images</h4>
+		{{#if editable}}
+			<h4>Images</h4>
+		{{/if}}
 		{{#each page.images}}
 			<figure>
 				<img src="{{src}}" />
@@ -20,34 +31,38 @@
 			<br />
 		{{/each}}
 
-		{{> dropzonePartial }}
-		{{> livePartial }}
-		{{> editablePartial }}
-	{{else}}
-		<div id="pageNav">
-			<div></div>
-			<div><h4><a href="../index.html">{{ galleryData.title }}</a></h4></div>
-			<div></div>
-		</div>
-
-		A page does not exist for this commit.
-
-		{{#if isHead}}
-			{{#if isDetached}}<div class="alert alert-danger" role="alert">WARNING: HEAD is detached</div>{{/if}}
-			{{#if isClean}}
-			{{else}}
-				<div class="alert alert-warning" role="alert">Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
-			{{/if}}
+		{{#if editable}}
+			{{> dropzonePartial }}
 			{{> livePartial }}
+			{{> editablePartial }}
 		{{/if}}
+	{{else}}
+		{{#if editable}}
+			<div id="pageNav">
+				<div></div>
+				<div><h4><a href="../index.html">{{ galleryData.title }}</a></h4></div>
+				<div></div>
+			</div>
 
-		<div>
-			<form method="post" action="/create">
-				<input type="hidden" name="commitRef" value="{{commitId}}" />
-				<button type="submit" class="btn btn-default">Create a New Page</button>
-			</form>
-		</div>
+			A page does not exist for this commit.
 
-		{{!-- {{> canvasPartial src="repo/index.html"}} --}}
+			{{#if isHead}}
+				{{#if isDetached}}<div class="alert alert-danger" role="alert">WARNING: HEAD is detached</div>{{/if}}
+				{{#if isClean}}
+				{{else}}
+					<div class="alert alert-warning" role="alert">Warning: Your working directory is not clean. If you create a page it will be for the current HEAD commit, not your current working directory.</div>
+				{{/if}}
+				{{> livePartial }}
+			{{/if}}
+
+			<div>
+				<form method="post" action="/create">
+					<input type="hidden" name="commitRef" value="{{commitId}}" />
+					<button type="submit" class="btn btn-default">Create a New Page</button>
+				</form>
+			</div>
+
+			{{!-- {{> canvasPartial src="repo/index.html"}} --}}
+		{{/if}}
 	{{/if}}
 </div>

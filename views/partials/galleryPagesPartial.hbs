@@ -16,7 +16,7 @@
 	<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
 	{{#each pages}}
-		<a href="{{commitId}}/">
+		<a href="{{commitId}}/index.html">
 			<div class="galleryItem">
 				{{#if images.length}}<img src="{{#if ../editable}}{{commitId}}/thumbnail?thumb=200x200{{else}}{{commitId}}/thumb_{{images.0.src}}{{/if}}" class="galleryThumb"/>{{/if}}
 				<div class="pageDesc">

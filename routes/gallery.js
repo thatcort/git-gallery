@@ -36,13 +36,13 @@ function getDirectory(req, res, next) {
 	commits.getCommits().then(commits => {
 		galleryData.commits = commits;
 		galleryData.editable = true;
+console.log('GALLERY RENDER DATA: ' + JSON.stringify(galleryData, null, 2));
 		res.render('gallery.hbs', galleryData);
 	});
 }
 
 /** Create a new page */
 router.post('/create', (req, res, next) => {
-console.log("RECEIVED CREATE CALL");
 	db.createPage(req.body.commitRef, (error, data) => {
 		if (error) {
 			console.log(error);
