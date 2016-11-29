@@ -10,10 +10,10 @@ const mime = require('mime');
 const debug = require('debug')('git-gallery');
 
 const gallery = require('./gallery.js');
-const commitsDB = require('../commitsDB');
-const pagesDB = require('../pagesDB');
-const fsUtils = require('../fsUtils');
-const repoUtils = require('../repoUtils');
+const commitsDB = require('../lib/commitsDB');
+const pagesDB = require('../lib/pagesDB');
+const fsUtils = require('../lib/fsUtils');
+const repoUtils = require('../lib/repoUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
 

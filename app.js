@@ -10,8 +10,8 @@ const routes = require('./routes/index');
 const gallery = require('./routes/gallery');
 const pages = require('./routes/page');
 const publish = require('./routes/publish');
-const head = require('./galleryHEAD');
-const fsUtils = require('./fsUtils');
+const head = require('./lib/galleryHEAD');
+const fsUtils = require('./lib/fsUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
 hbs.registerPartials(path.join(galleryRoot, 'views', 'partials'));

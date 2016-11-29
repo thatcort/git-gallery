@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 
 const debug = require('debug')('git-gallery');
 
-const fsUtils = require('../fsUtils');
+const fsUtils = require('../lib/fsUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
 const sharp = require('sharp');

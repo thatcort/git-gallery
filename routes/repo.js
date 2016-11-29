@@ -2,7 +2,7 @@ const express = require('express');
 const path = require("path");
 const mime = require('mime');
 
-const rUtils = require('../repoUtils');
+const rUtils = require('../lib/repoUtils');
 
 const router = express.Router({mergeParams: true});
 

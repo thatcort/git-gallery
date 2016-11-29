@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const ncp = require('ncp').ncp;
 const readline = require('readline');
 
-const fsUtils = require('../fsUtils');
+const fsUtils = require('../lib/fsUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
 const commandLineCommands = require('command-line-commands');

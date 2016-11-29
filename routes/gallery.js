@@ -5,12 +5,12 @@ const fs = require('fs');
 
 const debug = require('debug')('git-gallery');
 
-const fsUtils = require('../fsUtils');
+const fsUtils = require('../lib/fsUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
-const db = require('../pagesDB');
+const db = require('../lib/pagesDB');
 
-const commits = require('../commitsDB');
+const commits = require('../lib/commitsDB');
 
 router.use(function(req, res, next) {
 	console.log('galleryRouter: %s %s %s', req.method, req.url, req.path);

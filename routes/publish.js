@@ -6,17 +6,17 @@ const Promise = require('promise');
 
 const debug = require('debug')('git-gallery');
 
-const fsUtils = require('../fsUtils');
+const fsUtils = require('../lib/fsUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
-const db = require('../pagesDB');
+const db = require('../lib/pagesDB');
 
-const repo = require('../repoUtils');
+const repo = require('../lib/repoUtils');
 
 const gallery = require('./gallery');
 const pageRouter = require('./page');
 
-const commits = require('../commitsDB');
+const commits = require('../lib/commitsDB');
 
 const exportRoot = path.join(galleryRoot, 'export');
 
