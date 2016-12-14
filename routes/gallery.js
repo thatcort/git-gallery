@@ -36,7 +36,7 @@ function getDirectory(req, res, next) {
 	commits.getCommits().then(commits => {
 		galleryData.commits = commits;
 		galleryData.editable = true;
-console.log('GALLERY RENDER DATA: ' + JSON.stringify(galleryData, null, 2));
+// console.log('GALLERY RENDER DATA: ' + JSON.stringify(galleryData, null, 2));
 		res.render('gallery.hbs', galleryData);
 	});
 }
