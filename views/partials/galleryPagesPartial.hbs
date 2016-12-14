@@ -1,16 +1,16 @@
 <div id="pagesSection" class="pageContent container">
 	{{#if editable}}
 		<div>
-			<button id="publishBtn" class="btn btn-default" type="button">Publish...</button>
+			<button id="publishBtn" class="btn btn-default" type="button">Export...</button>
 			<div id="publishCtrls">
 				<label><input type="checkbox" id="selectAllChk" checked>Select All</input></label>
 				<label><input type="checkbox" id="repoChk" checked>Include Repo Content</input></label>
 				<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
 				<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
 			</div>
-			<div id="publishSuccessAlert" class="alert alert-success publishAlert" role="alert">Files were successfully published to the .gitGallery/export :)</div>
-			<div id="publishFailAlert" class="alert alert-warning publishAlert" role="alert">Something went wrong and the publish failed :(</div>
-			<div id="publishNonSelectedAlert" class="alert alert-info publishAlert" role="alert">You need to select some pages to publish first.</div>
+			<div id="publishSuccessAlert" class="alert alert-success publishAlert" role="alert">Files were successfully exported to the .gitGallery/export :)</div>
+			<div id="publishFailAlert" class="alert alert-warning publishAlert" role="alert">Something went wrong and the export failed :(</div>
+			<div id="publishNonSelectedAlert" class="alert alert-info publishAlert" role="alert">You need to select some pages to export first.</div>
 		</div>
 	{{/if}}
 
