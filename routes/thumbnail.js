@@ -41,7 +41,7 @@ function register(rootDir, options) {
 			ext: ext
 		}
 		var location = path.format(pathObj);
-		console.log("Thumbnail output location: " + location);
+		// console.log("Thumbnail output location: " + location);
 
 		fs.stat(filepath, function (err, sourceStats) {
 

@@ -17,20 +17,40 @@ const repoUtils = require('../lib/repoUtils');
 const galleryRoot = fsUtils.galleryRoot;
 
 
+function multerDestination(req, file) {
+	return path.join(galleryRoot, req.body.commitId);
+}
+function multerFilename(dir, name, ext) {
+	let fn = name + ext;
+	let p = path.join(dir, fn);
+	if (fsUtils.pathExists(p)) {
+		// add a number after the name so the name doesn't conflict with an already existing file
+		let number = 1;
+		do {
+			number++;
+			fn = name + number + ext;
+			p = path.join(dir, fn);
+		} while (fsUtils.pathExists(p));
+	}
+	return fn;
+}
+
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		// console.log('multer request: %s %s %s' + req.method, req.url, req.path);
-		d = path.join(galleryRoot, req.body.commitId);
-		console.log('multer destination: ' + d);
+		let d = multerDestination(req, file);
+		// console.log('multer destination: ' + d);
 		cb(null, d);
 	},
 	filename: function (req, file, cb) {
 		let ext = '.' + mime.extension(file.mimetype);
 		let name = file.originalname;
-		if (!name.endsWith(ext)) {
-			name += ext;
+		if (name.endsWith(ext)) {
+			name = name.substring(0, name.length-ext.length);
 		}
-		cb(null, name);
+		let dir = multerDestination(req, file);
+		let fn = multerFilename(dir, name, ext);
+		cb(null, fn);
 	}
 });
 var upload = multer({ storage: storage });
