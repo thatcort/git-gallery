@@ -56,3 +56,8 @@ For web projects that draw to an HTML canvas, I've created a snippet of code tha
 * Thumbnails are generated on the fly and cached for reuse. You can request a thumbnail of any image by appending the query `thumb=200x200` to the request (or whatever resolution you desire). You can also request the first image of a page as a thumbnail at `{{commitId}}/thumbnail?thumb=200x200`. The thumbnail will retain the orginal aspect ratio while fitting within the given dimensions
 * Export the gallery into a standalone directory structure that can be copied to a simple web server for others to view. You can optionally include the repository contents from the commit to enable viewers to run the code in their browsers.
 
+## Roadmap
+
+Add a couple convenience Git methods:
+* Checkout commits
+* Create branches
