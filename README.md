@@ -4,13 +4,13 @@ Git Gallery is tool for creating a visual gallery from Git commits. It's origina
 
 To add images for a commit you first create a 'page' for that commit. The page lives in a directory on the filesystem named after the commit id. The directory contains the images and a 'page.json' file with additional metadata (title, comments, etc.). The web interface makes it easy to create and edit pages, so most of the time you won't need to touch the filesystem.
 
-The motivation for creating Git Gallery comes from my work creating algorithmic art. In the process of creation I often discover new ideas and directions that aren't what I was intending, but are worth exploring later. Similarly, even if the idea doesn't change, the appearance may go through many iterations that are worth preserving either for their own sake or as part of the creation process. Sometimes just changing a variable slightly or a sine wave to a square wave results in a totally different result and these explorations should also be recorded.
+The motivation for creating Git Gallery comes from creating algorithmic art. In the process of creation I often discover new ideas and directions that aren't what I was intending, but are worth exploring later. Similarly, even if the idea doesn't change, the appearance may go through many iterations that are worth preserving either for their own sake or as part of the creation process. Sometimes just changing a variable slightly or a sine wave to a square wave results in a totally different work that is worth preserving.
 
 The Git approach to this workflow is to commit interesting versions and create branches for new ideas to work on them in parallel. Unfortunately, most Git tools are created with a more normal software development model in mind, where there is a single goal and branches exist to be merged into master. The only record of past work is terse commit messages and older commits quickly get lost. Git Gallery is intended to make it easy to keep track of all these versions of the work, relate them back to their Git commits and to publish them onto the web for others to view.
 
 ## Status
 
-Git-Gallery should be considered alpha quality at this point. Please send feedback, suggestions and pull-requests.
+Git-Gallery should be considered beta quality at this point. Please send feedback, suggestions and pull-requests.
 
 ## Usage
 
