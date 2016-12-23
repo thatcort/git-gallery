@@ -67,6 +67,10 @@ p {
   color: $primary-color;
 }
 
+.galleryPageLink {
+  text-decoration: none;
+}
+
 .galleryItem {
 	background-color: #ccc; // rgb(240, 240, 240);
 	padding: 10px;
