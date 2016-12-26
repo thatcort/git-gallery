@@ -2,6 +2,7 @@
 <script src="../lib/jquery.min.js"></script> 
 <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
 <link rel='stylesheet' href='../stylesheets/style.css' />
+<title>Current Working Directory</title>
 
 <div class="container">
 	<div><a href="/"><< Gallery</a></div>
@@ -13,14 +14,19 @@
 	{{else}}
 		{{#if isClean}}
 			<div class="alert alert-success">On branch {{branch}}<br>Working directory is clean. Nothing to commit.</div>
-			<div>
-				<form method="post" action="/create">
-					<input type="hidden" name="commitRef" value="HEAD" />
-					<label>Create a page for the current HEAD:</label>
-					<button type="submit" class="btn btn-default">Create a New Page</button>
-				</form>
-			</div>
-
+			{{#if pageExists}}
+				<div>
+					A page already exists for this commit. <a href="/HEAD/">&gt;&gt; View the HEAD commit</a>.
+				</div>
+			{{else}}
+				<div>
+					<form method="post" action="/create">
+						<input type="hidden" name="commitRef" value="HEAD" />
+						<label>Create a page for the current HEAD:</label>
+						<button type="submit" class="btn btn-default">Create a New Page</button>
+					</form>
+				</div>
+			{{/if}}
 		{{else}}
 			<div class="alert alert-info">
 				<p>On branch {{branch}}

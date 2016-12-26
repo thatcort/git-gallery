@@ -6,6 +6,7 @@ const path = require('path');
 const parseUrl = require('parseurl');
 const multer = require('multer');
 const mime = require('mime');
+const Promise = require('promise');
 
 const debug = require('debug')('git-gallery');
 
@@ -170,8 +171,17 @@ function thumbnailRequest(req, res, next) {
 
 function getCurrent(req, res, next) {
 	return repoUtils.repoStatus().then(status => {
-		return res.render('current', status);
-	});
+		if (status.isClean) {
+			return repoUtils.getHeadCommit().then(head => {
+				let page = pagesDB.getPage(head.sha());
+				status.pageExists = !!page;
+				status.page = page;
+				return status;
+			});
+		} else {
+			return Promise.resolve(status);
+		}
+	}).then(status => res.render('current', status));
 }
 
 function commitCurrent(req, res, next) {
