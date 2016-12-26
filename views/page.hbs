@@ -2,6 +2,7 @@
 <script src="../lib/jquery.min.js"></script> 
 <script src="../lib/bootstrap/js/bootstrap.min.js"></script>
 <link rel='stylesheet' href='../stylesheets/style.css' />
+<title>{{#if page.title}}{{page.title}}{{else}}{{commit.commitId}}{{/if}}{{#if galleryData.title}} - {{galleryData.title}}{{/if}}</title>
 
 {{#if editable}}
 	{{> commitPartial commit }}
