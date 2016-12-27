@@ -26,7 +26,13 @@
 		{{#each page.images}}
 			<figure>
 				<img src="{{src}}" />
-				<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
+				{{#if editable}}
+					<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
+				{{else}}
+					{{#if caption}}
+						<figcaption>{{caption}}</figcaption>
+					{{/if}}
+				{{/if}}
 			</figure>
 			<br />
 		{{/each}}
