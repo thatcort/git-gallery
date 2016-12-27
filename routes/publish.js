@@ -8,6 +8,7 @@ const debug = require('debug')('git-gallery');
 
 const fsUtils = require('../lib/fsUtils');
 const galleryRoot = fsUtils.galleryRoot;
+const exportRoot = fsUtils.exportRoot;
 
 const db = require('../lib/pagesDB');
 
@@ -17,8 +18,6 @@ const gallery = require('./gallery');
 const pageRouter = require('./page');
 
 const commits = require('../lib/commitsDB');
-
-const exportRoot = path.join(galleryRoot, 'export');
 
 
 router.post('/', (req, res, next) => {
