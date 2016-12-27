@@ -93,8 +93,8 @@ if (results[i].commitId !== id) {
 			result.images = old.images;
 
 			// set the prev & next links
-			let prev = i > 0 ? results[i-1] : null;
-			let next = i < (results.length-1) ? results[i+1] : null;
+			let prev = i > 0 ? results[i-1].commitId : null;
+			let next = i < (results.length-1) ? results[i+1].commitId : null;
 			result.page.prevPage = prev;
 			result.page.nextPage = next;
 		}
