@@ -55,7 +55,7 @@ function init() {
 
 	// add a gallery.json file
 	let gjFile = path.join(galleryRoot, 'gallery.json');
-	fsUtils.writeJson({ 'title': '' }, gjFile, { 'flag': 'wx' }, error => { if (error) console.log(error); });
+	fsUtils.writeJson({ 'title': '', 'showCanvas': false }, gjFile, { 'flag': 'wx' }, error => { if (error) console.log(error); });
 
 	// create/edit .gitignore file
 	let gitignore = path.join(galleryRoot, '../.gitignore');

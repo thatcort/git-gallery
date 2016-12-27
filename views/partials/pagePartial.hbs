@@ -18,7 +18,9 @@
 			{{#if page.comment}}<p>{{page.comment}}</p>{{/if}}
 		{{/if}}
 		
-		{{!-- {{> canvasPartial src="repo/index.html" snapshot="true"}} --}}
+		{{#if galleryData.showCanvas}}
+			{{> canvasPartial src="repo/index.html" snapshot="true"}}
+		{{/if}}
 
 		{{#if editable}}
 			<h4>Images</h4>
