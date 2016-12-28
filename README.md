@@ -4,9 +4,7 @@ Git Gallery is tool for creating a visual gallery from Git commits. It's origina
 
 To add images for a commit you first create a 'page' for that commit. The page lives in a directory on the filesystem named after the commit id. The directory contains the images and a 'page.json' file with additional metadata (title, comments, etc.). The web interface makes it easy to create and edit pages, so most of the time you won't need to touch the filesystem.
 
-The motivation for creating Git Gallery comes from creating algorithmic art. In the process of creation I often discover new ideas and directions that aren't what I was intending, but are worth exploring later. Similarly, even if the idea doesn't change, the appearance may go through many iterations that are worth preserving either for their own sake or as part of the creation process. Sometimes just changing a variable slightly or a sine wave to a square wave results in a totally different work that is worth preserving.
-
-The Git approach to this workflow is to commit interesting versions and create branches for new ideas to work on them in parallel. Unfortunately, most Git tools are created with a more normal software development model in mind, where there is a single goal and branches exist to be merged into master. The only record of past work is terse commit messages and older commits quickly get lost. Git Gallery is intended to make it easy to keep track of all these versions of the work, relate them back to their Git commits and to publish them onto the web for others to view.
+The motivation for creating Git Gallery comes from creating algorithmic art. In the process of creation a work can go through many iterations that are worth preserving. Sometimes new ideas and directions to explore emerge that one wishes to follow up on later. The Git approach to this workflow is to commit interesting versions and create branches for new ideas to work on them in parallel. Unfortunately, most Git tools present interfaces with a more singular software development model in mind, where branches mostly exist to be merged into master and older commits are quickly buried. Git Gallery is intended to make it easy to keep track of versions of a work, relate them back to their Git commits and to publish them onto the web for others to view.
 
 ## Status
 
@@ -55,6 +53,7 @@ For web projects that draw to an HTML canvas, I've created a snippet of code tha
 * Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have it run live on the page
 * Thumbnails are generated on the fly and cached for reuse. You can request a thumbnail of any image by appending the query `thumb=200x200` to the request (or whatever resolution you desire). You can also request the first image of a page as a thumbnail at `{{commitId}}/thumbnail?thumb=200x200`. The thumbnail will retain the orginal aspect ratio while fitting within the given dimensions
 * Export the gallery into a standalone directory structure that can be copied to a simple web server for others to view. You can optionally include the repository contents from the commit to enable viewers to run the code in their browsers.
+* Configure whether to show a live canvas on pages by editing the `showCanvas` field in the gallleryData.json file
 
 ## Roadmap
 
