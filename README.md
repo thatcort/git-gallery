@@ -40,7 +40,9 @@ The HEAD directory is a symbolic link that will always point to the commit direc
 
 Your current working directory is visible at `/current/`. From here you can see your current branch and any modifications, and create a new commit ('git add *; git commit'). If your work runs in a browser you can view it live on the page enabling a single place to view, test and commit from.
 
-For web projects that draw to an HTML canvas, I've created a snippet of code that you can use to view the project live in the browser and take snapshots that are saved to the page. You can enable this by uncommenting out the `{{> canvasPartial }}` line in pagePartial.hbs.
+For web projects that draw to an HTML canvas, I've created a snippet of code that you can use to view the project live in the browser and take snapshots that are saved to the page. You can enable this by editing the `showCanvas` setting in the galleryData.json file.
+
+You can export pages into a standalone directory structure that can be copied to a web server. When exporting you have the option of whether to include the repository contents, the live canvas and images for the pages. An example of an exported gallery can be seen [here](https://briancort.com/gitGallerySample/index.html).
 
 ## Features
 
@@ -52,8 +54,7 @@ For web projects that draw to an HTML canvas, I've created a snippet of code tha
 * View the current HEAD commit at `/HEAD`
 * Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have it run live on the page
 * Thumbnails are generated on the fly and cached for reuse. You can request a thumbnail of any image by appending the query `thumb=200x200` to the request (or whatever resolution you desire). You can also request the first image of a page as a thumbnail at `{{commitId}}/thumbnail?thumb=200x200`. The thumbnail will retain the orginal aspect ratio while fitting within the given dimensions
-* Export the gallery into a standalone directory structure that can be copied to a simple web server for others to view. You can optionally include the repository contents from the commit to enable viewers to run the code in their browsers.
-* Configure whether to show a live canvas on pages by editing the `showCanvas` field in the gallleryData.json file
+* Export the gallery into a standalone directory structure that can be copied to a simple web server for others to view.
 
 ## Roadmap
 
