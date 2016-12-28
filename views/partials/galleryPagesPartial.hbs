@@ -1,17 +1,35 @@
 <div id="pagesSection" class="pageContent container">
 	{{#if editable}}
-		<div>
-			<button id="publishBtn" class="btn btn-default" type="button">Export...</button>
-			<div id="publishCtrls">
-				<label><input type="checkbox" id="selectAllChk" checked>Select All</input></label>
-				<label><input type="checkbox" id="repoChk" checked>Include Repo Content</input></label>
-				<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
-				<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
+		<div class="row">
+			<div class="col-xs-2">
+				<button id="publishBtn" class="btn btn-default" type="button">Export...</button>
 			</div>
-			<div id="publishSuccessAlert" class="alert alert-success publishAlert" role="alert">Files were successfully exported to the .gitGallery/export :)</div>
-			<div id="publishFailAlert" class="alert alert-warning publishAlert" role="alert">Something went wrong and the export failed :(</div>
-			<div id="publishNonSelectedAlert" class="alert alert-info publishAlert" role="alert">You need to select some pages to export first.</div>
+			<div class="col-xs-10 publishCtrls">
+				<label><input type="checkbox" id="selectAllChk" checked>Select All</input></label>
+			</div>
 		</div>
+		<form class="publishCtrls panel panel-default">
+			<div class="panel-body">
+				<div class="checkbox">
+					<label><input type="checkbox" id="repoChk" checked>Include Repo Content</input></label>
+				</div>
+				<div class="checkbox">
+					<label><input type="checkbox" id="showImagesChk" checked>Show Images on Pages</input></label>
+				</div>
+				{{#if showCanvas}}
+					<div class="checkbox">
+						<label><input type="checkbox" id="showCanvasChk" checked>Show Canvas on Pages</input></label>
+					</div>
+				{{/if}}
+				<div class="form-group">
+					<button id="saveBtn" type="button" class="btn btn-primary">Save</button>
+					<button id="cancelPublishBtn" type="button" class="btn btn-link">Cancel</button>
+				</div>
+				<div id="publishSuccessAlert" class="alert alert-success publishAlert" role="alert">Files were successfully exported to the .gitGallery/export :)</div>
+				<div id="publishFailAlert" class="alert alert-warning publishAlert" role="alert">Something went wrong and the export failed :(</div>
+				<div id="publishNonSelectedAlert" class="alert alert-info publishAlert" role="alert">You need to select some pages to export first.</div>
+			</div>
+		</form>
 	{{/if}}
 
 	<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
@@ -41,19 +59,19 @@
 
 {{#if editable}}
 	<script>
-		$('#publishCtrls').hide();
+		$('.publishCtrls').hide();
 		$('.publishChk').hide();
 		$('.publishAlert').hide();
 
 		$('#publishBtn').click(() => {
 			$('#publishBtn').toggleClass('active');
-			$('#publishCtrls').toggle();
+			$('.publishCtrls').toggle();
 			$('.publishChk').toggle();
 			$('.publishAlert').hide();
 		});
 		$('#cancelPublishBtn').click(() => {
 			$('#publishBtn').removeClass('active');
-			$('#publishCtrls').hide();
+			$('.publishCtrls').hide();
 			$('.publishChk').hide();
 			$('.publishAlert').hide();
 		});
@@ -72,7 +90,12 @@
 			if (exports.length === 0) {
 				$('#publishNonSelectedAlert').show();
 			} else {
-				let xhr = $.post('/publish', { 'ids': exports.join(','), 'exportRepo': $('#repoChk').is(':checked') })
+				let xhr = $.post('/publish', {
+						'ids': exports.join(','),
+						'exportRepo': $('#repoChk').is(':checked'),
+						'showImages': $('#showImagesChk').is(':checked'),
+						'showCanvas': {{#if showCanvas}}$('#showCanvasChk').is(':checked'){{else}}false{{/if}}
+					})
 					.done(() => {
 						$('#publishSuccessAlert').show();
 					})

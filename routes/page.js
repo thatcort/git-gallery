@@ -200,7 +200,8 @@ function createPageRenderData(commitId) {
 			"galleryData": gallery.getGalleryData(),
 			"commit": commit,
 			"page": page,
-			"isHead": commitId === 'HEAD'
+			"isHead": commitId === 'HEAD',
+			"showImages": true
 		};
 		return data;
 	}).then(data => {

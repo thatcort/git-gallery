@@ -22,22 +22,25 @@
 			{{> canvasPartial src="repo/index.html" snapshot="true"}}
 		{{/if}}
 
-		{{#if editable}}
-			<h4>Images</h4>
-		{{/if}}
-		{{#each page.images}}
-			<figure>
-				<img src="{{src}}" />
-				{{#if editable}}
-					<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
-				{{else}}
-					{{#if caption}}
-						<figcaption>{{caption}}</figcaption>
+		{{#if showImages}}
+			{{#if editable}}
+				<h4>Images</h4>
+				}
+			{{/if}}
+			{{#each page.images}}
+				<figure>
+					<img src="{{src}}" />
+					{{#if editable}}
+						<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
+					{{else}}
+						{{#if caption}}
+							<figcaption>{{caption}}</figcaption>
+						{{/if}}
 					{{/if}}
-				{{/if}}
-			</figure>
-			<br />
-		{{/each}}
+				</figure>
+				<br />
+			{{/each}}
+		{{/if}}
 
 		{{#if editable}}
 			{{> dropzonePartial }}

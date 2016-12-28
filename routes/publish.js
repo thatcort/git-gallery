@@ -28,12 +28,19 @@ router.post('/', (req, res, next) => {
 		res.sendStatus(500);
 		return;
 	}
-	writeGallery(req.app, ids, req.body.exportRepo).then(() => res.sendStatus(200));
+	let options = {
+		'exportRepo': (req.body.exportRepo == 'true'),
+		'showImages': (req.body.showImages == 'true'),
+		'showCanvas': (req.body.showCanvas == 'true')
+	};
+	writeGallery(req.app, ids, options).then(() => res.sendStatus(200));
 });
 
 
 
-function writeGallery(app, ids, exportRepo) {
+function writeGallery(app, ids, options) {
+	options = options || {};
+
 	fs.ensureDirSync(exportRoot);
 
 	// render the gallery template
@@ -64,16 +71,16 @@ function writeGallery(app, ids, exportRepo) {
 	fs.ensureDirSync(cssDest);
 	fs.copySync(path.join(cssSrc, 'style.css'), path.join(cssDest, 'style.css'));
 
-	return prepareExportPages(ids).then(pages => {
+	return prepareExportPages(ids, options).then(pages => {
 		for (p of pages) {
-			writePage(app, p, exportRepo);
+			writePage(app, p, options);
 		}
 	});
 }
 
 
 /** Creates the render data for each page. */
-function prepareExportPages(ids) {
+function prepareExportPages(ids, options) {
 	// console.log("CREATE EXPORT FOR " + ids);
 	return Promise.all(ids.map(pageRouter.createPageRenderData)).then(function(results) {
 		for (let i=0; i < ids.length; i++) {
@@ -88,6 +95,8 @@ if (results[i].commitId !== id) {
 			
 			let result = results[i];
 			result.editable = false;
+			result.showImages = options.showImages;
+			result.galleryData.showCanvas = options.showCanvas;
 			
 			let old = db.getPage(id);
 			result.images = old.images;
@@ -103,7 +112,7 @@ if (results[i].commitId !== id) {
 }
 
 
-function writePage(app, page, exportRepo) {
+function writePage(app, page, options) {
 	// create a dir
 	let pdir = path.join(exportRoot, page.commitId);
 	fs.ensureDirSync(pdir);
@@ -129,7 +138,7 @@ function writePage(app, page, exportRepo) {
 	}
 
 	// add the repo contents
-	if (exportRepo) {
+	if (options.exportRepo) {
 		let repoDir = path.join(pdir, 'repo');
 		fs.ensureDirSync(repoDir);
 		let restoreFilter = path => {
