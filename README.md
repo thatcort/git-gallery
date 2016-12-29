@@ -26,17 +26,16 @@ On Windows you need to run all commands as Administrator.
 npm install -g git-gallery
 ```
 
-Then cd to the directory containinng your Git repo and run
+Then cd to the directory containinng your Git repo and initialize the gallery:
 ```
 git-gallery init
 ```
-to create the .gitGallery directory.
+This will create the .gitGallery directory.
 
-Then run
+Then run the app:
 ```
 git-gallery
 ```
-to run the app.
 
 Git Gallery will create a .gitGallery directory containing all its files. Every time you create a page it will create a sub-directory named after the commit id to store images and info about that page. The app is an Express webserver that will serve content from this directory and from the underlying Git repository
 
