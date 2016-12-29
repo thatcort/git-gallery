@@ -6,9 +6,17 @@ To add images for a commit you first create a 'page' for that commit. The page l
 
 The motivation for creating Git Gallery comes from creating algorithmic art. In the process of creation a work can go through many iterations that are worth preserving. Sometimes new ideas and directions to explore emerge that one wishes to follow up on later. The Git approach to this workflow is to commit interesting versions and create branches for new ideas to work on them in parallel. Unfortunately, most Git tools present interfaces with a more singular software development model in mind, where branches mostly exist to be merged into master and older commits are quickly buried. Git Gallery is intended to make it easy to keep track of versions of a work, relate them back to their Git commits and to publish them onto the web for others to view.
 
-## Status
+## Features
 
-Git-Gallery should be considered beta quality at this point. Please send feedback, suggestions and pull-requests.
+* Create gallery pages for any Git commit
+* Edit the page in the browser
+* Drag-n-drop images onto the page to have them included
+* View and commit your current working copy at `/current.html`
+* Maintains a HEAD directory that points to the current Git HEAD
+* View the current HEAD commit at `/HEAD`
+* Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have it run live on the page
+* Thumbnails are generated on the fly and cached for reuse. You can request a thumbnail of any image by appending the query `thumb=200x200` to the request (or whatever resolution you desire). You can also request the first image of a page as a thumbnail at `{{commitId}}/thumbnail?thumb=200x200`. The thumbnail will retain the orginal aspect ratio while fitting within the given dimensions
+* Export the gallery into a standalone directory structure that can be copied to a simple web server for others to view.
 
 ## Usage
 
@@ -44,17 +52,9 @@ For web projects that draw to an HTML canvas, I've created a snippet of code tha
 
 You can export pages into a standalone directory structure that can be copied to a web server. When exporting you have the option of whether to include the repository contents, the live canvas and images for the pages. An example of an exported gallery can be seen [here](https://briancort.com/gitGallerySample/index.html).
 
-## Features
+## Status
 
-* Create gallery pages for any Git commit
-* Edit the page in the browser
-* Drag-n-drop images onto the page to have them included
-* View and commit your current working copy at `/current.html`
-* Maintains a HEAD directory that points to the current Git HEAD
-* View the current HEAD commit at `/HEAD`
-* Read files directly from the repo: You can reference files in a given commit at /pages/:commitId:/repo/filename. This is especially useful if your content can display in a web browser, since you can then have it run live on the page
-* Thumbnails are generated on the fly and cached for reuse. You can request a thumbnail of any image by appending the query `thumb=200x200` to the request (or whatever resolution you desire). You can also request the first image of a page as a thumbnail at `{{commitId}}/thumbnail?thumb=200x200`. The thumbnail will retain the orginal aspect ratio while fitting within the given dimensions
-* Export the gallery into a standalone directory structure that can be copied to a simple web server for others to view.
+Git-Gallery should be considered beta quality at this point. Please send feedback, suggestions and pull-requests.
 
 ## Roadmap
 
