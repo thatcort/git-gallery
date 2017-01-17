@@ -29,7 +29,7 @@
 			{{#each page.images}}
 				<figure>
 					<img src="{{src}}" />
-					{{#if editable}}
+					{{#if ../editable}}
 						<figcaption class="editable" data-name="caption/{{src}}" data-title="Image Caption" data-type="text" data-pk="{{commitId}}" data-url="editpage">{{#if caption}}{{caption}}{{else}}Add caption{{/if}}</figcaption>
 					{{else}}
 						{{#if caption}}
