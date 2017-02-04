@@ -55,8 +55,12 @@ You can export pages into a standalone directory structure that can be copied to
 
 Git-Gallery should be considered beta quality at this point. Please send feedback, suggestions and pull-requests.
 
-## Roadmap
+## Roadmap / Potential Improvements
 
-Add a couple convenience Git methods:
+* Use a lightbox for browsing images
+* Look into importing content into WordPress
+* Delete images on a page
+* Delete pages
+* Add a site header partial for export
 * Checkout commits
 * Create branches
