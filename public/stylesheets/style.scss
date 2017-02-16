@@ -70,7 +70,7 @@ p {
 }
 
 .galleryItem {
-	background-color: #ccc; // rgb(240, 240, 240);
+	// background-color: #ccc; // rgb(240, 240, 240);
 	padding: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -97,6 +97,8 @@ p {
 }
 
 .galleryThumb {
+  border: 10px solid #ccc;
+  margin-bottom: 10px;
 }
 
 
