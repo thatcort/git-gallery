@@ -44,11 +44,13 @@ var storage = multer.diskStorage({
 		cb(null, d);
 	},
 	filename: function (req, file, cb) {
-		let ext = '.' + mime.extension(file.mimetype);
 		let name = file.originalname;
-		if (name.endsWith(ext)) {
-			name = name.substring(0, name.length-ext.length);
+		let ext = '.' + mime.extension(file.mimetype);
+		if (mime.lookup(name) == file.mimetype) {
+			ext = path.extname(name);
+			name = name.substring(0, name.length - ext.length)
 		}
+
 		let dir = multerDestination(req, file);
 		let fn = multerFilename(dir, name, ext);
 		cb(null, fn);
