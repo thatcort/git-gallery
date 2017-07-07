@@ -1,6 +1,6 @@
 {
   "name": "git-gallery",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "A gallery app for showing work based on Git commits.",
   "keywords": [
     "git",
