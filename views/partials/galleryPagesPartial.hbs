@@ -34,6 +34,8 @@
 
 	<h1 class="editable" data-name="title" data-title="Gallery Title" data-type="text" data-pk="_" data-url="editgallery">{{#if title}}{{ title }}{{else}}Git Gallery{{/if}}</h1>
 
+	<p class="editable" data-name="comment" data-title="Gallery Description" data-type="textarea" data-pk="_" data-url="editgallery">{{#if comment}}{{ comment }}{{else}}Gallery description{{/if}}</p>
+
 	{{#if pages.length}}
 		{{#each pages}}
 			<a href="{{commitId}}/index.html" class="galleryPageLink">
