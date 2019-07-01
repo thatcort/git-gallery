@@ -79,6 +79,9 @@ router.post('/commitcurrent', commitCurrent);
 function pageRequest(req, res, next) {
 	let commitId = req.params.commitRef;
 	switch (commitId) {
+		case 'workdir':
+			// Shouldn't happen -- probably means the requested working dir file doesn't exist
+			return res.send('');
 		case 'current':
 		case 'CURRENT':
 		// case 'current.html':
