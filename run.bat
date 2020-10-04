@@ -1,1 +1,0 @@
-set DEBUG=git-gallery:* & npm start
