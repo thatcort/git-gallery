@@ -6,7 +6,6 @@ const path = require('path');
 const parseUrl = require('parseurl');
 const multer = require('multer');
 const mime = require('mime');
-const Promise = require('promise');
 
 const debug = require('debug')('git-gallery');
 
@@ -45,8 +44,8 @@ var storage = multer.diskStorage({
 	},
 	filename: function (req, file, cb) {
 		let name = file.originalname;
-		let ext = '.' + mime.extension(file.mimetype);
-		if (mime.lookup(name) == file.mimetype) {
+		let ext = '.' + mime.getExtension(file.mimetype);
+		if (mime.getType(name) == file.mimetype) {
 			ext = path.extname(name);
 			name = name.substring(0, name.length - ext.length)
 		}

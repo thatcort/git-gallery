@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs-extra');
-const Promise = require('promise');
 
 const debug = require('debug')('git-gallery');
 

@@ -9,32 +9,58 @@ const router = express.Router({mergeParams: true});
 
 /** GET file from repo */
 router.get('/*', function(req, res, next) {
-
-	rUtils.getCommit(req.params.commitRef).then(function(commit) {
-		// console.log("loading from repo. commit: " + req.params.commitRef + "  path: " + req.path);
-		commit.getEntry(req.path.substr(1)).then(function(treeEntry) {
-			// console.log("Got TreeEntry: " + treeEntry + "   isBlob? " + treeEntry.isBlob());
-			// console.log("mime type: " + mime.lookup(treeEntry.name()));
-			res.type(mime.lookup(req.path));
-			if (treeEntry.isBlob()) {
-				treeEntry.getBlob().then(function(blob) {
-					// console.log("Sending content: " + blob.content());
-					res.send(blob.content());
-				}, function(error) {
-					logError("Problem retrieving tree entry blob from git: " + treeEntry.name(), error);
+	const filePath = req.path.substr(1); // Remove leading slash
+	const commitRef = req.params.commitRef;
+	
+	// console.log("loading from repo. commit: " + commitRef + "  path: " + filePath);
+	
+	rUtils.getRepo().then(function(git) {
+		// Use git show to get file content: git show commit:path
+		const gitPath = commitRef + ':' + filePath;
+		
+		git.show([gitPath]).then(function(content) {
+			// Set the correct MIME type
+			res.type(mime.getType(req.path) || 'application/octet-stream');
+			res.send(content);
+		}).catch(function(error) {
+			// File might not exist or might be a directory
+			if (filePath === '' || filePath === '/') {
+				// Handle root directory listing
+				git.raw(['ls-tree', '--name-only', commitRef]).then(function(listing) {
+					res.type('text/plain');
+					res.send('Directory listing:\n' + listing);
+				}).catch(function(listError) {
+					logError("Problem listing directory from git: " + filePath, listError);
+					res.status(404).send('Directory not found');
+				});
+			} else {
+				// Check if it's a directory by trying to list it
+				git.raw(['ls-tree', '--name-only', commitRef, filePath]).then(function(result) {
+					if (result.trim()) {
+						// It exists, check if it's a directory by trying to list contents
+						git.raw(['ls-tree', '--name-only', commitRef + ':' + filePath]).then(function(listing) {
+							res.type('text/plain');
+							res.send('Directory listing for ' + filePath + ':\n' + listing);
+						}).catch(function(listError) {
+							// Not a directory, file doesn't exist
+							logError("File not found in git: " + filePath, error);
+							res.status(404).send('File not found');
+						});
+					} else {
+						// File doesn't exist
+						logError("File not found in git: " + filePath, error);
+						res.status(404).send('File not found');
+					}
+				}).catch(function(checkError) {
+					logError("Problem checking file/directory in git: " + filePath, checkError);
+					res.status(404).send('File not found');
 				});
 			}
-		}, function (error) {
-			logError("Problem retrieving tree entry from git: " + req.path, error);
 		});
-	}, function(error) {
-		logError("Problem retrieving tree entry from git. commit: " + req.params.commitRef + "  path: " + req.path, error);
+	}).catch(function(error) {
+		logError("Problem getting git repository", error);
+		res.status(500).send('Repository error');
 	});
-
-	// TODO: handle directory listing for '/'
-
-	// res.send('TODO: Return ' + req.path + ' from the Git repo for commit ' + req.params.commitRef);
-
 });
 
 
